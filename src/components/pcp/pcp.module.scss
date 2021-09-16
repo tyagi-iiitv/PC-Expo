@@ -1,4 +1,28 @@
   
 .svgComp {
-    border: 3px solid black;
+    padding: 10px;
+    font: 10px sans-serif;
+}
+
+.lines path{
+    fill:none;
+    stroke: steelblue;
+}
+
+.background path {
+    fill: none;
+    stroke: #ddd;
+    shape-rendering: crispEdges;
+}
+
+.axis line,
+.axis path {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+    cursor: move;
 }
