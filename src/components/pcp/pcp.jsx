@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './pcp.module.scss';
 import * as d3 from 'd3';
-import data from './cars.csv';
+import data from './penguins_num.csv';
 
 class GeneratePCP extends React.Component {
     constructor(props) {
@@ -33,6 +33,7 @@ async function generateSVG(width, boxHeight) {
     let height = boxHeight - 20;
     d3.csv(data)
         .then(function(data){
+            console.log(data)
             // Extract the list of dimensions as keys and create a y scale for each.
             dimensions = d3.keys(data[0]).filter(function (key) {
                 if (key !== "") {

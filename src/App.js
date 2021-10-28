@@ -8,7 +8,7 @@ export default class App extends Component{
   constructor(props){
     super(props);
     this.state = {
-      data: data,
+      data: {},
     }
   }
 
@@ -32,7 +32,7 @@ export default class App extends Component{
           </NavbarBrand>
         </Navbar>
         <div>
-          <GeneratePCP />
+          <GeneratePCP data={this.state.data}/>
         </div>
       </div>
     );
