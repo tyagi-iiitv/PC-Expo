@@ -24,6 +24,8 @@ class GeneratePCP extends React.Component {
             />
         );
     }
+
+
 }
 
 async function generateSVG(width, boxHeight) {
@@ -33,7 +35,12 @@ async function generateSVG(width, boxHeight) {
     let height = boxHeight - 20;
     d3.csv(data)
         .then(function(data){
-            console.log(data)
+            let newdata = []
+            for(let i=0; i<data.length; i++){
+                newdata[i] = {'bill_length_mm': data[i]['bill_length_mm'], 
+                              'bill_depth_mm': data[i]['bill_depth_mm']}
+            };
+            data = newdata
             // Extract the list of dimensions as keys and create a y scale for each.
             dimensions = d3.keys(data[0]).filter(function (key) {
                 if (key !== "") {
@@ -47,7 +54,7 @@ async function generateSVG(width, boxHeight) {
             x = d3.scalePoint()
             .domain(dimensions)
             .range([0, width]);
-
+        
         // Add grey background lines for context.
         background = svg.append("g")
             .attr("class", styles.background)
