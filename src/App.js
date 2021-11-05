@@ -1,5 +1,5 @@
 import './App.css';
-import { Navbar, NavbarBrand } from 'react-bootstrap';
+import { Navbar, NavbarBrand, Container, Row, Col } from 'react-bootstrap';
 import {GeneratePCP} from './components';
 import { Component } from 'react';
 import data from './components/pcp/cars.csv';
@@ -31,9 +31,21 @@ export default class App extends Component{
             ParaCoords Explorer
           </NavbarBrand>
         </Navbar>
-        <div>
-          <GeneratePCP data={this.state.data}/>
-        </div>
+        <Container>
+          <Row>
+            <Col md={11}>
+              <GeneratePCP data={this.state.data}/>
+            </Col>
+            <Col md={1}>
+              <p style={{color: "#d53e4f"}}> Correlation</p>
+              <p style={{color: "#fc8d59"}}> Variance</p>
+              <p style={{color: "#fee08b"}}> Skewness</p>
+              <p style={{color: "#e6f598"}}> Neighborhood</p>
+              <p style={{color: "#99d594"}}> Split</p>
+              <p style={{color: "#3288bd"}}> Fan</p>
+            </Col>
+          </Row>
+        </Container>
       </div>
     );
   }
