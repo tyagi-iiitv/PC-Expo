@@ -31,14 +31,58 @@ class GeneratePCP extends React.Component {
 async function generateSVG(width, boxHeight) {
     let svg = d3.select('svg');
     let y = {};
-    let x, dimensions, lines, g, background;
+    let x, dimensions, lines, g, background, corrlines, varlines, skewlines, neighlines, splitlines, fanlines;
+
+
     let height = boxHeight - 20;
     d3.csv(data)
         .then(function(data){
-            let newdata = []
+            let newdata = [];
+            let corrdata = [];
+            let vardata = [];
+            let skewdata = [];
+            let neighdata = [];
+            let splitdata = [];
+            let fandata = [];
+            let otherdata = [];
+            let enter = false;
             for(let i=0; i<data.length; i++){
                 newdata[i] = {'bill_length_mm': data[i]['bill_length_mm'], 
                               'bill_depth_mm': data[i]['bill_depth_mm']}
+                if(data[i]['correlation'] == 'true'){
+                    corrdata.push({'bill_length_mm': data[i]['bill_length_mm'], 
+                    'bill_depth_mm': data[i]['bill_depth_mm']});
+                    enter = true;
+                }
+                if(data[i]['variance'] == 'true'){
+                    vardata.push({'bill_length_mm': data[i]['bill_length_mm'], 
+                    'bill_depth_mm': data[i]['bill_depth_mm']});
+                    enter = true;
+                }
+                if(data[i]['skewness'] == 'true'){
+                    skewdata.push({'bill_length_mm': data[i]['bill_length_mm'], 
+                    'bill_depth_mm': data[i]['bill_depth_mm']});
+                    enter = true;
+                }
+                if(data[i]['neigh'] == 'true'){
+                    neighdata.push({'bill_length_mm': data[i]['bill_length_mm'], 
+                    'bill_depth_mm': data[i]['bill_depth_mm']});
+                    enter = true;
+                }
+                if(data[i]['split_up'] == 'true'){
+                    splitdata.push({'bill_length_mm': data[i]['bill_length_mm'], 
+                    'bill_depth_mm': data[i]['bill_depth_mm']});
+                    enter = true;
+                }
+                if(data[i]['fan'] == 'true'){
+                    fandata.push({'bill_length_mm': data[i]['bill_length_mm'], 
+                    'bill_depth_mm': data[i]['bill_depth_mm']});
+                    enter = true;
+                }
+                if(enter == false){
+                    otherdata.push({'bill_length_mm': data[i]['bill_length_mm'], 
+                    'bill_depth_mm': data[i]['bill_depth_mm']});
+                }
             };
             data = newdata
             // Extract the list of dimensions as keys and create a y scale for each.
@@ -64,13 +108,54 @@ async function generateSVG(width, boxHeight) {
             .attr("d", line);
 
         // Draw lines
-        lines = svg.append("g")
-            .attr("class", styles.lines)
+        corrlines = svg.append("g")
+            .attr("class", styles.correlation)
             .selectAll("path")
-            .data(data).enter()
+            .data(corrdata).enter()
             .append("path")
             .attr("d", line);
 
+        varlines = svg.append("g")
+            .attr("class", styles.variance)
+            .selectAll("path")
+            .data(vardata).enter()
+            .append("path")
+            .attr("d", line);
+
+        skewlines = svg.append("g")
+            .attr("class", styles.skewness)
+            .selectAll("path")
+            .data(skewdata).enter()
+            .append("path")
+            .attr("d", line);
+
+        neighlines = svg.append("g")
+            .attr("class", styles.neigh)
+            .selectAll("path")
+            .data(neighdata).enter()
+            .append("path")
+            .attr("d", line);
+        
+        splitlines = svg.append("g")
+            .attr("class", styles.split)
+            .selectAll("path")
+            .data(splitdata).enter()
+            .append("path")
+            .attr("d", line);
+
+        fanlines = svg.append("g")
+            .attr("class", styles.fan)
+            .selectAll("path")
+            .data(fandata).enter()
+            .append("path")
+            .attr("d", line);
+
+        lines = svg.append("g")
+            .attr("class", styles.lines)
+            .selectAll("path")
+            .data(otherdata).enter()
+            .append("path")
+            .attr("d", line);
         // Add a group element for each dimension.
         g = svg.selectAll(".dimension")
             .data(dimensions).enter()
