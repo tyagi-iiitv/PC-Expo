@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './pcp.module.scss';
 import * as d3 from 'd3';
 import data from './penguins_num.csv';
+import equal from 'fast-deep-equal';
 
 class GeneratePCP extends React.Component {
     constructor(props) {
@@ -11,7 +12,31 @@ class GeneratePCP extends React.Component {
         };
     }
     componentDidMount() {
-        generateSVG(this.state.canvasDims.width, this.state.canvasDims.height);
+        generateSVG(
+            this.state.canvasDims.width, 
+            this.state.canvasDims.height,
+            this.props.corr, 
+            this.props.var, 
+            this.props.skew, 
+            this.props.neigh, 
+            this.props.split, 
+            this.props.fan
+        );
+    }
+
+    componentDidUpdate(prevProps){
+        if(!equal(this.props, prevProps)){
+            generateSVG(
+                this.state.canvasDims.width, 
+                this.state.canvasDims.height,
+                this.props.corr, 
+                this.props.var, 
+                this.props.skew, 
+                this.props.neigh, 
+                this.props.split, 
+                this.props.fan
+            );
+        }
     }
 
     render() {
@@ -28,10 +53,15 @@ class GeneratePCP extends React.Component {
 
 }
 
-async function generateSVG(width, boxHeight) {
+async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split, fan) {
     let svg = d3.select('svg');
     let y = {};
     let x, dimensions, lines, g, background, corrlines, varlines, skewlines, neighlines, splitlines, fanlines;
+    console.log(corr, variance, skew, neigh, split, fan)
+
+
+
+
 
 
     let height = boxHeight - 20;
@@ -45,8 +75,8 @@ async function generateSVG(width, boxHeight) {
             let splitdata = [];
             let fandata = [];
             let otherdata = [];
-            let enter = false;
             for(let i=0; i<data.length; i++){
+                let enter = false;
                 newdata[i] = {'bill_length_mm': data[i]['bill_length_mm'], 
                               'bill_depth_mm': data[i]['bill_depth_mm']}
                 if(data[i]['correlation'] == 'true'){
@@ -107,49 +137,60 @@ async function generateSVG(width, boxHeight) {
             .enter().append("path")
             .attr("d", line);
 
-        // Draw lines
-        corrlines = svg.append("g")
+        if(corr){
+            corrlines = svg.append("g")
             .attr("class", styles.correlation)
             .selectAll("path")
             .data(corrdata).enter()
             .append("path")
             .attr("d", line);
+        }
 
-        varlines = svg.append("g")
+        if(variance){
+            varlines = svg.append("g")
             .attr("class", styles.variance)
             .selectAll("path")
             .data(vardata).enter()
             .append("path")
             .attr("d", line);
+        }
 
-        skewlines = svg.append("g")
+        if(skew){
+            skewlines = svg.append("g")
             .attr("class", styles.skewness)
             .selectAll("path")
             .data(skewdata).enter()
             .append("path")
             .attr("d", line);
+        }
 
-        neighlines = svg.append("g")
+        if(neigh){
+            neighlines = svg.append("g")
             .attr("class", styles.neigh)
             .selectAll("path")
             .data(neighdata).enter()
             .append("path")
             .attr("d", line);
+        }
         
-        splitlines = svg.append("g")
+        if(split){
+            splitlines = svg.append("g")
             .attr("class", styles.split)
             .selectAll("path")
             .data(splitdata).enter()
             .append("path")
             .attr("d", line);
+        }
 
-        fanlines = svg.append("g")
+        if(fan){
+            fanlines = svg.append("g")
             .attr("class", styles.fan)
             .selectAll("path")
             .data(fandata).enter()
             .append("path")
             .attr("d", line);
-
+        }
+        
         lines = svg.append("g")
             .attr("class", styles.lines)
             .selectAll("path")
