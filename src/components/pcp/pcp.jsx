@@ -8,7 +8,7 @@ class GeneratePCP extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            canvasDims: { width: 1280, height: 960 },
+            canvasDims: { width: 600, height: 600 },
         };
     }
     componentDidMount() {
@@ -58,13 +58,7 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
     let svg = d3.select('svg');
     let y = {};
     let x, dimensions, lines, g, background, corrlines, varlines, skewlines, neighlines, splitlines, fanlines;
-    console.log(corr, variance, skew, neigh, split, fan)
-
-
-
-
-
-
+    
     let height = boxHeight - 20;
     d3.csv(data)
         .then(function(data){

@@ -1,6 +1,7 @@
 import './App.css';
 import { Navbar, NavbarBrand, Container, Row, Col, Form } from 'react-bootstrap';
 import {GeneratePCP} from './components';
+import { ScatterplotPlotly } from './components';
 import { Component } from 'react';
 import styles from './app.module.scss';
 
@@ -19,15 +20,15 @@ export default class App extends Component{
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidMount(){
-    fetch('/readData', {
-      methods: 'GET',
-    })
-    .then(response => response.json())
-    .then(response => {
-      this.setState({data: response})
-    })
-  }
+  // componentDidMount(){
+  //   fetch('/readData', {
+  //     methods: 'GET',
+  //   })
+  //   .then(response => response.json())
+  //   .then(response => {
+  //     this.setState({data: response})
+  //   })
+  // }
 
   handleChange(evt){
     let cur_state = this.state;
@@ -46,24 +47,25 @@ export default class App extends Component{
         </Navbar>
         <Container fluid>
           <Row className={styles.mainRow}>
-            <Col md={2}>
+            <Col md={3}>
               <Form.Check type="checkbox" id="corr" label="Correlation" onChange={this.handleChange}/>
               <Form.Check type="checkbox" id="var" label="Variance" onChange={this.handleChange}/>
               <Form.Check type="checkbox" id="skew" label="Skewness" onChange={this.handleChange}/>
               <Form.Check type="checkbox" id="neigh" label="Neighborhood" onChange={this.handleChange}/>
               <Form.Check type="checkbox" id="split" label="Split" onChange={this.handleChange}/>
               <Form.Check type="checkbox" id="fan" label="Fan" onChange={this.handleChange}/>
-            </Col>
-            <Col md={9}>
-              <GeneratePCP data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan}/>
-            </Col>
-            <Col md={1}>
               <p style={{color: "#d53e4f"}}> Correlation</p>
               <p style={{color: "#fc8d59"}}> Variance</p>
               <p style={{color: "#fee08b"}}> Skewness</p>
               <p style={{color: "#e6f598"}}> Neighborhood</p>
               <p style={{color: "#99d594"}}> Split</p>
               <p style={{color: "#3288bd"}}> Fan</p>
+            </Col>
+            <Col md={5}>
+              <GeneratePCP data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan}/>
+            </Col>
+            <Col md={4}>
+              <ScatterplotPlotly/>
             </Col>
           </Row>
         </Container>
