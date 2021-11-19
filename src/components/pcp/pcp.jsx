@@ -142,59 +142,59 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
             .append("path")
             .attr("d", line);
 
-        if(corr){
+        // if(corr){
             corrlines = svg.append("g")
             .attr("class", styles.correlation)
             .selectAll("path")
             .data(corrdata).enter()
             .append("path")
             .attr("d", line);
-        }
+        // }
 
-        if(variance){
+        // if(variance){
             varlines = svg.append("g")
             .attr("class", styles.variance)
             .selectAll("path")
             .data(vardata).enter()
             .append("path")
             .attr("d", line);
-        }
+        // }
 
-        if(skew){
+        // if(skew){
             skewlines = svg.append("g")
             .attr("class", styles.skewness)
             .selectAll("path")
             .data(skewdata).enter()
             .append("path")
             .attr("d", line);
-        }
+        // }
 
-        if(neigh){
+        // if(neigh){
             neighlines = svg.append("g")
             .attr("class", styles.neigh)
             .selectAll("path")
             .data(neighdata).enter()
             .append("path")
             .attr("d", line);
-        }
+        // }
         
-        if(split){
+        // if(split){
             splitlines = svg.append("g")
             .attr("class", styles.split)
             .selectAll("path")
             .data(splitdata).enter()
             .append("path")
             .attr("d", line);
-        }
+        // }
 
-        if(fan){
+        // if(fan){
             fanlines = svg.append("g")
             .attr("class", styles.fan)
             .selectAll("path")
             .data(fandata).enter()
             .append("path")
             .attr("d", line);
-        }
+        // }
         
 
         // Add a group element for each dimension.
