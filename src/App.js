@@ -10,6 +10,7 @@ export default class App extends Component{
     super(props);
     this.state = {
       data: {},
+      pcpdata: {},
       corr: false,
       var: false,
       skew: false,
@@ -18,6 +19,7 @@ export default class App extends Component{
       fan: false
     }
     this.handleChange = this.handleChange.bind(this);
+    this.callbackFromChild = this.callbackFromChild.bind(this);
   }
 
   // componentDidMount(){
@@ -29,6 +31,11 @@ export default class App extends Component{
   //     this.setState({data: response})
   //   })
   // }
+
+  callbackFromChild(data){
+    this.setState({'data_rec': false});
+    this.setState(data, ()=> this.setState({'data_rec': true}));
+  }
 
   handleChange(evt){
     let cur_state = this.state;
@@ -62,10 +69,10 @@ export default class App extends Component{
               <p style={{color: "#3288bd"}}> Fan</p>
             </Col>
             <Col md={5}>
-              <GeneratePCP data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan}/>
+              <GeneratePCP data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan} callbackFromParent={this.callbackFromChild}/>
             </Col>
             <Col md={4}>
-              <ScatterplotPlotly/>
+              <ScatterplotPlotly pcpdata={this.state.pcpdata}/>
             </Col>
           </Row>
         </Container>

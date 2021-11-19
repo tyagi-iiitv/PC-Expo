@@ -35,6 +35,13 @@ export default class ScatterplotPlotly extends Component {
                         type: 'scatter',
                         marker: {color: '#F08080', size: 7},
                     },
+                    {
+                        x: this.props.pcpdata[0],
+                        y: this.props.pcpdata[1],
+                        mode: 'markers',
+                        type: 'scatter',
+                        marker: {color: '#3182bd', size: 13},
+                    }
                 ]}
                 style={{width: 600, height: 400}}
                 />

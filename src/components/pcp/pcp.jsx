@@ -20,7 +20,8 @@ class GeneratePCP extends React.Component {
             this.props.skew, 
             this.props.neigh, 
             this.props.split, 
-            this.props.fan
+            this.props.fan, 
+            this.props.callbackFromParent
         );
     }
 
@@ -34,12 +35,14 @@ class GeneratePCP extends React.Component {
                 this.props.skew, 
                 this.props.neigh, 
                 this.props.split, 
-                this.props.fan
+                this.props.fan,
+                this.props.callbackFromParent
             );
         }
     }
 
     render() {
+        console.log(this.props.callbackFromParent)
         return (
             <svg
                 id="svg"
@@ -53,7 +56,7 @@ class GeneratePCP extends React.Component {
 
 }
 
-async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split, fan) {
+async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split, fan, callbackFromParent) {
     d3.selectAll("svg > *").remove();
     let svg = d3.select('svg');
     let y = {};
@@ -249,7 +252,9 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
             // console.log(y['bill_length_mm'].invert(940))
         })
         .then(response => response.json())
-        .then(data => {console.log(data)})
+        .then(data => {
+            callbackFromParent({pcpdata: data})
+        })
     }
     // Handles a brush event, toggling the display of foreground lines.
     function brush() {

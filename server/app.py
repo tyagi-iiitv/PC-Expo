@@ -1,15 +1,19 @@
 import pandas as pd
 from flask import Flask, request
 import json
+import numpy as np
 
 app = Flask(__name__)
 
 @app.route('/getpoints', methods=['POST'])
 def getPoints():
     [end, start] = request.get_json()
-    print(start, end)
+    cur_pts = np.where((num_df.bill_length_mm >= start) & 
+                            (num_df.bill_length_mm <= end)
+                           )
+    subset = num_df.iloc[cur_pts]
+    return json.dumps([list(subset['bill_length_mm']), list(subset['bill_depth_mm'])])
     
-    return "OK"
 
 @app.route('/readData', methods=['GET'])
 def readData():
