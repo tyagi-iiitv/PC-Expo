@@ -54,6 +54,7 @@ class GeneratePCP extends React.Component {
 }
 
 async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split, fan) {
+    d3.selectAll("svg > *").remove();
     let svg = d3.select('svg');
     let y = {};
     let x, dimensions, lines, g, background, corrlines, varlines, skewlines, neighlines, splitlines, fanlines;
@@ -137,6 +138,13 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
             .enter().append("path")
             .attr("d", line);
 
+        lines = svg.append("g")
+            .attr("class", styles.lines)
+            .selectAll("path")
+            .data(data).enter()
+            .append("path")
+            .attr("d", line);
+
         if(corr){
             corrlines = svg.append("g")
             .attr("class", styles.correlation)
@@ -191,12 +199,7 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
             .attr("d", line);
         }
         
-        lines = svg.append("g")
-            .attr("class", styles.lines)
-            .selectAll("path")
-            .data(otherdata).enter()
-            .append("path")
-            .attr("d", line);
+
         // Add a group element for each dimension.
         g = svg.selectAll(".dimension")
             .data(dimensions).enter()
@@ -222,7 +225,7 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
                 .extent([[-10, 0], [10, height]])
                 .on("start", brushstart)
                 .on("brush", brush)
-                .on("end", brush))
+                .on("end", brushend))
             .selectAll("rect")
             .attr("x", -8)
             .attr("width", 16);
@@ -241,6 +244,19 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
         d3.event.sourceEvent.stopPropagation();
     }
     
+    function brushend(){
+        fetch('/getpoints', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify([y['bill_length_mm'].invert(d3.brushSelection(this)[0]), y['bill_length_mm'].invert(d3.brushSelection(this)[1])])
+            // console.log(y['bill_length_mm'].invert(940))
+        })
+        .then(response => response.json())
+        .then(data => {console.log(data)})
+    }
     // Handles a brush event, toggling the display of foreground lines.
     function brush() {
         // Get a set of dimensions with active brushes and their current extent.

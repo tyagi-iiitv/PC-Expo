@@ -1,7 +1,14 @@
 import pandas as pd
-from flask import Flask
+from flask import Flask, request
 
 app = Flask(__name__)
+
+@app.route('/getpoints', methods=['POST'])
+def getPoints():
+    [end, start] = request.get_json()
+    print(start, end)
+    
+    return "OK"
 
 @app.route('/readData', methods=['GET'])
 def readData():
