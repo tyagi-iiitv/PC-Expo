@@ -152,48 +152,48 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
         // }
 
         // if(variance){
-            varlines = svg.append("g")
-            .attr("class", styles.variance)
-            .selectAll("path")
-            .data(vardata).enter()
-            .append("path")
-            .attr("d", line);
+            // varlines = svg.append("g")
+            // .attr("class", styles.variance)
+            // .selectAll("path")
+            // .data(vardata).enter()
+            // .append("path")
+            // .attr("d", line);
         // }
 
         // if(skew){
-            skewlines = svg.append("g")
-            .attr("class", styles.skewness)
-            .selectAll("path")
-            .data(skewdata).enter()
-            .append("path")
-            .attr("d", line);
+            // skewlines = svg.append("g")
+            // .attr("class", styles.skewness)
+            // .selectAll("path")
+            // .data(skewdata).enter()
+            // .append("path")
+            // .attr("d", line);
         // }
 
         // if(neigh){
-            neighlines = svg.append("g")
-            .attr("class", styles.neigh)
-            .selectAll("path")
-            .data(neighdata).enter()
-            .append("path")
-            .attr("d", line);
+            // neighlines = svg.append("g")
+            // .attr("class", styles.neigh)
+            // .selectAll("path")
+            // .data(neighdata).enter()
+            // .append("path")
+            // .attr("d", line);
         // }
         
         // if(split){
-            splitlines = svg.append("g")
-            .attr("class", styles.split)
-            .selectAll("path")
-            .data(splitdata).enter()
-            .append("path")
-            .attr("d", line);
+            // splitlines = svg.append("g")
+            // .attr("class", styles.split)
+            // .selectAll("path")
+            // .data(splitdata).enter()
+            // .append("path")
+            // .attr("d", line);
         // }
 
         // if(fan){
-            fanlines = svg.append("g")
-            .attr("class", styles.fan)
-            .selectAll("path")
-            .data(fandata).enter()
-            .append("path")
-            .attr("d", line);
+            // fanlines = svg.append("g")
+            // .attr("class", styles.fan)
+            // .selectAll("path")
+            // .data(fandata).enter()
+            // .append("path")
+            // .attr("d", line);
         // }
         
 
