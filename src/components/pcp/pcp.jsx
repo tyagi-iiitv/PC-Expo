@@ -9,9 +9,17 @@ class GeneratePCP extends React.Component {
         super(props);
         this.state = {
             canvasDims: { width: 600, height: 600 },
+            data_rec: {name: 'anjul'},
         };
     }
     componentDidMount() {
+        fetch('/getjsondata', {
+            methods: 'GET',
+            })
+            .then(response => response.json())
+            .then(response => {
+            this.setState({data_rec: response})
+        })
         generateSVG(
             this.state.canvasDims.width, 
             this.state.canvasDims.height,
@@ -21,7 +29,8 @@ class GeneratePCP extends React.Component {
             this.props.neigh, 
             this.props.split, 
             this.props.fan, 
-            this.props.callbackFromParent
+            this.props.callbackFromParent,
+            this.state.data_rec,
         );
     }
 
@@ -42,7 +51,7 @@ class GeneratePCP extends React.Component {
     }
 
     render() {
-        console.log(this.props.callbackFromParent)
+        console.log("here")
         return (
             <svg
                 id="svg"
@@ -56,7 +65,8 @@ class GeneratePCP extends React.Component {
 
 }
 
-async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split, fan, callbackFromParent) {
+async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split, fan, callbackFromParent, data_rec) {
+    console.log(data_rec)
     d3.selectAll("svg > *").remove();
     let svg = d3.select('svg');
     let y = {};
