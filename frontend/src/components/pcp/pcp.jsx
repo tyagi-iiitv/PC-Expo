@@ -85,7 +85,6 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
     let svg = d3.select('svg');
     let y = {};
     let x, dimensions, lines, g, background, corrlines, varlines, skewlines, neighlines, splitlines, fanlines;
-    // let corr_demo = [[32.1, 0.24916235830768624], [35.15555555555556, 0.15790483479646897], [38.21111111111111, -0.41686431587717243], [41.266666666666666, -0.32359645446001584], [44.32222222222222, 0.1962084716392814], [47.37777777777778, 0.5301388342487361], [50.43333333333334, 0.07711069339350457], [53.48888888888889, -0.29910392213669773], [56.544444444444444, -0.9999999999999954], [59.6, 0]]
     let height = boxHeight - 20;
     let data = data_rec
     dimensions = d3.keys(data[0]).filter(function (key) {
@@ -127,8 +126,8 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
         
     // var kde = kernelDensityEstimator(kernelEpanechnikov(7),yd.ticks(10))
     // var density =  kde( corr_demo.map(function(d){  return d; }) )  
-    console.log(corr_rec, indices)
-    
+    let offset = 30
+
     svg.append("path")
       .attr("class", "mypath")
       .datum(corr_rec)
@@ -140,6 +139,34 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
       .attr("d",  d3.line()
         .curve(d3.curveBasis)
           .x(function(d) { return x('bill_length_mm')+xd(d); })
+          .y(function(d,i) { return y['bill_length_mm'](indices[i]); })
+      );
+
+      svg.append("path")
+      .attr("class", "mypath")
+      .datum(var_rec)
+      .attr("fill", "#69b3a2")
+      .attr("opacity", ".8")
+      .attr("stroke", "#000")
+      .attr("stroke-width", 1)
+      .attr("stroke-linejoin", "round")
+      .attr("d",  d3.line()
+        .curve(d3.curveBasis)
+          .x(function(d) { return x('bill_length_mm')+xd(d)+offset; })
+          .y(function(d,i) { return y['bill_length_mm'](indices[i]); })
+      );
+
+      svg.append("path")
+      .attr("class", "mypath")
+      .datum(skew_rec)
+      .attr("fill", "#69b3a2")
+      .attr("opacity", ".8")
+      .attr("stroke", "#000")
+      .attr("stroke-width", 1)
+      .attr("stroke-linejoin", "round")
+      .attr("d",  d3.line()
+        .curve(d3.curveBasis)
+          .x(function(d) { return x('bill_length_mm')+xd(d)+2*offset; })
           .y(function(d,i) { return y['bill_length_mm'](indices[i]); })
       );
     //   x(key), y[key](d[key]
