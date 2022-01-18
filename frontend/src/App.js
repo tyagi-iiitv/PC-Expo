@@ -1,9 +1,8 @@
-import React, { Component }  from 'react';
 import './App.css';
 import { Navbar, NavbarBrand, Container, Row, Col, Form } from 'react-bootstrap';
 import {GeneratePCP} from './components';
 import { ScatterplotPlotly } from './components';
-// import { Component } from 'react';
+import { Component } from 'react';
 import styles from './app.module.scss';
 
 export default class App extends Component{
@@ -56,7 +55,7 @@ export default class App extends Component{
         <Container fluid>
           <Row className={styles.mainRow}>
             <Col md={3}>
-              <Form.Check type="checkbox" id="corr" label="Correction" onChange={this.handleChange}/>
+              <Form.Check type="checkbox" id="corr" label="Correlation" onChange={this.handleChange}/>
               <Form.Check type="checkbox" id="var" label="Variance" onChange={this.handleChange}/>
               <Form.Check type="checkbox" id="skew" label="Skewness" onChange={this.handleChange}/>
               <Form.Check type="checkbox" id="neigh" label="Neighborhood" onChange={this.handleChange}/>

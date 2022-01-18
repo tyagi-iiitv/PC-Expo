@@ -8,7 +8,7 @@ app = Flask(__name__)
 @app.route('/getjsondata', methods=['GET'])
 def getjsondata():
     matrix = num_df[['bill_length_mm', 'bill_depth_mm']]
-    return json.dumps(matrix.to_json(orient='records'))
+    return matrix.to_json(orient='records')
 
 @app.route('/getpoints', methods=['POST'])
 def getPoints():
