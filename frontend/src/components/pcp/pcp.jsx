@@ -10,6 +10,11 @@ class GeneratePCP extends React.Component {
         this.state = {
             canvasDims: { width: 500, height: 500 },
             data_rec: {},
+            correlation: [], 
+            variance: [],
+            skewness: [],
+            indices: [],
+
         };
     }
     componentDidMount() {
@@ -29,7 +34,11 @@ class GeneratePCP extends React.Component {
                     this.props.split, 
                     this.props.fan,
                     this.props.callbackFromParent,
-                    this.state.data_rec
+                    this.state.data_rec,
+                    this.state.correlation, 
+                    this.state.variance, 
+                    this.state.skewness,
+                    this.state.indices
                 )
             )
             })
@@ -37,13 +46,8 @@ class GeneratePCP extends React.Component {
 
     componentDidUpdate(prevProps){
         if(!equal(this.props, prevProps)){
-            fetch('/getjsondata', {
-                methods: 'GET',
-                })
-                .then(response => response.json())
-                .then(response => {
-                this.setState({data_rec: response}, ()=> 
-                    generateSVG(
+            console.log(this.props.pcpdata)
+            generateSVG(
                         this.state.canvasDims.width, 
                         this.state.canvasDims.height,
                         this.props.corr, 
@@ -53,11 +57,13 @@ class GeneratePCP extends React.Component {
                         this.props.split, 
                         this.props.fan,
                         this.props.callbackFromParent,
-                        this.state.data_rec
+                        this.state.data_rec, 
+                        this.props.pcpdata[2],
+                        this.props.pcpdata[3], 
+                        this.props.pcpdata[4],
+                        this.props.pcpdata[5],
                     )
-                )
-            })
-        }
+            }
     }
 
     render() {
@@ -74,12 +80,12 @@ class GeneratePCP extends React.Component {
 
 }
 
-async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split, fan, callbackFromParent, data_rec){
+async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split, fan, callbackFromParent, data_rec, corr_rec, var_rec, skew_rec, indices){
     d3.selectAll("svg > *").remove();
     let svg = d3.select('svg');
     let y = {};
     let x, dimensions, lines, g, background, corrlines, varlines, skewlines, neighlines, splitlines, fanlines;
-    let corr_demo = [[32.1, 0.24916235830768624], [35.15555555555556, 0.15790483479646897], [38.21111111111111, -0.41686431587717243], [41.266666666666666, -0.32359645446001584], [44.32222222222222, 0.1962084716392814], [47.37777777777778, 0.5301388342487361], [50.43333333333334, 0.07711069339350457], [53.48888888888889, -0.29910392213669773], [56.544444444444444, -0.9999999999999954], [59.6, 0]]
+    // let corr_demo = [[32.1, 0.24916235830768624], [35.15555555555556, 0.15790483479646897], [38.21111111111111, -0.41686431587717243], [41.266666666666666, -0.32359645446001584], [44.32222222222222, 0.1962084716392814], [47.37777777777778, 0.5301388342487361], [50.43333333333334, 0.07711069339350457], [53.48888888888889, -0.29910392213669773], [56.544444444444444, -0.9999999999999954], [59.6, 0]]
     let height = boxHeight - 20;
     let data = data_rec
     dimensions = d3.keys(data[0]).filter(function (key) {
@@ -121,12 +127,11 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
         
     // var kde = kernelDensityEstimator(kernelEpanechnikov(7),yd.ticks(10))
     // var density =  kde( corr_demo.map(function(d){  return d; }) )  
-    var density = corr_demo;
-    console.log(density)
+    console.log(corr_rec, indices)
     
     svg.append("path")
       .attr("class", "mypath")
-      .datum(density)
+      .datum(corr_rec)
       .attr("fill", "#69b3a2")
       .attr("opacity", ".8")
       .attr("stroke", "#000")
@@ -134,8 +139,8 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
       .attr("stroke-linejoin", "round")
       .attr("d",  d3.line()
         .curve(d3.curveBasis)
-          .x(function(d) { console.log(d[1], x('bill_length_mm')+xd(d[1])); return x('bill_length_mm')+xd(d[1]); })
-          .y(function(d) { console.log(y['bill_length_mm'](d[0])); return y['bill_length_mm'](d[0]); })
+          .x(function(d) { return x('bill_length_mm')+xd(d); })
+          .y(function(d,i) { return y['bill_length_mm'](indices[i]); })
       );
     //   x(key), y[key](d[key]
     // Add a group element for each dimension.
@@ -170,7 +175,7 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
     
     function line(d) {
         return d3.line()(dimensions.map(function (key) {
-            console.log(key, x(key), y[key](d[key]));
+            // console.log(key, x(key), y[key](d[key]));
             return [x(key), y[key](d[key])];
         }));
     }
@@ -200,7 +205,7 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
         var actives = [];
         svg.selectAll(".brush")
             .filter(function (d) {
-                console.log(d3.brushSelection(this));
+                // console.log(d3.brushSelection(this));
                 return d3.brushSelection(this);
             })
             .each(function (key) {

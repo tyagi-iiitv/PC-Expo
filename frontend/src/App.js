@@ -69,7 +69,7 @@ export default class App extends Component{
               <p style={{color: "#3288bd"}}> Fan</p>
             </Col>
             <Col md={5}>
-              <GeneratePCP data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan} callbackFromParent={this.callbackFromChild}/>
+              <GeneratePCP pcpdata={this.state.pcpdata} data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan} callbackFromParent={this.callbackFromChild}/>
             </Col>
             <Col md={4}>
               <ScatterplotPlotly pcpdata={this.state.pcpdata}/>
