@@ -79,7 +79,7 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
     let svg = d3.select('svg');
     let y = {};
     let x, dimensions, lines, g, background, corrlines, varlines, skewlines, neighlines, splitlines, fanlines;
-    
+    let corr_demo = [[32.1, 0.24916235830768624], [35.15555555555556, 0.15790483479646897], [38.21111111111111, -0.41686431587717243], [41.266666666666666, -0.32359645446001584], [44.32222222222222, 0.1962084716392814], [47.37777777777778, 0.5301388342487361], [50.43333333333334, 0.07711069339350457], [53.48888888888889, -0.29910392213669773], [56.544444444444444, -0.9999999999999954], [59.6, 0]]
     let height = boxHeight - 20;
     let data = data_rec
     dimensions = d3.keys(data[0]).filter(function (key) {
@@ -95,6 +95,13 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
     x = d3.scalePoint()
     .domain(dimensions)
     .range([0, width]);
+
+    let xd = d3.scaleLinear()
+    .domain([-1, 1])
+    .range([0, 200]);
+
+
+    let yd = y['bill_length_mm']
 
     // Add grey background lines for context.
     background = svg.append("g")
@@ -112,8 +119,25 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
         .attr("d", line);
 
         
-        
-
+    // var kde = kernelDensityEstimator(kernelEpanechnikov(7),yd.ticks(10))
+    // var density =  kde( corr_demo.map(function(d){  return d; }) )  
+    var density = corr_demo;
+    console.log(density)
+    
+    svg.append("path")
+      .attr("class", "mypath")
+      .datum(density)
+      .attr("fill", "#69b3a2")
+      .attr("opacity", ".8")
+      .attr("stroke", "#000")
+      .attr("stroke-width", 1)
+      .attr("stroke-linejoin", "round")
+      .attr("d",  d3.line()
+        .curve(d3.curveBasis)
+          .x(function(d) { console.log(d[1], x('bill_length_mm')+xd(d[1])); return x('bill_length_mm')+xd(d[1]); })
+          .y(function(d) { console.log(y['bill_length_mm'](d[0])); return y['bill_length_mm'](d[0]); })
+      );
+    //   x(key), y[key](d[key]
     // Add a group element for each dimension.
     g = svg.selectAll(".dimension")
         .data(dimensions).enter()
@@ -146,6 +170,7 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
     
     function line(d) {
         return d3.line()(dimensions.map(function (key) {
+            console.log(key, x(key), y[key](d[key]));
             return [x(key), y[key](d[key])];
         }));
     }
@@ -195,6 +220,20 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
             });
         }
     }
+
+    function kernelDensityEstimator(kernel, X) {
+        return function(V) {
+          return X.map(function(x) {
+            return [x, d3.mean(V, function(v) { return kernel(x - v); })];
+          });
+        };
+      }
+      function kernelEpanechnikov(k) {
+        return function(v) {
+          return Math.abs(v /= k) <= 1 ? 0.75 * (1 - v * v) / k : 0;
+        };
+    }
+    
     return svg.node();
 }
 

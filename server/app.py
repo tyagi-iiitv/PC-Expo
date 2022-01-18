@@ -2,6 +2,7 @@ import pandas as pd
 from flask import Flask, request
 import json
 import numpy as np
+from scipy import stats
 
 app = Flask(__name__)
 
@@ -10,6 +11,7 @@ def getjsondata():
     matrix = num_df[['bill_length_mm', 'bill_depth_mm']]
     return matrix.to_json(orient='records')
 
+
 @app.route('/getpoints', methods=['POST'])
 def getPoints():
     [end, start] = request.get_json()
@@ -17,6 +19,22 @@ def getPoints():
                             (num_df.bill_length_mm <= end)
                            )
     subset = num_df.iloc[cur_pts]
+    window_size = end-start
+    x_pts = np.linspace(num_df.bill_length_mm.min(), num_df.bill_length_mm.max(), 10) 
+    correlation = []
+    variance = []
+    skewness = []
+    for x in range(len(x_pts)):
+        cur_pts = np.where((num_df.bill_length_mm >= x_pts[x]) & 
+                    (num_df.bill_length_mm <= x_pts[x]+window_size))
+                    
+        if len(cur_pts[0]) > 0:
+            data = num_df.iloc[cur_pts]
+            matrix = data[['bill_length_mm', 'bill_depth_mm']]
+            correlation.append([x_pts[x], matrix.corr()['bill_length_mm']['bill_depth_mm']])
+            variance.append(np.cov(matrix.T)[0,1])
+            skewness.append(stats.skew(matrix)[0])
+    print(correlation, variance, skewness)
     return json.dumps([list(subset['bill_length_mm']), list(subset['bill_depth_mm'])])
     
 
