@@ -11,17 +11,22 @@ from flask_cors import CORS, cross_origin
 app = Flask(__name__, static_folder='frontend/build', static_url_path='')
 CORS(app)
 
+df = pd.read_csv('data/penguins.csv')
+df = df.dropna()
+numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
+num_df = df.select_dtypes(include=numerics)
+
 @app.route('/getjsondata', methods=['GET'])
 @cross_origin()
 def getjsondata():
-    global num_df
+    # global num_df
     matrix = num_df[['bill_length_mm', 'bill_depth_mm']]
     return matrix.to_json(orient='records')
 
 @app.route('/getsliderdata', methods=['POST'])
 @cross_origin()
 def getSliderData():
-    global num_df
+    # global num_df
     percent = request.get_json()
     var_range = num_df.bill_length_mm.max() - num_df.bill_length_mm.min()
     window_size = percent/100*var_range
@@ -45,7 +50,7 @@ def getSliderData():
 @app.route('/getpoints', methods=['POST'])
 @cross_origin()
 def getPoints():
-    global num_df
+    # global num_df
     [end, start] = request.get_json()
     cur_pts = np.where((num_df.bill_length_mm >= start) & 
                             (num_df.bill_length_mm <= end)
@@ -57,7 +62,7 @@ def getPoints():
 @app.route('/readData', methods=['GET'])
 @cross_origin()
 def readData():
-    global num_df
+    # global num_df
     return json.dumps([list(num_df['bill_length_mm']), list(num_df['bill_depth_mm'])])
 
 @app.route('/')
@@ -66,9 +71,5 @@ def serve():
     return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == "__main__":
-    df = pd.read_csv('data/penguins.csv')
-    df = df.dropna()
-    numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
-    num_df = df.select_dtypes(include=numerics)
     # num_df.to_csv('penguins_num.csv', index=False)
     app.run(debug=True)
