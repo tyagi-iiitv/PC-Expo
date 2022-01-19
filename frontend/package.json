@@ -33,7 +33,7 @@
       "react-app/jest"
     ]
   },
-  "proxy": "http://localhost:5000/",
+  "proxy": "https://paracoords.herokuapp.com/",
   "browserslist": {
     "production": [
       ">0.2%",
