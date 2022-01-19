@@ -5,12 +5,13 @@
 /.pnp
 /old_app
 .pnp.js
+/papers
 
 # testing
 /coverage
 
 # production
-/build
+# /build
 
 # misc
 .DS_Store

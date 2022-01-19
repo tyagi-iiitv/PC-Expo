@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from './pcp.module.scss';
 import * as d3 from 'd3';
-import data from './penguins_num.csv';
 import equal from 'fast-deep-equal';
 
 class GeneratePCP extends React.Component {
