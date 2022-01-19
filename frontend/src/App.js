@@ -4,6 +4,7 @@ import {GeneratePCP} from './components';
 import { ScatterplotPlotly } from './components';
 import { Component } from 'react';
 import styles from './app.module.scss';
+import Slider from '@mui/material/Slider';
 
 export default class App extends Component{
   constructor(props){
@@ -11,6 +12,7 @@ export default class App extends Component{
     this.state = {
       data: {},
       pcpdata: {},
+      sliderdata: {},
       corr: false,
       var: false,
       skew: false,
@@ -19,6 +21,7 @@ export default class App extends Component{
       fan: false
     }
     this.handleChange = this.handleChange.bind(this);
+    this.sliderChange = this.sliderChange.bind(this);
     this.callbackFromChild = this.callbackFromChild.bind(this);
   }
 
@@ -41,6 +44,22 @@ export default class App extends Component{
     let cur_state = this.state;
     cur_state[evt.target.id] = !cur_state[evt.target.id]
     this.setState(cur_state, ()=> console.log(this.state));
+  }
+
+  sliderChange(evt, val){
+    fetch('/getsliderdata', {
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(val)
+      // console.log(y['bill_length_mm'].invert(940))
+  })
+  .then(response => response.json())
+  .then(data => {
+      this.setState({sliderdata: data}, ()=> console.log(this.state))
+  })
   }
 
   render(){
@@ -67,9 +86,21 @@ export default class App extends Component{
               <p style={{color: "#e6f598"}}> Neighborhood</p>
               <p style={{color: "#99d594"}}> Split</p>
               <p style={{color: "#3288bd"}}> Fan</p>
+              <Slider
+                aria-label="Temperature"
+                defaultValue={30}
+                // getAriaValueText={valuetext}
+                valueLabelDisplay="auto"
+                step={10}
+                marks
+                min={10}
+                max={100}
+                onChangeCommitted={this.sliderChange}
+              />
+
             </Col>
             <Col md={5}>
-              <GeneratePCP pcpdata={this.state.pcpdata} data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan} callbackFromParent={this.callbackFromChild}/>
+              <GeneratePCP pcpdata={this.state.sliderdata} data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan} callbackFromParent={this.callbackFromChild}/>
             </Col>
             <Col md={4}>
               <ScatterplotPlotly pcpdata={this.state.pcpdata}/>

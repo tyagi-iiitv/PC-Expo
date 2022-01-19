@@ -46,7 +46,6 @@ class GeneratePCP extends React.Component {
 
     componentDidUpdate(prevProps){
         if(!equal(this.props, prevProps)){
-            console.log(this.props.pcpdata)
             generateSVG(
                         this.state.canvasDims.width, 
                         this.state.canvasDims.height,
@@ -58,10 +57,10 @@ class GeneratePCP extends React.Component {
                         this.props.fan,
                         this.props.callbackFromParent,
                         this.state.data_rec, 
+                        this.props.pcpdata[0],
+                        this.props.pcpdata[1], 
                         this.props.pcpdata[2],
-                        this.props.pcpdata[3], 
-                        this.props.pcpdata[4],
-                        this.props.pcpdata[5],
+                        this.props.pcpdata[3],
                     )
             }
     }
@@ -103,7 +102,7 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
 
     let xd = d3.scaleLinear()
     .domain([-1, 1])
-    .range([0, 200]);
+    .range([0, 50]);
 
 
     let yd = y['bill_length_mm']
@@ -126,7 +125,7 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
         
     // var kde = kernelDensityEstimator(kernelEpanechnikov(7),yd.ticks(10))
     // var density =  kde( corr_demo.map(function(d){  return d; }) )  
-    let offset = 30
+    let offset = 100
 
     svg.append("path")
       .attr("class", "mypath")
