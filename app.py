@@ -14,12 +14,14 @@ CORS(app)
 @app.route('/getjsondata', methods=['GET'])
 @cross_origin()
 def getjsondata():
+    global num_df
     matrix = num_df[['bill_length_mm', 'bill_depth_mm']]
     return matrix.to_json(orient='records')
 
 @app.route('/getsliderdata', methods=['POST'])
 @cross_origin()
 def getSliderData():
+    global num_df
     percent = request.get_json()
     var_range = num_df.bill_length_mm.max() - num_df.bill_length_mm.min()
     window_size = percent/100*var_range
@@ -43,6 +45,7 @@ def getSliderData():
 @app.route('/getpoints', methods=['POST'])
 @cross_origin()
 def getPoints():
+    global num_df
     [end, start] = request.get_json()
     cur_pts = np.where((num_df.bill_length_mm >= start) & 
                             (num_df.bill_length_mm <= end)
@@ -54,6 +57,7 @@ def getPoints():
 @app.route('/readData', methods=['GET'])
 @cross_origin()
 def readData():
+    global num_df
     return json.dumps([list(num_df['bill_length_mm']), list(num_df['bill_depth_mm'])])
 
 @app.route('/')
