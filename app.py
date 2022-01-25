@@ -5,6 +5,7 @@ from flask import Flask, request
 from flask.helpers import send_from_directory
 import json
 import numpy as np
+from sklearn.preprocessing import minmax_scale
 from scipy import stats
 from flask_cors import CORS, cross_origin
 
@@ -16,6 +17,10 @@ df = pd.read_csv('data/penguins.csv')
 df = df.dropna()
 numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
 num_df = df.select_dtypes(include=numerics)
+num_df = num_df[['bill_length_mm', 'bill_depth_mm']]
+bi_hist, xed, yed = np.histogram2d(num_df.bill_length_mm, num_df.bill_depth_mm, bins=256)
+xed = xed[:-1]
+yed = yed[:-1]
 
 @app.route('/getjsondata', methods=['GET'])
 @cross_origin()
@@ -31,19 +36,25 @@ def getSliderData():
     percent = request.get_json()
     var_range = num_df.bill_length_mm.max() - num_df.bill_length_mm.min()
     window_size = percent/100*var_range
-    x_pts = np.linspace(num_df.bill_length_mm.min(), num_df.bill_length_mm.max(), 10) 
+    x_pts = np.linspace(num_df.bill_length_mm.min(), num_df.bill_length_mm.max(), 256)
     correlation_pos = []
     correlation_neg = []
     variance_pos = []
     variance_neg = []
     skewness_pos = []
     skewness_neg = []
+    convergence = []
     var_th = 0.3
     skew_th = 0.3
     max_skew = 1.0
     max_var = 1.0
-    print(len(x_pts))
     for x in range(len(x_pts)):
+        # Calculating convergence
+        xbin_ids = np.where(np.logical_and(xed>=x_pts[x], xed<=x_pts[x]+window_size))
+        # print(xbin_ids)
+        conv_data = bi_hist[xbin_ids,:]
+        convergence.append((conv_data > 0).sum())
+        # Calculating corr, var, skew
         cur_pts = np.where((num_df.bill_length_mm >= x_pts[x]) & 
                     (num_df.bill_length_mm <= x_pts[x]+window_size))
         # print(cur_pts)
@@ -59,24 +70,18 @@ def getSliderData():
             else:
                 correlation_neg.append(-1*cur_corr)
                 correlation_pos.append(0.0)
-            if cur_var > var_th:
-                variance_pos.append(max_var)
+            if cur_var > 0:
+                variance_pos.append(cur_var)
                 variance_neg.append(0.0)
-            elif cur_var < -1*var_th:
+            else:
                 variance_pos.append(0.0)
-                variance_neg.append(max_var)
-            else:
-                variance_pos.append(0)
-                variance_neg.append(0)
-            if cur_skew > skew_th:
-                skewness_pos.append(max_skew)
+                variance_neg.append(-1*cur_var)
+            if cur_skew > 0:
+                skewness_pos.append(cur_skew)
                 skewness_neg.append(0.0)
-            elif cur_skew < -1*skew_th:
-                skewness_pos.append(0.0)
-                skewness_neg.append(max_skew)
             else:
-                skewness_pos.append(0)
-                skewness_neg.append(0)
+                skewness_pos.append(0.0)
+                skewness_neg.append(-1*cur_skew)
         else:
             correlation_pos.append(0.0)
             correlation_neg.append(0.0)
@@ -85,13 +90,20 @@ def getSliderData():
             skewness_pos.append(0)
             skewness_neg.append(0)
 
-    print(len(variance_pos), len(skewness_pos))
+    # Normalize all the arrays
+    variance_pos = minmax_scale(variance_pos)
+    variance_neg = minmax_scale(variance_neg)
+    skewness_pos = minmax_scale(skewness_pos)
+    skewness_neg = minmax_scale(skewness_neg)
+    convergence = minmax_scale(convergence)
+
     return json.dumps([list(np.nan_to_num(correlation_pos)), 
                         list(np.nan_to_num(correlation_neg)), 
                         list(np.nan_to_num(variance_pos)), 
                         list(np.nan_to_num(variance_neg)),
                         list(np.nan_to_num(skewness_pos)),
                         list(np.nan_to_num(skewness_neg)),
+                        list(np.nan_to_num(convergence)),
                         list(x_pts)])
 
 @app.route('/getpoints', methods=['POST'])

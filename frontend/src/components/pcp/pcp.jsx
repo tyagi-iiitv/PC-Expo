@@ -15,6 +15,7 @@ class GeneratePCP extends React.Component {
             variance_neg: [],
             skewness_pos: [],
             skewness_neg: [],
+            convergence: [],
             indices: [],
 
         };
@@ -43,6 +44,7 @@ class GeneratePCP extends React.Component {
                     this.state.variance_neg, 
                     this.state.skewness_pos,
                     this.state.skewness_neg,
+                    this.state.convergence,
                     this.state.indices
                 )
             )
@@ -69,6 +71,7 @@ class GeneratePCP extends React.Component {
                         this.props.pcpdata[4],
                         this.props.pcpdata[5], 
                         this.props.pcpdata[6],
+                        this.props.pcpdata[7],
                     )
             }
     }
@@ -97,9 +100,12 @@ async function generateSVG(width,
     fan, 
     callbackFromParent, 
     data_rec, 
-    corr_rec, corr_rec_neg, var_rec, var_rec_neg, skew_rec, skew_rec_neg, indices){
+    corr_rec, corr_rec_neg, 
+    var_rec, var_rec_neg, 
+    skew_rec, skew_rec_neg,
+    convergence, 
+    indices){
 
-    console.log(var_rec, var_rec_neg, skew_rec, skew_rec_neg, indices)
     d3.selectAll("svg > *").remove();
     let svg = d3.select('svg');
     let y = {};
@@ -114,9 +120,8 @@ async function generateSVG(width,
             return key;
         };
     });
-    console.log(dimensions)
     let x_para_offset = 1000
-    let dists = ['corr_pos', 'corr_neg', 'var_pos', 'var_neg', 'skew_pos', 'skew_neg']
+    let dists = ['corr_pos', 'corr_neg', 'var_pos', 'var_neg', 'skew_pos', 'skew_neg', 'convergence']
     let offset = 50
     // Create our x axis scale.
     x = d3.scalePoint()
@@ -234,6 +239,20 @@ async function generateSVG(width,
       .attr("d",  d3.line()
         .curve(d3.curveBasis)
           .x(function(d) { return x_dist('skew_neg')+xd(d);})
+          .y(function(d,i) { return y['bill_length_mm'](indices[i]); })
+      );
+
+      svg.append("path")
+      .attr("class", "mypath")
+      .datum(convergence)
+      .attr("fill", "#69b3a2")
+      .attr("opacity", ".8")
+      .attr("stroke", "#000")
+      .attr("stroke-width", 1)
+      .attr("stroke-linejoin", "round")
+      .attr("d",  d3.line()
+        .curve(d3.curveBasis)
+          .x(function(d) { return x_dist('convergence')+xd(d);})
           .y(function(d,i) { return y['bill_length_mm'](indices[i]); })
       );
 
