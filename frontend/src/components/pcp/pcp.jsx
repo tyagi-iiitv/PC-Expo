@@ -7,11 +7,14 @@ class GeneratePCP extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            canvasDims: { width: 500, height: 500 },
+            canvasDims: { width: 1400, height: 500 },
             data_rec: {},
-            correlation: [], 
-            variance: [],
-            skewness: [],
+            correlation_pos: [],
+            correlation_neg: [], 
+            variance_pos: [],
+            variance_neg: [],
+            skewness_pos: [],
+            skewness_neg: [],
             indices: [],
 
         };
@@ -34,9 +37,12 @@ class GeneratePCP extends React.Component {
                     this.props.fan,
                     this.props.callbackFromParent,
                     this.state.data_rec,
-                    this.state.correlation, 
-                    this.state.variance, 
-                    this.state.skewness,
+                    this.state.correlation_pos,
+                    this.state.correlation_neg, 
+                    this.state.variance_pos,
+                    this.state.variance_neg, 
+                    this.state.skewness_pos,
+                    this.state.skewness_neg,
                     this.state.indices
                 )
             )
@@ -60,6 +66,9 @@ class GeneratePCP extends React.Component {
                         this.props.pcpdata[1], 
                         this.props.pcpdata[2],
                         this.props.pcpdata[3],
+                        this.props.pcpdata[4],
+                        this.props.pcpdata[5], 
+                        this.props.pcpdata[6],
                     )
             }
     }
@@ -78,7 +87,19 @@ class GeneratePCP extends React.Component {
 
 }
 
-async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split, fan, callbackFromParent, data_rec, corr_rec, var_rec, skew_rec, indices){
+async function generateSVG(width, 
+    boxHeight, 
+    corr, 
+    variance, 
+    skew, 
+    neigh, 
+    split, 
+    fan, 
+    callbackFromParent, 
+    data_rec, 
+    corr_rec, corr_rec_neg, var_rec, var_rec_neg, skew_rec, skew_rec_neg, indices){
+
+    console.log(var_rec, var_rec_neg, skew_rec, skew_rec_neg, indices)
     d3.selectAll("svg > *").remove();
     let svg = d3.select('svg');
     let y = {};
@@ -93,15 +114,22 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
             return key;
         };
     });
-
+    console.log(dimensions)
+    let x_para_offset = 1000
+    let dists = ['corr_pos', 'corr_neg', 'var_pos', 'var_neg', 'skew_pos', 'skew_neg']
+    let offset = 50
     // Create our x axis scale.
     x = d3.scalePoint()
     .domain(dimensions)
-    .range([0, width]);
+    .range([x_para_offset, width-50]);
 
     let xd = d3.scaleLinear()
     .domain([-1, 1])
-    .range([0, 50]);
+    .range([0, 25]);
+
+    let x_dist = d3.scalePoint()
+    .domain(dists)
+    .range([10, x_para_offset-offset])
 
 
     let yd = y['bill_length_mm']
@@ -124,7 +152,6 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
         
     // var kde = kernelDensityEstimator(kernelEpanechnikov(7),yd.ticks(10))
     // var density =  kde( corr_demo.map(function(d){  return d; }) )  
-    let offset = 100
 
     svg.append("path")
       .attr("class", "mypath")
@@ -136,7 +163,21 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
       .attr("stroke-linejoin", "round")
       .attr("d",  d3.line()
         .curve(d3.curveBasis)
-          .x(function(d) { return x('bill_length_mm')+xd(d); })
+          .x(function(d) { return x_dist('corr_pos')+xd(d);})
+          .y(function(d,i) { return y['bill_length_mm'](indices[i]); })
+      );
+
+      svg.append("path")
+      .attr("class", "mypath")
+      .datum(corr_rec_neg)
+      .attr("fill", "#69b3a2")
+      .attr("opacity", ".8")
+      .attr("stroke", "#000")
+      .attr("stroke-width", 1)
+      .attr("stroke-linejoin", "round")
+      .attr("d",  d3.line()
+        .curve(d3.curveBasis)
+          .x(function(d) { return x_dist('corr_neg')+xd(d);})
           .y(function(d,i) { return y['bill_length_mm'](indices[i]); })
       );
 
@@ -150,7 +191,21 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
       .attr("stroke-linejoin", "round")
       .attr("d",  d3.line()
         .curve(d3.curveBasis)
-          .x(function(d) { return x('bill_length_mm')+xd(d)+offset; })
+          .x(function(d) { return x_dist('var_pos')+xd(d);})
+          .y(function(d,i) { return y['bill_length_mm'](indices[i]); })
+      );
+
+      svg.append("path")
+      .attr("class", "mypath")
+      .datum(var_rec_neg)
+      .attr("fill", "#69b3a2")
+      .attr("opacity", ".8")
+      .attr("stroke", "#000")
+      .attr("stroke-width", 1)
+      .attr("stroke-linejoin", "round")
+      .attr("d",  d3.line()
+        .curve(d3.curveBasis)
+          .x(function(d) { return x_dist('var_neg')+xd(d);})
           .y(function(d,i) { return y['bill_length_mm'](indices[i]); })
       );
 
@@ -164,9 +219,24 @@ async function generateSVG(width, boxHeight, corr, variance, skew, neigh, split,
       .attr("stroke-linejoin", "round")
       .attr("d",  d3.line()
         .curve(d3.curveBasis)
-          .x(function(d) { return x('bill_length_mm')+xd(d)+2*offset; })
+          .x(function(d) { return x_dist('skew_pos')+xd(d);})
           .y(function(d,i) { return y['bill_length_mm'](indices[i]); })
       );
+
+      svg.append("path")
+      .attr("class", "mypath")
+      .datum(skew_rec_neg)
+      .attr("fill", "#69b3a2")
+      .attr("opacity", ".8")
+      .attr("stroke", "#000")
+      .attr("stroke-width", 1)
+      .attr("stroke-linejoin", "round")
+      .attr("d",  d3.line()
+        .curve(d3.curveBasis)
+          .x(function(d) { return x_dist('skew_neg')+xd(d);})
+          .y(function(d,i) { return y['bill_length_mm'](indices[i]); })
+      );
+
     //   x(key), y[key](d[key]
     // Add a group element for each dimension.
     g = svg.selectAll(".dimension")

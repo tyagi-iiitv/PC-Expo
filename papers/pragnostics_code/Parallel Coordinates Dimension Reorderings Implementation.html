@@ -1,0 +1,189 @@
+
+<!-- saved from url=(0030)https://subspace.dbvis.de/pcp/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parallel Coordinates Dimension Reorderings Implementation</title>
+<link rel="stylesheet" href="./Parallel Coordinates Dimension Reorderings Implementation_files/bootstrap.css">
+<link rel="stylesheet" href="./Parallel Coordinates Dimension Reorderings Implementation_files/style.css">
+<link rel="stylesheet" href="./Parallel Coordinates Dimension Reorderings Implementation_files/Vis.css">
+
+
+</head><body data-new-gr-c-s-check-loaded="14.1006.0" data-gr-ext-installed="">
+
+    <div class="page-wrapper">
+        <div class="header-wrapper">
+            <div class="header--main-cont">
+                <div class="header--main site-normal-width">
+                    <div class="header__logo">
+                        <img src="./Parallel Coordinates Dimension Reorderings Implementation_files/favicon.ico" width="40 px"> &nbsp; Dimension Reordering for Parallel Coordinates
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="main-content alternate-colors">
+                <div id="folder-structure" class="content-row">
+                    <div class="content-row__content">
+                        <h3 class="heading">Step 1: Choose your data (*.csv)</h3>
+                        <!--<p>Please note that-->
+                        <ul>
+                            <li> The first column needs to contain ids and will not be visualized.</li>
+                            <li> All values in the data are considered to be on a ratio scale.</li>
+                            <li> Computing time increases with larger number of dimensions (depending on the ordering).</li>
+                        </ul>
+
+                        <p class="example-data">Download example datasets:
+                            <a href="https://subspace.dbvis.de/pcp/TestData/cars.csv" download="Cars.csv">
+                                <l>Cars.csv</l>
+                            </a>
+                            ,
+                            <a href="https://subspace.dbvis.de/pcp/TestData/2C_6.csv" download="Syn_2Clusters.csv">
+                                <l>Synth. with 2 clusters</l>
+                            </a>
+                            ,
+                            <a href="https://subspace.dbvis.de/pcp/TestData/3C_4.csv" download="Syn_3Clusters.csv">
+                                <l>Synth. with 3 clusters</l>
+                            </a>
+                            ,
+                            <a href="https://subspace.dbvis.de/pcp/TestData/4C_4.csv" download="Syn_4Clusters.csv">
+                                <l>Synth. with 4 clusters</l>
+                            </a>
+                        </p>
+
+                        <p>
+                            <input class="form-control" id="files" required="" type="file" accept=".csv">
+                        </p>
+                        <p>
+                            <input type="checkbox" placeholder="" id="normalized" value="normalized"> The values in all columns are in range [0,1] (no normalization is applied).
+                            <br>
+                        </p>
+                        <h3 class="heading">Step 2: Choose Ordering Methods</h3>
+                        <select id="list" onchange="showSim()">
+                            <option value="0" id="0">Default Ordering (same as input file)</option>
+                            <option value="1" id="1">Clutter-based (Peng et al. 2004)</option>
+                            <option value="7" class="hidden" id="7">Clutter-based Method for SG</option>
+                            <option value="2" id="2">Contribution-based (Lu et al. 2015)</option>
+                            <option value="3" id="3">Similarity-based (Artero et al. 2006)</option>
+                            <option value="12" class="hidden" id="12">Disimilarity-based Method based on Artero et al.</option>
+                            <option value="4" id="4">Similarity-based (Lu et al. 2015)</option>
+                            <option value="8" id="8">Similarity-based; exhaustive search (Ankerst et al. 1998)</option>
+                            <option value="9" id="9">Dissimilarity-based; exhaustive search (Blumenschein et al. 2020)</option>
+                            <option value="10" id="10">Maximizing Variance of Neighboring Dimensions (Blumenschein et al. 2020)</option>
+                            <option value="11" class="hidden" id="11">Similarity-based Method(Min Variance)</option>
+                            <option value="5" id="5">Pattern Optimization Method (Makwana et al. 2012)</option>
+                            <option value="6" id="6">Pargnostics (Dasgupta &amp; Kosara 2010)</option>
+
+                        </select>
+                        <br>
+                        <div class="link-to-reference" id="infoBox">
+                            <p id="basicInfo2">*This method arranges axes based on the flowing quality metrics for parallel coordinates and user-defined weights. <br>*Link to original publication:  <a href="https://ieeexplore.ieee.org/document/5613439/">Pargnostics: Screen-Space Metrics for Parallel Coordinates</a></p>
+                        </div>
+                        <p id="choose">Please define weights between 0 and 1 for each metrics: (All weights should sum up to 1)</p>
+
+                        <select id="similarity" class="hidden">
+                            <option value="euclidean" id="euclidean">Euclidean Distance</option>
+                            <option value="pcc" id="pcc">Pearson's Correlation Coefficient</option>
+                        </select>
+                        <form id="weights" class="show">
+                            Number of Line Crossings:
+                            <br>
+                            <input type="text" id="nlc" value="0.3">
+                            <br>
+                            <br> Angles of Crossing:
+                            <br>
+                            <input type="text" id="ac" value="0.3">
+                            <br>
+                            <br> Parallelism:
+                            <br>
+                            <input type="text" id="para" value="0.1">
+                            <br>
+                            <br> Mutual Information:
+                            <br>
+                            <input type="text" id="mi" value="0.1">
+                            <br>
+                            <br> Convergence, Divergence:
+                            <br>
+                            <input type="text" id="condi" value="0.1">
+                            <br>
+                            <br> Over-plotting:
+                            <br>
+                            <input type="text" id="op" value="0.1">
+                            <br>
+                        </form>
+
+                        <input id="threshold" type="text" class="hidden" value="0.1">
+
+                        <form id="SGthresholds" class="hidden">
+                            Monotonicity:
+                            <br>
+                            <input type="text" id="monotonicity" value="0.2">
+                            <br>
+                            <br> Symmetry:
+                            <br>
+                            <input type="text" id="symmetry" value="0.2">
+                        </form>
+
+                        <h3 class="heading hidden">Step 3: Run Visualization</h3>
+
+                        <p>
+                            <input type="checkbox" placeholder="" id="appendData" value="appendData" onclick="showTable()"> Show data table with reordered dimensions
+                            <br>
+                        </p>
+                        <p>
+                            <input type="checkbox" placeholder="" id="storeData" value="storeData"> Download dataset with reordered dimensions as .csv file
+                            <br>
+                        </p>
+                        <p>
+                            <input type="checkbox" placeholder="" id="storeSimValues" value="storeSim"> Store similarity values of Max. Variance, Similarity, and Dissimilarity patterns
+                            <br>
+                        </p>
+                        <br>
+                        <br>
+
+
+                        <button id="submit" class="btn btn-default" type="submit">Visualize Parallel Coordinates</button>
+                        <input type="button" class="btn btn-default" value="Reset and Refresh Page" onclick="window.location.reload()">
+                        <div class="hidden" id="targetPC"></div>
+                        <div class="hidden" id="targetSG">
+                            <br>
+                        </div>
+                        <br>
+                        <br>
+                        <div id="app"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer footer-wrapper">
+            <div class="footer site-normal-width" align="right">
+                <a href="https://www.vis.uni-konstanz.de/impressum/">Imprint</a> &nbsp; | &nbsp; <a href="https://subspace.dbvis.de/pcp/data-protection.html">Data Protection</a> | &nbsp; <a href="https://osf.io/zwm69/">Source Code</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="./Parallel Coordinates Dimension Reorderings Implementation_files/jquery.min.js.download"></script>
+    <script src="./Parallel Coordinates Dimension Reorderings Implementation_files/d3.v3.min.js.download"></script>
+    <script src="./Parallel Coordinates Dimension Reorderings Implementation_files/jquery-3.2.1.slim.min.js.download"></script>
+    <script src="./Parallel Coordinates Dimension Reorderings Implementation_files/popper.min.js.download"></script>
+    <script src="./Parallel Coordinates Dimension Reorderings Implementation_files/bootstrap.min.js.download"></script>
+    <script src="./Parallel Coordinates Dimension Reorderings Implementation_files/papaparse.js.download"></script>
+
+
+    <script src="./Parallel Coordinates Dimension Reorderings Implementation_files/index.js.download"></script>
+    <script src="./Parallel Coordinates Dimension Reorderings Implementation_files/pcVis.js.download"></script>
+    <script src="./Parallel Coordinates Dimension Reorderings Implementation_files/auxiliary.js.download"></script>
+    <script src="./Parallel Coordinates Dimension Reorderings Implementation_files/svd.js.download"></script>
+    <script src="./Parallel Coordinates Dimension Reorderings Implementation_files/combinations.js.download"></script>
+    <script src="./Parallel Coordinates Dimension Reorderings Implementation_files/artero.js.download"></script>
+    <script src="./Parallel Coordinates Dimension Reorderings Implementation_files/artero_dis.js.download"></script>
+    <script src="./Parallel Coordinates Dimension Reorderings Implementation_files/luCon.js.download"></script>
+    <script src="./Parallel Coordinates Dimension Reorderings Implementation_files/luSim.js.download"></script>
+    <script src="./Parallel Coordinates Dimension Reorderings Implementation_files/sim_global.js.download"></script>
+    <script src="./Parallel Coordinates Dimension Reorderings Implementation_files/dissimilarity_global.js.download"></script>
+    <script src="./Parallel Coordinates Dimension Reorderings Implementation_files/makwana.js.download"></script>
+    <script src="./Parallel Coordinates Dimension Reorderings Implementation_files/peng_pc.js.download"></script>
+    <script src="./Parallel Coordinates Dimension Reorderings Implementation_files/pargnostics.js.download"></script>
+    <script src="./Parallel Coordinates Dimension Reorderings Implementation_files/maxVar_global.js.download"></script>
+    <script src="./Parallel Coordinates Dimension Reorderings Implementation_files/minVar_global.js.download"></script>
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>

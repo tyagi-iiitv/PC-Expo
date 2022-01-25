@@ -33,7 +33,7 @@
         "react-app/jest"
       ]
     },
-    "proxy": "https://lit-dusk-75851.herokuapp.com/",
+    "proxy": "https://paracoords.herokuapp.com/",
     "browserslist": {
       "production": [
         ">0.2%",
