@@ -71,6 +71,7 @@ export default class App extends Component{
             ParaCoords Explorer
           </NavbarBrand>
         </Navbar>
+        <img src="/all_props.png" alt="image"/>
         <Container fluid>
           <Row className={styles.mainRow}>
             <Col md={3}>
