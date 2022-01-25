@@ -1,4 +1,4 @@
-from audioop import cross
+from audioop import cross, minmax
 from statistics import variance
 import pandas as pd
 from flask import Flask, request
@@ -44,6 +44,7 @@ def getSliderData():
     skewness_pos = []
     skewness_neg = []
     convergence = []
+    para = []
     var_th = 0.3
     skew_th = 0.3
     max_skew = 1.0
@@ -64,6 +65,9 @@ def getSliderData():
             cur_corr = matrix.corr()['bill_length_mm']['bill_depth_mm']
             cur_var = np.cov(matrix.T)[0,1]
             cur_skew = stats.skew(matrix)[0]
+            cur_para = matrix['bill_depth_mm'] - matrix['bill_length_mm']
+            cur_para = minmax_scale(cur_para)
+            para.append(1-stats.iqr(cur_para))
             if cur_corr > 0:
                 correlation_pos.append(cur_corr)
                 correlation_neg.append(0.0)
@@ -89,6 +93,7 @@ def getSliderData():
             variance_neg.append(0)
             skewness_pos.append(0)
             skewness_neg.append(0)
+            para.append(0)
 
     # Normalize all the arrays
     variance_pos = minmax_scale(variance_pos)
@@ -104,6 +109,7 @@ def getSliderData():
                         list(np.nan_to_num(skewness_pos)),
                         list(np.nan_to_num(skewness_neg)),
                         list(np.nan_to_num(convergence)),
+                        list(np.nan_to_num(para)),
                         list(x_pts)])
 
 @app.route('/getpoints', methods=['POST'])

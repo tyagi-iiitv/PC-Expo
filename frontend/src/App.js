@@ -74,18 +74,22 @@ export default class App extends Component{
         <Container fluid>
           <Row className={styles.mainRow}>
             <Col md={3}>
-              <Form.Check type="checkbox" id="corr" label="Correlation" onChange={this.handleChange}/>
+              {/* <Form.Check type="checkbox" id="corr" label="Correlation" onChange={this.handleChange}/>
               <Form.Check type="checkbox" id="var" label="Variance" onChange={this.handleChange}/>
               <Form.Check type="checkbox" id="skew" label="Skewness" onChange={this.handleChange}/>
               <Form.Check type="checkbox" id="neigh" label="Neighborhood" onChange={this.handleChange}/>
               <Form.Check type="checkbox" id="split" label="Split" onChange={this.handleChange}/>
-              <Form.Check type="checkbox" id="fan" label="Fan" onChange={this.handleChange}/>
-              <p style={{color: "#d53e4f"}}> Correlation</p>
-              <p style={{color: "#fc8d59"}}> Variance</p>
-              <p style={{color: "#fee08b"}}> Skewness</p>
-              <p style={{color: "#e6f598"}}> Neighborhood</p>
-              <p style={{color: "#99d594"}}> Split</p>
-              <p style={{color: "#3288bd"}}> Fan</p>
+              <Form.Check type="checkbox" id="fan" label="Fan" onChange={this.handleChange}/> */}
+              <p style={{color: "#e41a1c"}}> Positive Correlation</p>
+              <p style={{color: "#e41a1c"}}> Negative Correlation</p>
+              <p style={{color: "#377eb8"}}> Positive Variance</p>
+              <p style={{color: "#377eb8"}}> Negative Variance</p>
+              <p style={{color: "#4daf4a"}}> Positive Skewness</p>
+              <p style={{color: "#4daf4a"}}> Negative Skewness</p>
+              <p style={{color: "#984ea3"}}> Fan</p>
+              <p style={{color: "#ff7f00"}}> Neighborhood</p>
+              {/* <ScatterplotPlotly pcpdata={this.state.pcpdata}/> */}
+              
               <Slider
                 aria-label="Temperature"
                 defaultValue={30}
@@ -97,7 +101,7 @@ export default class App extends Component{
                 max={100}
                 onChangeCommitted={this.sliderChange}
               />
-
+            <p>Window Size</p>
             </Col>
             <Col md={9}>
               <GeneratePCP pcpdata={this.state.sliderdata} data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan} callbackFromParent={this.callbackFromChild}/>
