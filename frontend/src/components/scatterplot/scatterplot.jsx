@@ -1,62 +1,53 @@
 import React, {Component} from 'react';
-import * as d3 from 'd3';
-import equal from 'fast-deep-equal';
-import styles from './scatterplot.module.scss'
-
-
+import Plot from 'react-plotly.js';
 
 export default class ScatterplotPlotly extends Component {
-    constructor(props) {
+    constructor(props){
         super(props);
         this.state = {
-            canvasDims: { width: 300, height: 500 },
-            data: {},
-        };
+            data: {}
+        }
     }
-    componentDidMount() {
-        fetch('/readdata', {
+
+    componentDidMount(){
+        fetch('/readData', {
             methods: 'GET',
             })
             .then(response => response.json())
             .then(response => {
-                this.setState({data: response}, ()=> 
-                generateSVG(
-                    this.state.data,
-                    this.props.dragdata,
-                    this.state.canvasDims.height,
-                    this.state.canvasDims.width
-                )
-            )
-            })
+            this.setState({data: response})
+        })
     }
-
-    componentDidUpdate(prevProps){
-        if(!equal(this.props, prevProps)){
-            generateSVG(
-                        this.state.data,
-                        this.props.dragdata,
-                        this.state.canvasDims.height,
-                        this.state.canvasDims.width
-                    )
-            }
-    }
-
+    //To display the scatterplot
     render() {
+        // if(this.props.emb.length === 0){
+        //     return <div/>
+        // }
         return (
-            <svg
-                id="svg"
-                className={styles.svgComp}
-                height={this.state.canvasDims.height}
-                width={this.state.canvasDims.width}
-            />
-        );
-    }
-}
+            <div>
+                <Plot
+                data={[
+                    {   
+                        //Creates the original scatterplot based on the embeddings
+                        x: this.state.data[0],
+                        y: this.state.data[1],
+                        mode: 'markers',
+                        type: 'scatter',
+                        marker: {color: '#F08080', size: 7},
+                    },
+                    // {
+                    //     x: this.props.pcpdata[0],
+                    //     y: this.props.pcpdata[1],
+                    //     mode: 'markers',
+                    //     type: 'scatter',
+                    //     marker: {color: '#3182bd', size: 13},
+                    // }
+                ]}
+                style={{width: 600, height: 400}}
+                />
+            </div>
 
-async function generateSVG(data, dragdata, height, width){
-    console.log(data, dragdata)
-    d3.selectAll("svg > *").remove();
-    let svg = d3.select('svg');
-    height = height - 20;
-    return svg.node();
+        );
+        
+    }
 }

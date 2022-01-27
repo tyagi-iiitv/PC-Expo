@@ -82,7 +82,7 @@ class GeneratePCP extends React.Component {
     render() {
         return (
             <svg
-                id="svg"
+                id="svg1"
                 className={styles.svgComp}
                 height={this.state.canvasDims.height}
                 width={this.state.canvasDims.width}
@@ -109,8 +109,8 @@ async function generateSVG(width,
     convergence, 
     para,
     indices){
-    d3.selectAll("svg > *").remove();
-    let svg = d3.select('svg');
+    d3.selectAll("svg1 > *").remove();
+    let svg = d3.select('svg1');
     let y = {};
     let x, dimensions, lines, g, background, corrlines, varlines, skewlines, neighlines, splitlines, fanlines;
     let height = boxHeight - 20;
