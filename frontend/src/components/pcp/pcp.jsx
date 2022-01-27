@@ -119,13 +119,13 @@ async function generateSVG(width,
         if (key !== "") {
             y[key] = d3.scaleLinear()
                 .domain(d3.extent(data, function (d) { return +d[key]; }))
-                .range([height, 0]);
+                .range([height-30, 0]);
             return key;
         };
     });
     let x_para_offset = 1000
-    let dists = ['corr_pos', 'corr_neg', 'var_pos', 'var_neg', 'skew_pos', 'skew_neg', 'convergence', 'para']
-    let offset = 50
+    let dists = ['corr_pos', 'corr_neg', 'var_pos', 'var_neg', 'skew_pos', 'skew_neg', 'fan', 'neighborhood']
+    let offset = 100
     // Create our x axis scale.
     x = d3.scalePoint()
     .domain(dimensions)
@@ -137,7 +137,7 @@ async function generateSVG(width,
 
     let x_dist = d3.scalePoint()
     .domain(dists)
-    .range([10, x_para_offset-offset])
+    .range([40, x_para_offset-offset])
 
 
     let yd = y['bill_length_mm']
@@ -256,7 +256,7 @@ async function generateSVG(width,
       .attr("stroke-linejoin", "round")
       .attr("d",  d3.line()
         .curve(d3.curveBasis)
-          .x(function(d) { return x_dist('convergence')+xd(d);})
+          .x(function(d) { return x_dist('fan')+xd(d);})
           .y(function(d,i) { return y['bill_length_mm'](indices[i]); })
       );
 
@@ -270,27 +270,44 @@ async function generateSVG(width,
       .attr("stroke-linejoin", "round")
       .attr("d",  d3.line()
         .curve(d3.curveBasis)
-          .x(function(d) { return x_dist('para')+xd(d);})
+          .x(function(d) { return x_dist('neighborhood')+xd(d);})
           .y(function(d,i) { return y['bill_length_mm'](indices[i]); })
       );
 
+
     //   x(key), y[key](d[key]
-    // Add a group element for each dimension.
+    // Add a group element for each dimension and dist
     g = svg.selectAll(".dimension")
         .data(dimensions).enter()
         .append("g")
         .attr("class", "dimension")
         .attr("transform", function (d) { return "translate(" + x(d) + ")"; });
-
-    // Add an axis and title.
+    
+    let g_dist = svg.selectAll(".dists")
+        .data(dists).enter()
+        .append("g")
+        .attr("class", "dists")
+        .attr("transform", function (d) { return "translate(" + x_dist(d) + ")"; });
+    
+    // // Add axis labels and title.
     g.append("g")
         .attr("class", styles.axis)
-        .each(function (d) { d3.select(this).call(d3.axisLeft().scale(y[d])); })
+        .each(function (d) {d3.select(this).call(d3.axisLeft().scale(y[d])); })
         .append("text")
         .style("text-anchor", "middle")
         .attr("fill", "black")
         .attr("font-size", "12")
-        .attr("y", -9)
+        .attr("y", height-5)
+        .text(function (d) { return d; });
+
+    g_dist.append("g")
+        .attr("class", styles.axis)
+        .each(function (d) { d3.select(this).call(d3.axisLeft().scale(yd)); })
+        .append("text")
+        .style("text-anchor", "middle")
+        .attr("fill", "black")
+        .attr("font-size", "12")
+        .attr("y", height-5)
         .text(function (d) { return d; });
 
     // Add and store a brush for each axis.
@@ -300,6 +317,17 @@ async function generateSVG(width,
             .extent([[-10, 0], [10, height]])
             .on("start", brushstart)
             .on("brush", brush)
+            .on("end", brushend))
+        .selectAll("rect")
+        .attr("x", -8)
+        .attr("width", 16);
+
+    g_dist.append("g")
+        .attr("class", "brushdist")
+        .call(d3.brushY()
+            .extent([[-10, 0], [10, height]])
+            .on("start", brushstart)
+            .on("brush", brushDist)
             .on("end", brushend))
         .selectAll("rect")
         .attr("x", -8)
@@ -317,6 +345,11 @@ async function generateSVG(width,
     }
     
     function brushend(){
+        if(!d3.brushSelection(this)){
+            lines.style("display", null);
+            return
+        }
+
         fetch('/getpoints', {
             method: 'POST',
             headers: {
@@ -337,7 +370,6 @@ async function generateSVG(width,
         var actives = [];
         svg.selectAll(".brush")
             .filter(function (d) {
-                // console.log(d3.brushSelection(this));
                 return d3.brushSelection(this);
             })
             .each(function (key) {
@@ -357,20 +389,32 @@ async function generateSVG(width,
             });
         }
     }
-
-    function kernelDensityEstimator(kernel, X) {
-        return function(V) {
-          return X.map(function(x) {
-            return [x, d3.mean(V, function(v) { return kernel(x - v); })];
-          });
-        };
-      }
-      function kernelEpanechnikov(k) {
-        return function(v) {
-          return Math.abs(v /= k) <= 1 ? 0.75 * (1 - v * v) / k : 0;
-        };
-    }
     
+    function brushDist() {
+        // Get a set of dimensions with active brushes and their current extent.
+        var actives = [];
+        svg.selectAll(".brushdist")
+            .filter(function (d) {
+                return d3.brushSelection(this);
+            })
+            .each(function (key) {
+                actives.push({
+                    dimension: 'bill_length_mm',
+                    extent: d3.brushSelection(this)
+                });
+            });
+        // Change line visibility based on brush extent.
+        if (actives.length === 0) {
+            lines.style("display", null);
+        } else {
+            lines.style("display", function (d) {
+                return actives.every(function (brushObj) {
+                    return brushObj.extent[0] <= y[brushObj.dimension](d[brushObj.dimension]) && y[brushObj.dimension](d[brushObj.dimension]) <= brushObj.extent[1];
+                }) ? null : "none";
+            });
+        }
+    }
+
     return svg.node();
 }
 
