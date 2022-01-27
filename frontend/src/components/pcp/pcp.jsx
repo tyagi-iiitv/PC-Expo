@@ -348,6 +348,9 @@ async function generateSVG(width,
         if(!d3.brushSelection(this)){
             lines.style("display", null);
             return
+
+
+
         }
 
         fetch('/getpoints', {
@@ -361,7 +364,7 @@ async function generateSVG(width,
         })
         .then(response => response.json())
         .then(data => {
-            callbackFromParent({pcpdata: data})
+            callbackFromParent({dragdata: data})
         })
     }
     // Handles a brush event, toggling the display of foreground lines.

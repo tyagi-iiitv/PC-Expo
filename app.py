@@ -124,7 +124,7 @@ def getPoints():
     return json.dumps([list(subset['bill_length_mm']), list(subset['bill_depth_mm'])])
     
 
-@app.route('/readData', methods=['GET'])
+@app.route('/readdata', methods=['GET'])
 @cross_origin()
 def readData():
     # global num_df

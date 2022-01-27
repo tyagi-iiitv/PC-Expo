@@ -12,6 +12,7 @@ export default class App extends Component{
     this.state = {
       data: {},
       pcpdata: {},
+      dragdata: {},
       sliderdata: {},
       corr: false,
       var: false,
@@ -97,8 +98,8 @@ export default class App extends Component{
             <Col md={9}>
               <GeneratePCP pcpdata={this.state.sliderdata} data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan} callbackFromParent={this.callbackFromChild}/>
             </Col>
-            {/* <Col md={4}>
-              <ScatterplotPlotly pcpdata={this.state.pcpdata}/>
+            {/* <Col md={3}>
+              <ScatterplotPlotly data={this.state.data} dragdata={this.state.dragdata}/>
             </Col> */}
           </Row>
         </Container>
@@ -107,19 +108,3 @@ export default class App extends Component{
   }
 }
 
-// function App() {
-//   return (
-//     <div>
-//       <Navbar bg="dark" variant="dark">
-//         <NavbarBrand style={{fontSize: 30, padding: '5 0', marginLeft: 15}}>
-//           ParaCoords Explorer
-//         </NavbarBrand>
-//       </Navbar>
-//       <div>
-//         <GeneratePCP />
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default App;
