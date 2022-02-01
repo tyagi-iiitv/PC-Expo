@@ -109,8 +109,8 @@ async function generateSVG(width,
     convergence, 
     para,
     indices){
-    d3.selectAll("svg1 > *").remove();
-    let svg = d3.select('svg1');
+    d3.selectAll("#svg1 > *").remove();
+    let svg = d3.select('#svg1');
     let y = {};
     let x, dimensions, lines, g, background, corrlines, varlines, skewlines, neighlines, splitlines, fanlines;
     let height = boxHeight - 20;
@@ -348,9 +348,6 @@ async function generateSVG(width,
         if(!d3.brushSelection(this)){
             lines.style("display", null);
             return
-
-
-
         }
 
         fetch('/getpoints', {

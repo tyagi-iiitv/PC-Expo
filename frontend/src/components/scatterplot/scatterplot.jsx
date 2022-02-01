@@ -10,7 +10,7 @@ export default class ScatterplotPlotly extends Component {
     }
 
     componentDidMount(){
-        fetch('/readData', {
+        fetch('/readdata', {
             methods: 'GET',
             })
             .then(response => response.json())
