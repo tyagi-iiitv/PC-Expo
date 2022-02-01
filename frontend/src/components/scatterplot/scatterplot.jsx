@@ -20,6 +20,7 @@ export default class ScatterplotPlotly extends Component {
     }
     //To display the scatterplot
     render() {
+        console.log(this.state.data, this.props.dragdata)
         // if(this.props.emb.length === 0){
         //     return <div/>
         // }
@@ -35,15 +36,15 @@ export default class ScatterplotPlotly extends Component {
                         type: 'scatter',
                         marker: {color: '#F08080', size: 7},
                     },
-                    // {
-                    //     x: this.props.pcpdata[0],
-                    //     y: this.props.pcpdata[1],
-                    //     mode: 'markers',
-                    //     type: 'scatter',
-                    //     marker: {color: '#3182bd', size: 13},
-                    // }
+                    {
+                        x: this.props.dragdata[0],
+                        y: this.props.dragdata[1],
+                        mode: 'markers',
+                        type: 'scatter',
+                        marker: {color: '#3182bd', size: 13},
+                    }
                 ]}
-                style={{width: 600, height: 400}}
+                style={{width: 500, height: 500}}
                 />
             </div>
 

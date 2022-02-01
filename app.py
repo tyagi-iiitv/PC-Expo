@@ -8,6 +8,8 @@ import numpy as np
 from sklearn.preprocessing import minmax_scale
 from scipy import stats
 from flask_cors import CORS, cross_origin
+import warnings
+warnings.filterwarnings("ignore")
 
 
 app = Flask(__name__, static_folder='frontend/build', static_url_path='')
