@@ -300,7 +300,7 @@ async function generateSVG(width,
 
     g_dist.append("g")
         .attr("class", styles.axis)
-        .each(function (d) { d3.select(this).call(d3.axisLeft().scale(yd)); })
+        .each(function (d) { d3.select(this).call(d3.axisRight().scale(yd).tickFormat("")); })
         .append("text")
         .style("text-anchor", "middle")
         .attr("fill", "black")
@@ -399,7 +399,6 @@ async function generateSVG(width,
     }
     
     function brushDist() {
-        console.log(d3.brushSelection(this), clicked_node)
         var actives = [{
             dimension: 'bill_length_mm',
             extent: d3.brushSelection(this)
