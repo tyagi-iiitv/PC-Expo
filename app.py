@@ -20,7 +20,7 @@ df = df.dropna()
 numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
 num_df = df.select_dtypes(include=numerics)
 num_df = num_df[['bill_length_mm', 'bill_depth_mm']]
-bi_hist, xed, yed = np.histogram2d(num_df.bill_length_mm, num_df.bill_depth_mm, bins=20)
+bi_hist, xed, yed = np.histogram2d(num_df.bill_length_mm, num_df.bill_depth_mm, bins=15)
 xed = xed[:-1]
 yed = yed[:-1]
 
@@ -38,7 +38,7 @@ def getSliderData():
     percent = request.get_json()
     var_range = num_df.bill_length_mm.max() - num_df.bill_length_mm.min()
     window_size = percent/100*var_range
-    x_pts = np.linspace(num_df.bill_length_mm.min(), num_df.bill_length_mm.max(), 20)
+    x_pts = np.linspace(num_df.bill_length_mm.min(), num_df.bill_length_mm.max(), 15)
     correlation_pos = []
     correlation_neg = []
     variance_pos = []
@@ -46,6 +46,7 @@ def getSliderData():
     skewness_pos = []
     skewness_neg = []
     convergence = []
+    p_vals = []
     para = []
     var_th = 0.3
     skew_th = 0.3
@@ -61,10 +62,11 @@ def getSliderData():
         cur_pts = np.where((num_df.bill_length_mm >= x_pts[x]) & 
                     (num_df.bill_length_mm <= x_pts[x]+window_size))
         # print(cur_pts)
-        if len(cur_pts[0]) > 0:
+        p_vals.append(len(cur_pts[0]))
+        if len(cur_pts[0]) > 2:
             data = num_df.iloc[cur_pts]
             matrix = data[['bill_length_mm', 'bill_depth_mm']]
-            cur_corr = matrix.corr()['bill_length_mm']['bill_depth_mm']
+            (cur_corr, _) = stats.pearsonr(matrix['bill_length_mm'], matrix['bill_depth_mm'])
             cur_var = np.cov(matrix.T)[0,1]
             cur_skew = stats.skew(matrix)[0]
             cur_para = matrix['bill_depth_mm'] - matrix['bill_length_mm']
@@ -103,7 +105,7 @@ def getSliderData():
     skewness_pos = minmax_scale(skewness_pos)
     skewness_neg = minmax_scale(skewness_neg)
     convergence = minmax_scale(convergence)
-
+    p_vals = minmax_scale(p_vals)
     return json.dumps([list(np.nan_to_num(correlation_pos[1:])), 
                         list(np.nan_to_num(correlation_neg[1:])), 
                         list(np.nan_to_num(variance_pos[1:])), 
@@ -113,7 +115,8 @@ def getSliderData():
                         list(np.nan_to_num(convergence[1:])),
                         list(np.nan_to_num(para[1:])),
                         list(x_pts[1:]),
-                        window_size])
+                        window_size,
+                        list(np.nan_to_num(p_vals[1:]))])
 
 @app.route('/getpoints', methods=['POST'])
 @cross_origin()

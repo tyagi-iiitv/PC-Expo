@@ -19,6 +19,7 @@ class GeneratePCP extends React.Component {
             para: [],
             indices: [],
             window_size: 0,
+            p_vals: []
         };
     }
     componentDidMount() {
@@ -49,6 +50,7 @@ class GeneratePCP extends React.Component {
                     this.state.para,
                     this.state.indices,
                     this.state.window_size,
+                    this.state.p_vals,
                 )
             )
             })
@@ -77,6 +79,7 @@ class GeneratePCP extends React.Component {
                         this.props.pcpdata[7],
                         this.props.pcpdata[8],
                         this.props.pcpdata[9],
+                        this.props.pcpdata[10],
                     )
             }
     }
@@ -111,13 +114,18 @@ async function generateSVG(width,
     convergence, 
     para,
     indices,
-    window_size){
+    window_size,
+    p_vals){
     d3.selectAll("#svg1 > *").remove();
     let svg = d3.select('#svg1');
     let y = {};
     let x, dimensions, lines, g, background, corrlines, varlines, skewlines, neighlines, splitlines, fanlines;
     let colors = d3.scaleSequential()
         .interpolator(d3.interpolateInferno)
+        .domain([0,1])
+    
+    let colors_pvals = d3.scaleSequential()
+        .interpolator(d3.interpolateGreys)
         .domain([0,1])
     
     let height = boxHeight - 20;
@@ -178,8 +186,21 @@ async function generateSVG(width,
             .attr("x", function(d) {return x_dist('corr_pos')+20})
             .attr("y", function(d,i) {return y['bill_length_mm'](indices[i])})
             .attr("width", 25)
-            .attr("height", 25)
+            .attr("height", 32)
             .style("fill", function(d) {return colors(d)})
+    svg.append("g")
+        .attr("class", styles.hists)
+        .selectAll("rect")
+        .data(p_vals)
+        .enter()
+        .append("rect")
+            .attr("x", function(d) {return x_dist('corr_pos')+50})
+            .attr("y", function(d,i) {return y['bill_length_mm'](indices[i])})
+            .attr("width", 25)
+            .attr("height", 32)
+            .style("fill", function(d) {return colors_pvals(d)})
+            .style("stroke", "black")
+            .style("stroke-width", 1)
       
 
     svg.append("g")
@@ -191,8 +212,21 @@ async function generateSVG(width,
         .attr("x", function(d) {return x_dist('corr_neg')+20})
         .attr("y", function(d,i) {return y['bill_length_mm'](indices[i])})
         .attr("width", 25)
-        .attr("height", 25)
+        .attr("height", 32)
         .style("fill", function(d) {return colors(d)})
+    svg.append("g")
+        .attr("class", styles.hists)
+        .selectAll("rect")
+        .data(p_vals)
+        .enter()
+        .append("rect")
+            .attr("x", function(d) {return x_dist('corr_neg')+50})
+            .attr("y", function(d,i) {return y['bill_length_mm'](indices[i])})
+            .attr("width", 25)
+            .attr("height", 32)
+            .style("fill", function(d) {return colors_pvals(d)})
+            .style("stroke", "black")
+            .style("stroke-width", 1)
 
     svg.append("g")
     .attr("class", styles.hists)
@@ -203,8 +237,21 @@ async function generateSVG(width,
         .attr("x", function(d) {return x_dist('var_pos')+20})
         .attr("y", function(d,i) {return y['bill_length_mm'](indices[i])})
         .attr("width", 25)
-        .attr("height", 25)
+        .attr("height", 32)
         .style("fill", function(d) {return colors(d)})
+    svg.append("g")
+        .attr("class", styles.hists)
+        .selectAll("rect")
+        .data(p_vals)
+        .enter()
+        .append("rect")
+            .attr("x", function(d) {return x_dist('var_pos')+50})
+            .attr("y", function(d,i) {return y['bill_length_mm'](indices[i])})
+            .attr("width", 25)
+            .attr("height", 32)
+            .style("fill", function(d) {return colors_pvals(d)})
+            .style("stroke", "black")
+            .style("stroke-width", 1)
 
     svg.append("g")
     .attr("class", styles.hists)
@@ -215,8 +262,21 @@ async function generateSVG(width,
         .attr("x", function(d) {return x_dist('var_neg')+20})
         .attr("y", function(d,i) {return y['bill_length_mm'](indices[i])})
         .attr("width", 25)
-        .attr("height", 25)
+        .attr("height", 32)
         .style("fill", function(d) {return colors(d)})
+    svg.append("g")
+        .attr("class", styles.hists)
+        .selectAll("rect")
+        .data(p_vals)
+        .enter()
+        .append("rect")
+            .attr("x", function(d) {return x_dist('var_neg')+50})
+            .attr("y", function(d,i) {return y['bill_length_mm'](indices[i])})
+            .attr("width", 25)
+            .attr("height", 32)
+            .style("fill", function(d) {return colors_pvals(d)})
+            .style("stroke", "black")
+            .style("stroke-width", 1)
     
 
 
@@ -229,8 +289,21 @@ async function generateSVG(width,
         .attr("x", function(d) {return x_dist('skew_pos')+20})
         .attr("y", function(d,i) {return y['bill_length_mm'](indices[i])})
         .attr("width", 25)
-        .attr("height", 25)
+        .attr("height", 32)
         .style("fill", function(d) {return colors(d)})
+    svg.append("g")
+        .attr("class", styles.hists)
+        .selectAll("rect")
+        .data(p_vals)
+        .enter()
+        .append("rect")
+            .attr("x", function(d) {return x_dist('skew_pos')+50})
+            .attr("y", function(d,i) {return y['bill_length_mm'](indices[i])})
+            .attr("width", 25)
+            .attr("height", 32)
+            .style("fill", function(d) {return colors_pvals(d)})
+            .style("stroke", "black")
+            .style("stroke-width", 1)
     
 
     svg.append("g")
@@ -242,8 +315,21 @@ async function generateSVG(width,
         .attr("x", function(d) {return x_dist('skew_neg')+20})
         .attr("y", function(d,i) {return y['bill_length_mm'](indices[i])})
         .attr("width", 25)
-        .attr("height", 25)
+        .attr("height", 32)
         .style("fill", function(d) {return colors(d)})
+    svg.append("g")
+        .attr("class", styles.hists)
+        .selectAll("rect")
+        .data(p_vals)
+        .enter()
+        .append("rect")
+            .attr("x", function(d) {return x_dist('skew_neg')+50})
+            .attr("y", function(d,i) {return y['bill_length_mm'](indices[i])})
+            .attr("width", 25)
+            .attr("height", 32)
+            .style("fill", function(d) {return colors_pvals(d)})
+            .style("stroke", "black")
+            .style("stroke-width", 1)
     
 
     svg.append("g")
@@ -255,8 +341,21 @@ async function generateSVG(width,
         .attr("x", function(d) {return x_dist('fan')+20})
         .attr("y", function(d,i) {return y['bill_length_mm'](indices[i])})
         .attr("width", 25)
-        .attr("height", 25)
+        .attr("height", 32)
         .style("fill", function(d) {return colors(d)})
+    svg.append("g")
+        .attr("class", styles.hists)
+        .selectAll("rect")
+        .data(p_vals)
+        .enter()
+        .append("rect")
+            .attr("x", function(d) {return x_dist('fan')+50})
+            .attr("y", function(d,i) {return y['bill_length_mm'](indices[i])})
+            .attr("width", 25)
+            .attr("height", 32)
+            .style("fill", function(d) {return colors_pvals(d)})
+            .style("stroke", "black")
+            .style("stroke-width", 1)
     
 
     svg.append("g")
@@ -268,8 +367,21 @@ async function generateSVG(width,
         .attr("x", function(d) {return x_dist('neighborhood')+20})
         .attr("y", function(d,i) {return y['bill_length_mm'](indices[i])})
         .attr("width", 25)
-        .attr("height", 25)
+        .attr("height", 32)
         .style("fill", function(d) {return colors(d)})
+    svg.append("g")
+        .attr("class", styles.hists)
+        .selectAll("rect")
+        .data(p_vals)
+        .enter()
+        .append("rect")
+            .attr("x", function(d) {return x_dist('neighborhood')+50})
+            .attr("y", function(d,i) {return y['bill_length_mm'](indices[i])})
+            .attr("width", 25)
+            .attr("height", 32)
+            .style("fill", function(d) {return colors_pvals(d)})
+            .style("stroke", "black")
+            .style("stroke-width", 1)
     
 
 
