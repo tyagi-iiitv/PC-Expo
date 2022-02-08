@@ -20,7 +20,7 @@ export default class ScatterplotPlotly extends Component {
     }
     //To display the scatterplot
     render() {
-        console.log(this.state.data, this.props.dragdata)
+        // console.log(this.state.data, this.props.dragdata)
         // if(this.props.emb.length === 0){
         //     return <div/>
         // }

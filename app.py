@@ -112,7 +112,8 @@ def getSliderData():
                         list(np.nan_to_num(skewness_neg)),
                         list(np.nan_to_num(convergence)),
                         list(np.nan_to_num(para)),
-                        list(x_pts)])
+                        list(x_pts),
+                        window_size])
 
 @app.route('/getpoints', methods=['POST'])
 @cross_origin()

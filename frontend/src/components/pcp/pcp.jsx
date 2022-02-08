@@ -18,7 +18,7 @@ class GeneratePCP extends React.Component {
             convergence: [],
             para: [],
             indices: [],
-
+            window_size: 0,
         };
     }
     componentDidMount() {
@@ -47,7 +47,8 @@ class GeneratePCP extends React.Component {
                     this.state.skewness_neg,
                     this.state.convergence,
                     this.state.para,
-                    this.state.indices
+                    this.state.indices,
+                    this.state.window_size,
                 )
             )
             })
@@ -75,6 +76,7 @@ class GeneratePCP extends React.Component {
                         this.props.pcpdata[6],
                         this.props.pcpdata[7],
                         this.props.pcpdata[8],
+                        this.props.pcpdata[9],
                     )
             }
     }
@@ -108,7 +110,8 @@ async function generateSVG(width,
     skew_rec, skew_rec_neg,
     convergence, 
     para,
-    indices){
+    indices,
+    window_size){
     d3.selectAll("#svg1 > *").remove();
     let svg = d3.select('#svg1');
     let y = {};
@@ -322,16 +325,20 @@ async function generateSVG(width,
         .attr("x", -8)
         .attr("width", 16);
 
+    let fixed_brush = d3.brushY()
+        .extent([[-10, 0], [10, height-5]])
+
+    console.log(y['bill_length_mm'].domain())
     g_dist.append("g")
         .attr("class", "brushdist")
-        .call(d3.brushY()
-            .extent([[-10, 0], [10, height]])
-            .on("start", brushstart)
-            .on("brush", brushDist)
-            .on("end", brushend))
+        .call(fixed_brush)
+        .call(fixed_brush.move, [0,y['bill_length_mm'](y['bill_length_mm'].domain()[1]-window_size)])
         .selectAll("rect")
         .attr("x", -8)
         .attr("width", 16);
+        // .on("start", brushstart)
+            // .on("brush", brushDist)
+            // .on("end", brushend))
     
     function line(d) {
         return d3.line()(dimensions.map(function (key) {
@@ -414,7 +421,8 @@ async function generateSVG(width,
             });
         }
     }
-
+    d3.selectAll('.brushdist>.handle').remove();
+    d3.selectAll('.brushdist>.overlay').remove();
     return svg.node();
 }
 

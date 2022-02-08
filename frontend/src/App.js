@@ -99,7 +99,7 @@ export default class App extends Component{
               <GeneratePCP pcpdata={this.state.sliderdata} data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan} callbackFromParent={this.callbackFromChild}/>
             </Col>
             <Col md={3}>
-              <ScatterplotPlotly data={this.state.data} dragdata={this.state.dragdata}/>
+              {/* <ScatterplotPlotly data={this.state.data} dragdata={this.state.dragdata}/> */}
             </Col>
           </Row>
         </Container>
