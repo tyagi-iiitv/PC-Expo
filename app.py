@@ -20,7 +20,7 @@ df = df.dropna()
 numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
 num_df = df.select_dtypes(include=numerics)
 num_df = num_df[['bill_length_mm', 'bill_depth_mm']]
-bi_hist, xed, yed = np.histogram2d(num_df.bill_length_mm, num_df.bill_depth_mm, bins=256)
+bi_hist, xed, yed = np.histogram2d(num_df.bill_length_mm, num_df.bill_depth_mm, bins=20)
 xed = xed[:-1]
 yed = yed[:-1]
 
@@ -38,7 +38,7 @@ def getSliderData():
     percent = request.get_json()
     var_range = num_df.bill_length_mm.max() - num_df.bill_length_mm.min()
     window_size = percent/100*var_range
-    x_pts = np.linspace(num_df.bill_length_mm.min(), num_df.bill_length_mm.max(), 256)
+    x_pts = np.linspace(num_df.bill_length_mm.min(), num_df.bill_length_mm.max(), 20)
     correlation_pos = []
     correlation_neg = []
     variance_pos = []
@@ -104,15 +104,15 @@ def getSliderData():
     skewness_neg = minmax_scale(skewness_neg)
     convergence = minmax_scale(convergence)
 
-    return json.dumps([list(np.nan_to_num(correlation_pos)), 
-                        list(np.nan_to_num(correlation_neg)), 
-                        list(np.nan_to_num(variance_pos)), 
-                        list(np.nan_to_num(variance_neg)),
-                        list(np.nan_to_num(skewness_pos)),
-                        list(np.nan_to_num(skewness_neg)),
-                        list(np.nan_to_num(convergence)),
-                        list(np.nan_to_num(para)),
-                        list(x_pts),
+    return json.dumps([list(np.nan_to_num(correlation_pos[1:])), 
+                        list(np.nan_to_num(correlation_neg[1:])), 
+                        list(np.nan_to_num(variance_pos[1:])), 
+                        list(np.nan_to_num(variance_neg[1:])),
+                        list(np.nan_to_num(skewness_pos[1:])),
+                        list(np.nan_to_num(skewness_neg[1:])),
+                        list(np.nan_to_num(convergence[1:])),
+                        list(np.nan_to_num(para[1:])),
+                        list(x_pts[1:]),
                         window_size])
 
 @app.route('/getpoints', methods=['POST'])

@@ -122,6 +122,7 @@ async function generateSVG(width,
     
     let height = boxHeight - 20;
     let data = data_rec
+    let clicked_node = null;
     dimensions = d3.keys(data[0]).filter(function (key) {
         if (key !== "") {
             y[key] = d3.scaleLinear()
@@ -283,7 +284,7 @@ async function generateSVG(width,
     let g_dist = svg.selectAll(".dists")
         .data(dists).enter()
         .append("g")
-        .attr("class", "dists")
+        .attr("class", function(d) {return d})
         .attr("transform", function (d) { return "translate(" + x_dist(d) + ")"; });
     
     // // Add axis labels and title.
@@ -321,18 +322,21 @@ async function generateSVG(width,
 
     let fixed_brush = d3.brushY()
         .extent([[-10, 0], [10, height-5]])
+        .on("start", distbrushstart)
+        .on("brush", brushDist)
+        .on("end", brushend)
 
     g_dist.append("g")
         .attr("class", "brushdist")
         .call(fixed_brush)
         .call(fixed_brush.move, [0,y['bill_length_mm'](y['bill_length_mm'].domain()[1]-window_size)])
-        .selectAll("rect")
-        .attr("x", -8)
-        .attr("width", 16);
+        // .selectAll("rect")
+        // .attr("x", -8)
+        // .attr("width", 16);
         // .on("start", brushstart)
             // .on("brush", brushDist)
             // .on("end", brushend))
-    
+
     function line(d) {
         return d3.line()(dimensions.map(function (key) {
             // console.log(key, x(key), y[key](d[key]));
@@ -342,6 +346,10 @@ async function generateSVG(width,
     
     function brushstart() {
         d3.event.sourceEvent.stopPropagation();
+    }
+
+    function distbrushstart(){
+        clicked_node = d3.select(this.parentNode).attr('class')
     }
     
     function brushend(){
@@ -391,18 +399,11 @@ async function generateSVG(width,
     }
     
     function brushDist() {
-        // Get a set of dimensions with active brushes and their current extent.
-        var actives = [];
-        svg.selectAll(".brushdist")
-            .filter(function (d) {
-                return d3.brushSelection(this);
-            })
-            .each(function (key) {
-                actives.push({
-                    dimension: 'bill_length_mm',
-                    extent: d3.brushSelection(this)
-                });
-            });
+        console.log(d3.brushSelection(this), clicked_node)
+        var actives = [{
+            dimension: 'bill_length_mm',
+            extent: d3.brushSelection(this)
+        }]
         // Change line visibility based on brush extent.
         if (actives.length === 0) {
             lines.style("display", null);
@@ -416,7 +417,6 @@ async function generateSVG(width,
     }
     d3.selectAll('.brushdist>.handle').remove();
     d3.selectAll('.brushdist>.overlay').remove();
-    console.log(svg)
     return svg.node();
 }
 
