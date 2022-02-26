@@ -20,7 +20,7 @@ df = df.dropna()
 numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
 num_df = df.select_dtypes(include=numerics)
 num_df = num_df[['bill_length_mm', 'bill_depth_mm']]
-bi_hist, xed, yed = np.histogram2d(num_df.bill_length_mm, num_df.bill_depth_mm, bins=15)
+bi_hist, xed, yed = np.histogram2d(num_df.bill_length_mm, num_df.bill_depth_mm, bins=256)
 xed = xed[:-1]
 yed = yed[:-1]
 
@@ -38,7 +38,7 @@ def getSliderData():
     percent = request.get_json()
     var_range = num_df.bill_length_mm.max() - num_df.bill_length_mm.min()
     window_size = percent/100*var_range
-    x_pts = np.linspace(num_df.bill_length_mm.min(), num_df.bill_length_mm.max(), 15)
+    x_pts = np.linspace(num_df.bill_length_mm.min(), num_df.bill_length_mm.max(), 256)
     correlation_pos = []
     correlation_neg = []
     variance_pos = []
