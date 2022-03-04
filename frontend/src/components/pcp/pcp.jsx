@@ -140,13 +140,14 @@ async function generateSVG(width,
         };
     });
     console.log(data_rec)
-    let x_para_offset = 1000
+    let x_para_offset = 100
+    let x_para_right_offset = 150
     let dists = ['corr_pos', 'corr_neg', 'var_pos', 'var_neg', 'skew_pos', 'skew_neg', 'fan', 'neighborhood']
     let offset = 100
     // Create our x axis scale.
     x = d3.scalePoint()
     .domain(dimensions)
-    .range([x_para_offset, width-50]);
+    .range([x_para_offset, width-x_para_right_offset]);
 
     let xd = d3.scaleLinear()
     .domain([-1, 1])

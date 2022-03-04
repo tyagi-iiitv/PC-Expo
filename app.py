@@ -53,10 +53,15 @@ def fileUpload():
     destination="/".join([target, filename])
     file.save(destination)
     df = pd.read_csv('uploads/data.csv')
-    df = df.sample(n=2000)
+    try:
+        df = df.sample(n=2000)
+    except:
+        df = df.sample(n=2000, replace=True)
     df = df.dropna()
     # numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
     num_df = df.select_dtypes(include=numerics)
+    num_df.columns = [f'{i}_{x[:4]}' for i, x in enumerate(num_df.columns)]
+    print(num_df.columns)
     return num_df.to_json(orient='records')
 
 @app.route('/getsliderdata', methods=['POST'])
