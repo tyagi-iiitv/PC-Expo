@@ -34,6 +34,10 @@ def getjsondata():
 @app.route('/getsliderdata', methods=['POST'])
 @cross_origin()
 def getSliderData():
+    '''
+    Calculates properties based on the window slider
+    clear grouping, density change, split up, neighborhood, pos/neg corr, pos/neg var, pos/neg skew, fan, outliers
+    '''
     # global num_df
     percent = request.get_json()
     var_range = num_df.bill_length_mm.max() - num_df.bill_length_mm.min()
@@ -48,6 +52,11 @@ def getSliderData():
     convergence = []
     p_vals = []
     para = []
+    clear_grouping = []
+    density_change = []
+    split_up = []
+    outlier_ids = np.where(np.absolute(stats.zscore(num_df.bill_length_mm)) > 2)[0]
+    ourliers = []
     var_th = 0.3
     skew_th = 0.3
     max_skew = 1.0
@@ -61,11 +70,29 @@ def getSliderData():
         # Calculating corr, var, skew
         cur_pts = np.where((num_df.bill_length_mm >= x_pts[x]) & 
                     (num_df.bill_length_mm <= x_pts[x]+window_size))
-        # print(cur_pts)
+        ourliers.append(len(list(set(cur_pts[0]).intersection(outlier_ids))))
         p_vals.append(len(cur_pts[0]))
         if len(cur_pts[0]) > 2:
             data = num_df.iloc[cur_pts]
             matrix = data[['bill_length_mm', 'bill_depth_mm']]
+            x_pts_pcpnr = list(matrix['bill_length_mm'])
+            y_pts_pcpnr = list(matrix['bill_depth_mm'])
+            density_x = stats.gaussian_kde(x_pts_pcpnr)(x_pts_pcpnr)
+            density_y = stats.gaussian_kde(y_pts_pcpnr)(y_pts_pcpnr)
+            density_change.append(stats.entropy(density_x, density_y))
+            sorted_x = sorted(x_pts_pcpnr)
+            sorted_y = sorted(y_pts_pcpnr)
+            sigma_x = (sorted_x[-1] - sorted_x[0])/10
+            sigma_y = (sorted_y[-1] - sorted_y[0])/10
+            pair_dist_x = np.array([x_pts_pcpnr])-np.array([x_pts_pcpnr]).T
+            pair_dist_y = np.array([y_pts_pcpnr])-np.array([y_pts_pcpnr]).T
+            sq_sigma_dists_x = np.exp(-(np.square(pair_dist_x)/sigma_x**2))
+            sq_sigma_dists_y = np.exp(-(np.square(pair_dist_y)/sigma_y**2))
+            pji_x = sq_sigma_dists_x/sq_sigma_dists_x.sum(axis=1, keepdims=True)
+            pji_y = sq_sigma_dists_y/sq_sigma_dists_y.sum(axis=1, keepdims=True)
+            dkl = pji_x*np.log(pji_x/pji_y)
+            dkl = dkl.sum() - dkl.trace()
+            clear_grouping.append(dkl)
             (cur_corr, _) = stats.pearsonr(matrix['bill_length_mm'], matrix['bill_depth_mm'])
             cur_var = np.cov(matrix.T)[0,1]
             cur_skew = stats.skew(matrix)[0]
@@ -98,6 +125,8 @@ def getSliderData():
             skewness_pos.append(0)
             skewness_neg.append(0)
             para.append(0)
+            clear_grouping.append(0)
+            density_change.append(0)
 
     # Normalize all the arrays
     variance_pos = minmax_scale(variance_pos)
@@ -105,7 +134,11 @@ def getSliderData():
     skewness_pos = minmax_scale(skewness_pos)
     skewness_neg = minmax_scale(skewness_neg)
     convergence = minmax_scale(convergence)
+    clear_grouping = minmax_scale(clear_grouping)
+    density_change = minmax_scale(density_change)
     p_vals = minmax_scale(p_vals)
+    outliers = minmax_scale(ourliers)
+    split_up = [1-x for x in clear_grouping]
     return json.dumps([list(np.nan_to_num(correlation_pos[1:])), 
                         list(np.nan_to_num(correlation_neg[1:])), 
                         list(np.nan_to_num(variance_pos[1:])), 
@@ -116,7 +149,11 @@ def getSliderData():
                         list(np.nan_to_num(para[1:])),
                         list(x_pts[1:]),
                         window_size,
-                        list(np.nan_to_num(p_vals[1:]))])
+                        list(np.nan_to_num(p_vals[1:])),
+                        list(np.nan_to_num(clear_grouping[1:])),
+                        list(np.nan_to_num(density_change[1:])),
+                        list(np.nan_to_num(split_up[1:])),
+                        list(np.nan_to_num(outliers[1:]))])
 
 @app.route('/getpoints', methods=['POST'])
 @cross_origin()
