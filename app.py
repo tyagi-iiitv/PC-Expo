@@ -53,6 +53,7 @@ def fileUpload():
     destination="/".join([target, filename])
     file.save(destination)
     df = pd.read_csv('uploads/data.csv')
+    df = df.sample(n=2000)
     df = df.dropna()
     # numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
     num_df = df.select_dtypes(include=numerics)
