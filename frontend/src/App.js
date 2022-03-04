@@ -38,7 +38,6 @@ export default class App extends Component{
   // }
 
   callbackFromChild(data){
-    console.log("here")
     this.setState({'data_rec': false});
     this.setState(data, ()=> this.setState({'data_rec': true}));
   }
@@ -80,7 +79,7 @@ export default class App extends Component{
         <Container fluid>
           <Row className={styles.mainRow}>
             <Col md={9}>
-              <img src="/all_props.png" alt="image"/>
+            <GeneratePCP pcpdata={this.state.sliderdata} data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan} callbackFromParent={this.callbackFromChild}/>
             </Col>
             <Col md={3} className={styles.slider}>
               <Slider
@@ -99,12 +98,18 @@ export default class App extends Component{
           </Row>
         </Container>
         <Container fluid>
-          <Row className={styles.mainRow}>
-            <Col md={9}>
-              <GeneratePCP pcpdata={this.state.sliderdata} data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan} callbackFromParent={this.callbackFromChild}/>
-            </Col>
-            <Col md={3}>
+          {/* <Row className={styles.mainRow}> */}
+            {/* <Col md={9}> */}
+              
+            {/* </Col> */}
+            {/* <Col md={3}> */}
               {/* <ScatterplotPlotly data={this.state.data} dragdata={this.state.dragdata}/> */}
+            {/* </Col> */}
+          {/* </Row> */}
+          <Row>
+          <Col md={9}>
+              <div></div>
+              <img src="/all_props.png" alt="image"/>
             </Col>
           </Row>
         </Container>
