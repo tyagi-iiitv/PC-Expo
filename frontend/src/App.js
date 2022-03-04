@@ -38,6 +38,7 @@ export default class App extends Component{
   // }
 
   callbackFromChild(data){
+    console.log("here")
     this.setState({'data_rec': false});
     this.setState(data, ()=> this.setState({'data_rec': true}));
   }
@@ -73,7 +74,7 @@ export default class App extends Component{
             ParaCoords Explorer
           </NavbarBrand>
           <Nav className="mr-auto">
-            <LoadData />
+            <LoadData callbackFromParent={this.callbackFromChild}/>
           </Nav>
         </Navbar>
         <Container fluid>

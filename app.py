@@ -9,11 +9,18 @@ from sklearn.preprocessing import minmax_scale
 from scipy import stats
 from flask_cors import CORS, cross_origin
 import warnings
+import os
 warnings.filterwarnings("ignore")
 
 
+UPLOAD_FOLDER = './uploads/'
+DOWNLOAD_FOLDER = '../frontend/src/'
+ALLOWED_EXTENSIONS = set(['csv'])
+
 app = Flask(__name__, static_folder='frontend/build', static_url_path='')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 CORS(app)
+
 
 df = pd.read_csv('data/penguins.csv')
 df = df.dropna()
@@ -28,8 +35,28 @@ yed = yed[:-1]
 @cross_origin()
 def getjsondata():
     # global num_df
+    print(num_df.columns)
     matrix = num_df[['bill_length_mm', 'bill_depth_mm']]
     return matrix.to_json(orient='records')
+
+
+@app.route('/upload', methods=['POST'])
+#Function to upload file and read the data
+def fileUpload():
+    target=os.path.join(UPLOAD_FOLDER)
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    # logger.info("welcome to upload`")
+    file = request.files['file'] 
+    # filename = secure_filename(file.filename)
+    filename = "data.csv"
+    destination="/".join([target, filename])
+    file.save(destination)
+    df = pd.read_csv('uploads/data.csv')
+    df = df.dropna()
+    # numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
+    num_df = df.select_dtypes(include=numerics)
+    return num_df.to_json(orient='records')
 
 @app.route('/getsliderdata', methods=['POST'])
 @cross_origin()
