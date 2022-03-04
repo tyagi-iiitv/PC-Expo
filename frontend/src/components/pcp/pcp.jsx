@@ -128,7 +128,7 @@ async function generateSVG(width,
         .interpolator(d3.interpolateGreys)
         .domain([0,1])
     
-    let height = boxHeight - 20;
+    let height = boxHeight - 70;
     let data = data_rec
     let clicked_node = null;
     dimensions = d3.keys(data[0]).filter(function (key) {

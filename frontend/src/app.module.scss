@@ -1,8 +1,14 @@
 .mainRow {
-    height: 100%;
+    height: 92.4vh;
     width: 100%;
 }
 
 .slider {
     padding: 3em;
+    border-left: 2px solid black;
+}
+
+.clueImage {
+    align-self: bottom;
+    width: 50%;
 }

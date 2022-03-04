@@ -79,7 +79,12 @@ export default class App extends Component{
         <Container fluid>
           <Row className={styles.mainRow}>
             <Col md={9}>
-            <GeneratePCP pcpdata={this.state.sliderdata} data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan} callbackFromParent={this.callbackFromChild}/>
+              <Row>
+                <GeneratePCP pcpdata={this.state.sliderdata} data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan} callbackFromParent={this.callbackFromChild}/>
+              </Row>
+              <Row>
+                <img src="/all_props.png" alt="image" className={styles.clueImage}/>
+              </Row>
             </Col>
             <Col md={3} className={styles.slider}>
               <Slider
@@ -109,7 +114,7 @@ export default class App extends Component{
           <Row>
           <Col md={9}>
               <div></div>
-              <img src="/all_props.png" alt="image"/>
+              
             </Col>
           </Row>
         </Container>

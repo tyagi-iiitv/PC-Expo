@@ -26,7 +26,7 @@ df = pd.read_csv('data/penguins.csv')
 df = df.dropna()
 numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
 num_df = df.select_dtypes(include=numerics)
-num_df = num_df[['bill_length_mm', 'bill_depth_mm']]
+# num_df = num_df[['bill_length_mm', 'bill_depth_mm']]
 bi_hist, xed, yed = np.histogram2d(num_df.bill_length_mm, num_df.bill_depth_mm, bins=256)
 xed = xed[:-1]
 yed = yed[:-1]
@@ -35,9 +35,7 @@ yed = yed[:-1]
 @cross_origin()
 def getjsondata():
     # global num_df
-    print(num_df.columns)
-    matrix = num_df[['bill_length_mm', 'bill_depth_mm']]
-    return matrix.to_json(orient='records')
+    return num_df.to_json(orient='records')
 
 
 @app.route('/upload', methods=['POST'])
@@ -61,7 +59,6 @@ def fileUpload():
     # numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
     num_df = df.select_dtypes(include=numerics)
     num_df.columns = [f'{i}_{x[:4]}' for i, x in enumerate(num_df.columns)]
-    print(num_df.columns)
     return num_df.to_json(orient='records')
 
 @app.route('/getsliderdata', methods=['POST'])
