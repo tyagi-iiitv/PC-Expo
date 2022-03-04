@@ -1,8 +1,9 @@
 import './App.css';
-import { Navbar, NavbarBrand, Container, Row, Col, Form } from 'react-bootstrap';
-import {GeneratePCP} from './components';
+import { Navbar, Nav, NavbarBrand, Container, Row, Col, Form } from 'react-bootstrap';
+import {GeneratePCP, LoadData} from './components';
 import { ScatterplotPlotly } from './components';
 import { Component } from 'react';
+// import * as navbar from './com';
 import styles from './app.module.scss';
 import Slider from '@mui/material/Slider';
 
@@ -71,6 +72,9 @@ export default class App extends Component{
           <NavbarBrand style={{fontSize: 30, padding: '5 0', marginLeft: 15}}>
             ParaCoords Explorer
           </NavbarBrand>
+          <Nav className="mr-auto">
+            <LoadData />
+          </Nav>
         </Navbar>
         <Container fluid>
           <Row className={styles.mainRow}>
