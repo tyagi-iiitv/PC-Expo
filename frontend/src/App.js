@@ -15,7 +15,18 @@ export default class App extends Component{
       pcpdata: {},
       dragdata: {},
       sliderdata: {},
-      clear_grouping_val: 30,
+      clear_grouping_sliderval: 30,
+      split_up_sliderval: 30,
+      density_change_sliderval: 30,
+      neigh_sliderval: 30,
+      fan_sliderval: 30,
+      outliers_sliderval: 30,
+      pos_corr_sliderval: 30,
+      neg_corr_sliderval: 30,
+      pos_var_sliderval: 30,
+      neg_var_sliderval: 30,
+      pos_skew_sliderval: 30,
+      neg_skew_sliderval: 30,
     }
     this.handleChange = this.handleChange.bind(this);
     this.sliderChange = this.sliderChange.bind(this);
@@ -35,6 +46,7 @@ export default class App extends Component{
   callbackFromChild(data){
     this.setState({'data_rec': false});
     this.setState(data, ()=> this.setState({'data_rec': true}));
+    console.log(this.state)
   }
 
   handleChange(evt){
@@ -85,20 +97,20 @@ export default class App extends Component{
               <Row>
                 <h4>Properties</h4>
                 <Col>
-                  <ClearGrouping/>
-                  <SplitUp/>
-                  <DensityChange/>
-                  <Neighborhood/>
-                  <Fan/>
-                  <Outliers/>
+                  <ClearGrouping callbackFromParent={this.callbackFromChild} val={this.state.clear_grouping_sliderval}/>
+                  <SplitUp callbackFromParent={this.callbackFromChild} val={this.state.split_up_sliderval}/>
+                  <DensityChange callbackFromParent={this.callbackFromChild} val={this.state.density_change_sliderval}/>
+                  <Neighborhood callbackFromParent={this.callbackFromChild} val={this.state.neigh_sliderval}/>
+                  <Fan callbackFromParent={this.callbackFromChild} val={this.state.fan_sliderval}/>
+                  <Outliers callbackFromParent={this.callbackFromChild} val={this.state.outliers_sliderval}/>
                 </Col>
                 <Col>
-                  <PosCorr/>
-                  <NegCorr/>
-                  <PosVar/>
-                  <NegVar/>
-                  <PosSkew/>
-                  <NegSkew/>
+                  <PosCorr callbackFromParent={this.callbackFromChild} val={this.state.pos_corr_sliderval}/>
+                  <NegCorr callbackFromParent={this.callbackFromChild} val={this.state.neg_corr_sliderval}/>
+                  <PosVar callbackFromParent={this.callbackFromChild} val={this.state.pos_var_sliderval}/>
+                  <NegVar callbackFromParent={this.callbackFromChild} val={this.state.neg_var_sliderval}/>
+                  <PosSkew callbackFromParent={this.callbackFromChild} val={this.state.pos_skew_sliderval}/>
+                  <NegSkew callbackFromParent={this.callbackFromChild} val={this.state.neg_skew_sliderval}/>
                 </Col>
               </Row>
               <Row className={styles.slider}>

@@ -10,7 +10,7 @@ export class ClearGrouping extends Component {
     }
 
     sliderChange(evt, val){
-        console.log("here")       
+        this.props.callbackFromParent({clear_grouping_sliderval: val})       
     }
 
     checkChange(){
@@ -26,8 +26,9 @@ export class ClearGrouping extends Component {
                 </Col>
                 <Col>
                     <Slider
+                        key={`slider-${this.props.val}`}
                         aria-label="Temperature"
-                        defaultValue={30}
+                        defaultValue={this.props.val}
                         // getAriaValueText={valuetext}
                         valueLabelDisplay="auto"
                         step={10}
@@ -51,7 +52,7 @@ export class DensityChange extends Component {
     }
 
     sliderChange(evt, val){
-        console.log("here")       
+        this.props.callbackFromParent({density_change_sliderval: val})       
     }
 
     checkChange(){
@@ -67,8 +68,9 @@ export class DensityChange extends Component {
                 </Col>
                 <Col>
                     <Slider
+                        key={`slider-${this.props.val}`}
                         aria-label="Temperature"
-                        defaultValue={30}
+                        defaultValue={this.props.val}
                         // getAriaValueText={valuetext}
                         valueLabelDisplay="auto"
                         step={10}
@@ -92,7 +94,7 @@ export class SplitUp extends Component {
     }
 
     sliderChange(evt, val){
-        console.log("here")       
+        this.props.callbackFromParent({split_up_sliderval: val})       
     }
 
     checkChange(){
@@ -108,8 +110,9 @@ export class SplitUp extends Component {
                 </Col>
                 <Col>
                     <Slider
+                        key={`slider-${this.props.val}`}
                         aria-label="Temperature"
-                        defaultValue={30}
+                        defaultValue={this.props.val}
                         // getAriaValueText={valuetext}
                         valueLabelDisplay="auto"
                         step={10}
@@ -132,7 +135,7 @@ export class Neighborhood extends Component {
     }
 
     sliderChange(evt, val){
-        console.log("here")       
+        this.props.callbackFromParent({neigh_sliderval: val})       
     }
 
     checkChange(){
@@ -148,8 +151,9 @@ export class Neighborhood extends Component {
                 </Col>
                 <Col>
                     <Slider
+                        key={`slider-${this.props.val}`}
                         aria-label="Temperature"
-                        defaultValue={30}
+                        defaultValue={this.props.val}
                         // getAriaValueText={valuetext}
                         valueLabelDisplay="auto"
                         step={10}
@@ -173,7 +177,7 @@ export class PosCorr extends Component {
     }
 
     sliderChange(evt, val){
-        console.log("here")       
+        this.props.callbackFromParent({pos_corr_sliderval: val})       
     }
 
     checkChange(){
@@ -189,8 +193,9 @@ export class PosCorr extends Component {
                 </Col>
                 <Col>
                     <Slider
+                        key={`slider-${this.props.val}`}
                         aria-label="Temperature"
-                        defaultValue={30}
+                        defaultValue={this.props.val}
                         // getAriaValueText={valuetext}
                         valueLabelDisplay="auto"
                         step={10}
@@ -214,7 +219,7 @@ export class NegCorr extends Component {
     }
 
     sliderChange(evt, val){
-        console.log("here")       
+        this.props.callbackFromParent({neg_corr_sliderval: val})       
     }
 
     checkChange(){
@@ -230,8 +235,9 @@ export class NegCorr extends Component {
                 </Col>
                 <Col>
                     <Slider
+                        key={`slider-${this.props.val}`}
                         aria-label="Temperature"
-                        defaultValue={30}
+                        defaultValue={this.props.val}
                         // getAriaValueText={valuetext}
                         valueLabelDisplay="auto"
                         step={10}
@@ -255,7 +261,7 @@ export class PosVar extends Component {
     }
 
     sliderChange(evt, val){
-        console.log("here")       
+        this.props.callbackFromParent({pos_var_sliderval: val})       
     }
 
     checkChange(){
@@ -271,8 +277,9 @@ export class PosVar extends Component {
                 </Col>
                 <Col>
                     <Slider
+                        key={`slider-${this.props.val}`}
                         aria-label="Temperature"
-                        defaultValue={30}
+                        defaultValue={this.props.val}
                         // getAriaValueText={valuetext}
                         valueLabelDisplay="auto"
                         step={10}
@@ -296,7 +303,7 @@ export class NegVar extends Component {
     }
 
     sliderChange(evt, val){
-        console.log("here")       
+        this.props.callbackFromParent({neg_var_sliderval: val})       
     }
 
     checkChange(){
@@ -312,8 +319,9 @@ export class NegVar extends Component {
                 </Col>
                 <Col>
                     <Slider
+                        key={`slider-${this.props.val}`}
                         aria-label="Temperature"
-                        defaultValue={30}
+                        defaultValue={this.props.val}
                         // getAriaValueText={valuetext}
                         valueLabelDisplay="auto"
                         step={10}
@@ -337,7 +345,7 @@ export class PosSkew extends Component {
     }
 
     sliderChange(evt, val){
-        console.log("here")       
+        this.props.callbackFromParent({pos_skew_sliderval: val})       
     }
 
     checkChange(){
@@ -353,8 +361,9 @@ export class PosSkew extends Component {
                 </Col>
                 <Col>
                     <Slider
+                        key={`slider-${this.props.val}`}
                         aria-label="Temperature"
-                        defaultValue={30}
+                        defaultValue={this.props.val}
                         // getAriaValueText={valuetext}
                         valueLabelDisplay="auto"
                         step={10}
@@ -378,7 +387,7 @@ export class NegSkew extends Component {
     }
 
     sliderChange(evt, val){
-        console.log("here")       
+        this.props.callbackFromParent({neg_skew_sliderval: val})       
     }
 
     checkChange(){
@@ -394,8 +403,9 @@ export class NegSkew extends Component {
                 </Col>
                 <Col>
                     <Slider
+                        key={`slider-${this.props.val}`}
                         aria-label="Temperature"
-                        defaultValue={30}
+                        defaultValue={this.props.val}
                         // getAriaValueText={valuetext}
                         valueLabelDisplay="auto"
                         step={10}
@@ -419,7 +429,7 @@ export class Fan extends Component {
     }
 
     sliderChange(evt, val){
-        console.log("here")       
+        this.props.callbackFromParent({fan_sliderval: val})       
     }
 
     checkChange(){
@@ -435,8 +445,9 @@ export class Fan extends Component {
                 </Col>
                 <Col>
                     <Slider
+                        key={`slider-${this.props.val}`}
                         aria-label="Temperature"
-                        defaultValue={30}
+                        defaultValue={this.props.val}
                         // getAriaValueText={valuetext}
                         valueLabelDisplay="auto"
                         step={10}
@@ -460,7 +471,7 @@ export class Outliers extends Component {
     }
 
     sliderChange(evt, val){
-        console.log("here")       
+        this.props.callbackFromParent({outliers_sliderval: val})       
     }
 
     checkChange(){
@@ -476,8 +487,9 @@ export class Outliers extends Component {
                 </Col>
                 <Col>
                     <Slider
+                        key={`slider-${this.props.val}`}
                         aria-label="Temperature"
-                        defaultValue={30}
+                        defaultValue={this.props.val}
                         // getAriaValueText={valuetext}
                         valueLabelDisplay="auto"
                         step={10}
