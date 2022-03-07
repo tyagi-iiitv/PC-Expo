@@ -1,6 +1,6 @@
 import './App.css';
 import { Navbar, Nav, NavbarBrand, Container, Row, Col, Form } from 'react-bootstrap';
-import {GeneratePCP, LoadData, ClearGrouping, DensityChange, SplitUp, Neighborhood, PosCorr, NegCorr, PosVar, NegVar, PosSkew, NegSkew, Fan, Outliers} from './components';
+import {GeneratePCP, LoadData, ClearGrouping, DensityChange, SplitUp, Neighborhood, PosCorr, NegCorr, PosVar, NegVar, PosSkew, NegSkew, Fan, Outliers, EqualWeights} from './components';
 import { ScatterplotPlotly } from './components';
 import { Component } from 'react';
 // import * as navbar from './com';
@@ -81,6 +81,7 @@ export default class App extends Component{
           </NavbarBrand>
           <Nav className="mr-auto">
             <LoadData callbackFromParent={this.callbackFromChild}/>
+            <EqualWeights callbackFromParent={this.callbackFromChild}/>
           </Nav>
         </Navbar>
         <Container fluid>

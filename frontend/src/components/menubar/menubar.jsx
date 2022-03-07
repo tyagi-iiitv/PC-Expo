@@ -35,3 +35,36 @@ export class LoadData extends Component {
         )
     }
 }
+
+export class EqualWeights extends Component {
+    constructor(props){
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(event){
+        this.props.callbackFromParent({
+            clear_grouping_sliderval: 30,
+            split_up_sliderval: 30,
+            density_change_sliderval: 30,
+            neigh_sliderval: 30,
+            fan_sliderval: 30,
+            outliers_sliderval: 30,
+            pos_corr_sliderval: 30,
+            neg_corr_sliderval: 30,
+            pos_var_sliderval: 30,
+            neg_var_sliderval: 30,
+            pos_skew_sliderval: 30,
+            neg_skew_sliderval: 30,
+        })
+    }
+
+    render(){
+        const reset_button = (
+            <Nav.Item style={{paddingLeft: 15}}>
+                <Button variant="info" onClick={this.handleChange}>Set Equal Weights</Button>
+            </Nav.Item>
+        );
+        return reset_button;
+    }
+}
