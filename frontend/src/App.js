@@ -1,6 +1,6 @@
 import './App.css';
 import { Navbar, Nav, NavbarBrand, Container, Row, Col, Form } from 'react-bootstrap';
-import {GeneratePCP, LoadData} from './components';
+import {GeneratePCP, LoadData, ClearGrouping, DensityChange, SplitUp, Neighborhood, PosCorr, NegCorr, PosVar, NegVar, PosSkew, NegSkew, Fan, Outliers} from './components';
 import { ScatterplotPlotly } from './components';
 import { Component } from 'react';
 // import * as navbar from './com';
@@ -15,12 +15,7 @@ export default class App extends Component{
       pcpdata: {},
       dragdata: {},
       sliderdata: {},
-      corr: false,
-      var: false,
-      skew: false,
-      neigh: false, 
-      split: false, 
-      fan: false
+      clear_grouping_val: 30,
     }
     this.handleChange = this.handleChange.bind(this);
     this.sliderChange = this.sliderChange.bind(this);
@@ -82,39 +77,44 @@ export default class App extends Component{
               <Row>
                 <GeneratePCP pcpdata={this.state.sliderdata} data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan} callbackFromParent={this.callbackFromChild}/>
               </Row>
-              <Row>
+              <Row className={styles.clueImage}>
                 <img src="/all_props.png" alt="image" className={styles.clueImage}/>
               </Row>
             </Col>
             <Col md={3} className={styles.slider}>
-              <Slider
-                  aria-label="Temperature"
-                  defaultValue={30}
-                  // getAriaValueText={valuetext}
-                  valueLabelDisplay="auto"
-                  step={10}
-                  marks
-                  min={10}
-                  max={100}
-                  onChangeCommitted={this.sliderChange}
-                />
-              <p>Window Size</p>
-            </Col>
-          </Row>
-        </Container>
-        <Container fluid>
-          {/* <Row className={styles.mainRow}> */}
-            {/* <Col md={9}> */}
-              
-            {/* </Col> */}
-            {/* <Col md={3}> */}
-              {/* <ScatterplotPlotly data={this.state.data} dragdata={this.state.dragdata}/> */}
-            {/* </Col> */}
-          {/* </Row> */}
-          <Row>
-          <Col md={9}>
-              <div></div>
-              
+              <Row>
+                <h4>Properties</h4>
+                <Col>
+                  <ClearGrouping/>
+                  <SplitUp/>
+                  <DensityChange/>
+                  <Neighborhood/>
+                  <Fan/>
+                  <Outliers/>
+                </Col>
+                <Col>
+                  <PosCorr/>
+                  <NegCorr/>
+                  <PosVar/>
+                  <NegVar/>
+                  <PosSkew/>
+                  <NegSkew/>
+                </Col>
+              </Row>
+              <Row className={styles.slider}>
+                <h4>Granularity (Window Size)</h4>
+                <Slider
+                    aria-label="Temperature"
+                    defaultValue={30}
+                    // getAriaValueText={valuetext}
+                    valueLabelDisplay="auto"
+                    step={10}
+                    marks
+                    min={10}
+                    max={100}
+                    onChangeCommitted={this.sliderChange}
+                  />
+              </Row>
             </Col>
           </Row>
         </Container>
