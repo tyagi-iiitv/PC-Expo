@@ -86,7 +86,7 @@ export default class App extends Component{
         </Navbar>
         <Container fluid>
           <Row className={styles.mainRow}>
-            <Col md={9}>
+            <Col md={10}>
               <Row>
                 <GeneratePCP pcpdata={this.state.sliderdata} data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan} callbackFromParent={this.callbackFromChild}/>
               </Row>
@@ -94,9 +94,9 @@ export default class App extends Component{
                 <img src="/all_props.png" alt="image" className={styles.clueImage}/>
               </Row>
             </Col>
-            <Col md={3} className={styles.slider}>
+            <Col md={2} className={styles.slider}>
               <Row>
-                <h4>Properties</h4>
+                <h5>Properties</h5>
                 <Col>
                   <ClearGrouping callbackFromParent={this.callbackFromChild} val={this.state.clear_grouping_sliderval}/>
                   <SplitUp callbackFromParent={this.callbackFromChild} val={this.state.split_up_sliderval}/>
@@ -114,8 +114,8 @@ export default class App extends Component{
                   <NegSkew callbackFromParent={this.callbackFromChild} val={this.state.neg_skew_sliderval}/>
                 </Col>
               </Row>
-              <Row className={styles.slider}>
-                <h4>Granularity (Window Size)</h4>
+              <Row className={styles.sliderWindow}>
+                <h5>Granularity (Window Size)</h5>
                 <Slider
                     aria-label="Temperature"
                     defaultValue={30}
