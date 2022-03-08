@@ -1,6 +1,32 @@
 import React, {Component} from 'react';
 import Slider from '@mui/material/Slider';
 import {Form, Row, Col} from 'react-bootstrap';
+import Multiselect from 'multiselect-react-dropdown';
+
+export class FeatureSelect extends Component {
+    constructor(props){
+        super(props);
+        this.select = this.select.bind(this);
+    }
+
+    select(selectedList){
+        this.props.callbackFromParent({selectedList: selectedList})
+    }
+    
+
+    render(){
+        return (
+            <Multiselect
+                options={this.props.cols}
+                selectedValues={this.props.selectedList}
+                onSelect={this.select}
+                onRemove={this.select}
+                displayValue="name"
+            />
+        )
+    }
+
+}
 
 export class ClearGrouping extends Component {
     constructor(props){

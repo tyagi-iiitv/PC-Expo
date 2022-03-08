@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Form, Button, Nav} from 'react-bootstrap';
+import * as d3 from 'd3';
 
 export class LoadData extends Component {
     constructor(props){
@@ -22,8 +23,13 @@ export class LoadData extends Component {
             body: data,
         }).then(response => response.json())
         .then((response) => {
-            console.log(response)
-            this.props.callbackFromParent({data: response})
+            let data = response;
+            let dimensions = []
+            let cols = d3.keys(data[0])
+            for(let i=0; i< cols.length; i++){
+                dimensions.push({key: i, name: cols[i]})
+            }
+            this.props.callbackFromParent({data: data, dimensions: dimensions, selectedList: dimensions})
         });
     }
 

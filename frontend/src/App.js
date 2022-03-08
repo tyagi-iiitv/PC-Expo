@@ -1,6 +1,6 @@
 import './App.css';
 import { Navbar, Nav, NavbarBrand, Container, Row, Col, Form } from 'react-bootstrap';
-import {GeneratePCP, LoadData, ClearGrouping, DensityChange, SplitUp, Neighborhood, PosCorr, NegCorr, PosVar, NegVar, PosSkew, NegSkew, Fan, Outliers, EqualWeights} from './components';
+import {GeneratePCP, LoadData, ClearGrouping, DensityChange, SplitUp, Neighborhood, PosCorr, NegCorr, PosVar, NegVar, PosSkew, NegSkew, Fan, Outliers, EqualWeights, FeatureSelect} from './components';
 import { ScatterplotPlotly } from './components';
 import { Component } from 'react';
 // import * as navbar from './com';
@@ -27,6 +27,16 @@ export default class App extends Component{
       neg_var_sliderval: 30,
       pos_skew_sliderval: 30,
       neg_skew_sliderval: 30,
+      dimensions: [
+        {id: 0, name: 'bill_length_mm'},
+        {id: 1, name: 'bill_depth_mm'}, 
+        {id: 2, name: 'flipper_length_mm'}, 
+        {id: 3, name: 'body_mass_g'}],
+      selectedList: [
+        {id: 0, name: 'bill_length_mm'},
+        {id: 1, name: 'bill_depth_mm'}, 
+        {id: 2, name: 'flipper_length_mm'}, 
+        {id: 3, name: 'body_mass_g'}],
     }
     this.handleChange = this.handleChange.bind(this);
     this.sliderChange = this.sliderChange.bind(this);
@@ -46,7 +56,6 @@ export default class App extends Component{
   callbackFromChild(data){
     this.setState({'data_rec': false});
     this.setState(data, ()=> this.setState({'data_rec': true}));
-    console.log(this.state)
   }
 
   handleChange(evt){
@@ -127,6 +136,10 @@ export default class App extends Component{
                     max={100}
                     onChangeCommitted={this.sliderChange}
                   />
+              </Row>
+              <Row>
+                <h5>Data Features</h5>
+                <FeatureSelect cols={this.state.dimensions} selectedList={this.state.selectedList} callbackFromParent={this.callbackFromChild}/>
               </Row>
             </Col>
           </Row>
