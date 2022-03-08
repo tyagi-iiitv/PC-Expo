@@ -97,7 +97,7 @@ export default class App extends Component{
           <Row className={styles.mainRow}>
             <Col md={10}>
               <Row>
-                <GeneratePCP pcpdata={this.state.sliderdata} data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan} callbackFromParent={this.callbackFromChild}/>
+                <GeneratePCP pcpdata={this.state.sliderdata} data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan} callbackFromParent={this.callbackFromChild} selectedList={this.state.selectedList}/>
               </Row>
               <Row className={styles.clueImage}>
                 <img src="/all_props.png" alt="image" className={styles.clueImage}/>

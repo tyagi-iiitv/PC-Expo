@@ -7,7 +7,7 @@ class GeneratePCP extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            canvasDims: { width: 1400, height: 500 },
+            canvasDims: { width: 1650, height: 500 },
             data_rec: {},
             correlation_pos: [],
             correlation_neg: [], 
@@ -51,6 +51,7 @@ class GeneratePCP extends React.Component {
                     this.state.indices,
                     this.state.window_size,
                     this.state.p_vals,
+                    this.props.selectedList
                 )
             )
             })
@@ -80,6 +81,7 @@ class GeneratePCP extends React.Component {
                         this.props.pcpdata[8],
                         this.props.pcpdata[9],
                         this.props.pcpdata[10],
+                        this.props.selectedList,
                     )
             }
     }
@@ -115,7 +117,8 @@ async function generateSVG(width,
     para,
     indices,
     window_size,
-    p_vals){
+    p_vals,
+    selectedList){
     d3.selectAll("#svg1 > *").remove();
     let svg = d3.select('#svg1');
     let y = {};
@@ -131,7 +134,8 @@ async function generateSVG(width,
     let height = boxHeight - 70;
     let data = data_rec
     let clicked_node = null;
-    dimensions = d3.keys(data[0]).filter(function (key) {
+    let selectedCols = selectedList.map(o => o.name)
+    dimensions = selectedCols.filter(function (key) {
         if (key !== "") {
             y[key] = d3.scaleLinear()
                 .domain(d3.extent(data, function (d) { return +d[key]; }))
@@ -139,6 +143,7 @@ async function generateSVG(width,
             return key;
         };
     });
+    console.log(dimensions, y)
     let x_para_offset = 100
     let x_para_right_offset = 150
     let dists = ['corr_pos', 'corr_neg', 'var_pos', 'var_neg', 'skew_pos', 'skew_neg', 'fan', 'neighborhood']
