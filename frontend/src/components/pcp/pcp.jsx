@@ -135,7 +135,6 @@ async function generateSVG(width,
             return key;
         };
     });
-    console.log(dimensions, y, data)
     let x_para_offset = 100
     let x_para_right_offset = 150
     let dists = ['corr_pos', 'corr_neg', 'var_pos', 'var_neg', 'skew_pos', 'skew_neg', 'fan', 'neighborhood']
