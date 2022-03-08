@@ -43,15 +43,16 @@ export default class App extends Component{
     this.callbackFromChild = this.callbackFromChild.bind(this);
   }
 
-  // componentDidMount(){
-  //   fetch('/readData', {
-  //     methods: 'GET',
-  //   })
-  //   .then(response => response.json())
-  //   .then(response => {
-  //     this.setState({data: response})
-  //   })
-  // }
+  componentDidMount(){
+    fetch('/getjsondata', {
+      methods: 'GET',
+    })
+    .then(response => response.json())
+    .then(response => {
+      this.setState({'data_rec': false});
+      this.setState({data: response}, ()=> this.setState({'data_rec': true}))
+    })
+  }
 
   callbackFromChild(data){
     this.setState({'data_rec': false});

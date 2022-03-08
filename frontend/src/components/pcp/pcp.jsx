@@ -23,38 +23,30 @@ class GeneratePCP extends React.Component {
         };
     }
     componentDidMount() {
-        fetch('/getjsondata', {
-            methods: 'GET',
-            })
-            .then(response => response.json())
-            .then(response => {
-                this.setState({data_rec: response}, ()=> 
-                generateSVG(
-                    this.state.canvasDims.width, 
-                    this.state.canvasDims.height,
-                    this.props.corr, 
-                    this.props.var, 
-                    this.props.skew, 
-                    this.props.neigh, 
-                    this.props.split, 
-                    this.props.fan,
-                    this.props.callbackFromParent,
-                    this.state.data_rec,
-                    this.state.correlation_pos,
-                    this.state.correlation_neg, 
-                    this.state.variance_pos,
-                    this.state.variance_neg, 
-                    this.state.skewness_pos,
-                    this.state.skewness_neg,
-                    this.state.convergence,
-                    this.state.para,
-                    this.state.indices,
-                    this.state.window_size,
-                    this.state.p_vals,
-                    this.props.selectedList
-                )
-            )
-            })
+        generateSVG(
+            this.state.canvasDims.width, 
+            this.state.canvasDims.height,
+            this.props.corr, 
+            this.props.var, 
+            this.props.skew, 
+            this.props.neigh, 
+            this.props.split, 
+            this.props.fan,
+            this.props.callbackFromParent,
+            this.props.data, 
+            this.props.pcpdata[0],
+            this.props.pcpdata[1], 
+            this.props.pcpdata[2],
+            this.props.pcpdata[3],
+            this.props.pcpdata[4],
+            this.props.pcpdata[5], 
+            this.props.pcpdata[6],
+            this.props.pcpdata[7],
+            this.props.pcpdata[8],
+            this.props.pcpdata[9],
+            this.props.pcpdata[10],
+            this.props.selectedList,
+        )
     }
 
     componentDidUpdate(prevProps){
@@ -143,7 +135,7 @@ async function generateSVG(width,
             return key;
         };
     });
-    console.log(dimensions, y)
+    console.log(dimensions, y, data)
     let x_para_offset = 100
     let x_para_right_offset = 150
     let dists = ['corr_pos', 'corr_neg', 'var_pos', 'var_neg', 'skew_pos', 'skew_neg', 'fan', 'neighborhood']
