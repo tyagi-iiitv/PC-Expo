@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
 import styles from './heatmap.module.scss';
 import * as d3 from 'd3';
+import { margin } from '@mui/system';
 
 export default class HeatMap extends Component{
     constructor(props){
         super(props);
         this.state = {
             canvasDims: {width: 300, height: 300},
+            margins: {top: 80, right: 25, bottom: 30, left: 40},
             data_rec: {},
         }
     }
@@ -21,6 +23,7 @@ export default class HeatMap extends Component{
                 generateSVG(
                     this.state.canvasDims.width,
                     this.state.canvasDims.height,
+                    this.state.margins,
                     this.state.data_rec,
                 )
             )
@@ -40,18 +43,22 @@ export default class HeatMap extends Component{
     }
 }
 
-async function generateSVG(width, height, data){
+async function generateSVG(width, height, margins, data){
     d3.selectAll("#svg2 > *").remove();
     let svg = d3.select("#svg2");
     let cols = data[1];
     data = data[0];
-    let x_scale = d3.scalePoint()
+    width = width - margins.left - margins.right;
+    height = height - margins.top - margins.bottom; 
+    let x_scale = d3.scaleBand()
         .domain(cols)
-        .range([10, width])
-    let y_scale = d3.scalePoint()
-        .domain(cols)
-        .range([10, height])
+        .range([0, width])
+        .padding(0.05)
 
+    let y_scale = d3.scaleBand()
+        .domain(cols)
+        .range([height, 0])
+        .padding(0.05)
     
     svg.selectAll()
         .data(data)
@@ -65,8 +72,8 @@ async function generateSVG(width, height, data){
         .attr("y", function(d) {
             return y_scale(d.col2)
         })
-        .attr("width", 10)
-        .attr("height", 10)
+        .attr("width", x_scale.bandwidth())
+        .attr("height", y_scale.bandwidth())
         .style("fill", "red")
         .style("stroke-width","1px") 
 }
