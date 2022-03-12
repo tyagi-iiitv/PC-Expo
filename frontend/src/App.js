@@ -1,11 +1,11 @@
 import './App.css';
 import { Navbar, Nav, NavbarBrand, Container, Row, Col, Button } from 'react-bootstrap';
 import {GeneratePCP, LoadData, ClearGrouping, DensityChange, SplitUp, Neighborhood, PosCorr, NegCorr, PosVar, NegVar, PosSkew, NegSkew, Fan, Outliers, EqualWeights, FeatureSelect, Donut, HeatMap} from './components';
-import { ScatterplotPlotly } from './components';
 import { Component } from 'react';
 // import * as navbar from './com';
 import styles from './app.module.scss';
 import Slider from '@mui/material/Slider';
+import * as d3 from 'd3';
 
 export default class App extends Component{
   constructor(props){
@@ -27,16 +27,8 @@ export default class App extends Component{
       neg_var_sliderval: 30,
       pos_skew_sliderval: 30,
       neg_skew_sliderval: 30,
-      dimensions: [
-        {id: 0, name: 'bill_length_mm'},
-        {id: 1, name: 'bill_depth_mm'}, 
-        {id: 2, name: 'flipper_length_mm'}, 
-        {id: 3, name: 'body_mass_g'}],
-      selectedList: [
-        {id: 0, name: 'bill_length_mm'},
-        {id: 1, name: 'bill_depth_mm'}, 
-        {id: 2, name: 'flipper_length_mm'}, 
-        {id: 3, name: 'body_mass_g'}],
+      dimensions: [],
+      selectedList: [],
     }
     this.handleChange = this.handleChange.bind(this);
     this.sliderChange = this.sliderChange.bind(this);
@@ -51,7 +43,13 @@ export default class App extends Component{
     .then(response => response.json())
     .then(response => {
       this.setState({'data_rec': false});
-      this.setState({data: response}, ()=> this.setState({'data_rec': true}))
+      let dimensions = [];
+      let data = response;
+      let cols = d3.keys(data[0])
+      for(let i=0; i< cols.length; i++){
+          dimensions.push({key: i, name: cols[i]})
+      }
+      this.setState({data: response, dimensions: dimensions, selectedList: dimensions}, ()=> this.setState({'data_rec': true}))
     })
   }
 
@@ -67,7 +65,18 @@ export default class App extends Component{
   }
 
   recommend(evt){
-    
+    fetch('/heatmapdata', {
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify([10])
+    })
+    .then(response => response.json())
+    // .then(data => {
+    //     this.setState({sliderdata: data}, ()=> console.log(this.state))
+    // })
   }
 
   sliderChange(evt, val){
