@@ -18,7 +18,7 @@
 }
 
 .recommend_button {
-    width: 50%;
+    max-width: min-content !important;
     margin: auto;
     margin-bottom: 10px;
 }
