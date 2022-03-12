@@ -7,8 +7,8 @@ export default class HeatMap extends Component{
     constructor(props){
         super(props);
         this.state = {
-            canvasDims: {width: 300, height: 300},
-            margins: {top: 80, right: 25, bottom: 30, left: 40},
+            canvasDims: {width: 400, height: 300},
+            margins: {top: 80, right: 150, bottom: 0, left: 40},
             data_rec: {},
         }
     }
@@ -60,6 +60,7 @@ async function generateSVG(width, height, margins, data){
         .range([height, 0])
         .padding(0.05)
     
+    // Adding rects for the heatmap
     svg.selectAll()
         .data(data)
         .enter()
@@ -76,4 +77,16 @@ async function generateSVG(width, height, margins, data){
         .attr("height", y_scale.bandwidth())
         .style("fill", "red")
         .style("stroke-width","1px") 
+
+    // Adding diagonal labels
+    svg.selectAll('.texts')
+        .data(cols)
+        .enter()
+        .append('text')
+        .attr('class', 'texts')
+        // .attr('text-anchor', 'end')
+        .attr('x', function(d){return x_scale(d)+x_scale.bandwidth()+10;})
+        .attr('y', function(d){return y_scale(d)+y_scale.bandwidth()/1.5;})
+        .attr('font-size', y_scale.bandwidth()/2)
+        .text(function(d){return d;})
 }
