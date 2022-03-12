@@ -27,6 +27,19 @@ export default class App extends Component{
       neg_var_sliderval: 30,
       pos_skew_sliderval: 30,
       neg_skew_sliderval: 30,
+      window_sliderval: 30,
+      clear_grouping_checkval: false,
+      split_up_checkval: false,
+      density_change_checkval: false,
+      neigh_checkval: false,
+      fan_checkval: false,
+      outliers_checkval: false,
+      pos_corr_checkval: false,
+      neg_corr_checkval: false,
+      pos_var_checkval: false,
+      neg_var_checkval: false,
+      pos_skew_checkval: false,
+      neg_skew_checkval: false,
       dimensions: [],
       selectedList: [],
     }
@@ -80,19 +93,20 @@ export default class App extends Component{
   }
 
   sliderChange(evt, val){
-    fetch('/getsliderdata', {
-      method: 'POST',
-      headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(val)
-      // console.log(y['bill_length_mm'].invert(940))
-  })
-  .then(response => response.json())
-  .then(data => {
-      this.setState({sliderdata: data}, ()=> console.log(this.state))
-  })
+    this.setState({window_sliderval: val})
+    //   fetch('/getsliderdata', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Accept': 'application/json',
+    //         'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify(val)
+    //     // console.log(y['bill_length_mm'].invert(940))
+    // })
+    // .then(response => response.json())
+    // .then(data => {
+    //     this.setState({sliderdata: data}, ()=> console.log(this.state))
+    // })
   }
 
   render(){

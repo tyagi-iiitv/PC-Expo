@@ -39,8 +39,8 @@ export class ClearGrouping extends Component {
         this.props.callbackFromParent({clear_grouping_sliderval: val})       
     }
 
-    checkChange(){
-        console.log("here in check")
+    checkChange(evt){
+        this.props.callbackFromParent({clear_grouping_checkval: evt.target.checked})
     }
 
 
@@ -60,7 +60,7 @@ export class ClearGrouping extends Component {
                         valueLabelDisplay="auto"
                         step={10}
                         marks
-                        min={10}
+                        min={0}
                         max={100}
                         onChangeCommitted={this.sliderChange}
                         size='small'
@@ -83,8 +83,8 @@ export class DensityChange extends Component {
         this.props.callbackFromParent({density_change_sliderval: val})       
     }
 
-    checkChange(){
-        console.log("here in check")
+    checkChange(evt){
+        this.props.callbackFromParent({density_change_checkval: evt.target.checked})
     }
 
 
@@ -103,7 +103,7 @@ export class DensityChange extends Component {
                         valueLabelDisplay="auto"
                         step={10}
                         marks
-                        min={10}
+                        min={0}
                         max={100}
                         onChangeCommitted={this.sliderChange}
                         size='small'
@@ -126,8 +126,8 @@ export class SplitUp extends Component {
         this.props.callbackFromParent({split_up_sliderval: val})       
     }
 
-    checkChange(){
-        console.log("here in check")
+    checkChange(evt){
+        this.props.callbackFromParent({split_up_checkval: evt.target.checked})
     }
 
 
@@ -146,7 +146,7 @@ export class SplitUp extends Component {
                         valueLabelDisplay="auto"
                         step={10}
                         marks
-                        min={10}
+                        min={0}
                         max={100}
                         onChangeCommitted={this.sliderChange}
                         size='small'
@@ -168,8 +168,8 @@ export class Neighborhood extends Component {
         this.props.callbackFromParent({neigh_sliderval: val})       
     }
 
-    checkChange(){
-        console.log("here in check")
+    checkChange(evt){
+        this.props.callbackFromParent({neigh_checkval: evt.target.checked})
     }
 
 
@@ -188,7 +188,7 @@ export class Neighborhood extends Component {
                         valueLabelDisplay="auto"
                         step={10}
                         marks
-                        min={10}
+                        min={0}
                         max={100}
                         onChangeCommitted={this.sliderChange}
                         size='small'
@@ -211,8 +211,8 @@ export class PosCorr extends Component {
         this.props.callbackFromParent({pos_corr_sliderval: val})       
     }
 
-    checkChange(){
-        console.log("here in check")
+    checkChange(evt){
+        this.props.callbackFromParent({pos_corr_checkval: evt.target.checked})
     }
 
 
@@ -231,7 +231,7 @@ export class PosCorr extends Component {
                         valueLabelDisplay="auto"
                         step={10}
                         marks
-                        min={10}
+                        min={0}
                         max={100}
                         onChangeCommitted={this.sliderChange}
                         size='small'
@@ -254,8 +254,8 @@ export class NegCorr extends Component {
         this.props.callbackFromParent({neg_corr_sliderval: val})       
     }
 
-    checkChange(){
-        console.log("here in check")
+    checkChange(evt){
+        this.props.callbackFromParent({neg_corr_checkval: evt.target.checked})
     }
 
 
@@ -274,7 +274,7 @@ export class NegCorr extends Component {
                         valueLabelDisplay="auto"
                         step={10}
                         marks
-                        min={10}
+                        min={0}
                         max={100}
                         onChangeCommitted={this.sliderChange}
                         size='small'
@@ -297,8 +297,8 @@ export class PosVar extends Component {
         this.props.callbackFromParent({pos_var_sliderval: val})       
     }
 
-    checkChange(){
-        console.log("here in check")
+    checkChange(evt){
+        this.props.callbackFromParent({pos_var_checkval: evt.target.checked})
     }
 
 
@@ -317,7 +317,7 @@ export class PosVar extends Component {
                         valueLabelDisplay="auto"
                         step={10}
                         marks
-                        min={10}
+                        min={0}
                         max={100}
                         onChangeCommitted={this.sliderChange}
                         size='small'
@@ -340,8 +340,8 @@ export class NegVar extends Component {
         this.props.callbackFromParent({neg_var_sliderval: val})       
     }
 
-    checkChange(){
-        console.log("here in check")
+    checkChange(evt){
+        this.props.callbackFromParent({neg_var_checkval: evt.target.checked})
     }
 
 
@@ -360,7 +360,7 @@ export class NegVar extends Component {
                         valueLabelDisplay="auto"
                         step={10}
                         marks
-                        min={10}
+                        min={0}
                         max={100}
                         onChangeCommitted={this.sliderChange}
                         size='small'
@@ -383,8 +383,8 @@ export class PosSkew extends Component {
         this.props.callbackFromParent({pos_skew_sliderval: val})       
     }
 
-    checkChange(){
-        console.log("here in check")
+    checkChange(evt){
+        this.props.callbackFromParent({pos_skew_checkval: evt.target.checked})
     }
 
 
@@ -403,7 +403,7 @@ export class PosSkew extends Component {
                         valueLabelDisplay="auto"
                         step={10}
                         marks
-                        min={10}
+                        min={0}
                         max={100}
                         onChangeCommitted={this.sliderChange}
                         size='small'
@@ -426,8 +426,8 @@ export class NegSkew extends Component {
         this.props.callbackFromParent({neg_skew_sliderval: val})       
     }
 
-    checkChange(){
-        console.log("here in check")
+    checkChange(evt){
+        this.props.callbackFromParent({neg_skew_checkval: evt.target.checked})
     }
 
 
@@ -446,7 +446,7 @@ export class NegSkew extends Component {
                         valueLabelDisplay="auto"
                         step={10}
                         marks
-                        min={10}
+                        min={0}
                         max={100}
                         onChangeCommitted={this.sliderChange}
                         size='small'
@@ -469,8 +469,8 @@ export class Fan extends Component {
         this.props.callbackFromParent({fan_sliderval: val})       
     }
 
-    checkChange(){
-        console.log("here in check")
+    checkChange(evt){
+        this.props.callbackFromParent({fan_checkval: evt.target.checked})
     }
 
 
@@ -489,7 +489,7 @@ export class Fan extends Component {
                         valueLabelDisplay="auto"
                         step={10}
                         marks
-                        min={10}
+                        min={0}
                         max={100}
                         onChangeCommitted={this.sliderChange}
                         size='small'
@@ -512,8 +512,8 @@ export class Outliers extends Component {
         this.props.callbackFromParent({outliers_sliderval: val})       
     }
 
-    checkChange(){
-        console.log("here in check")
+    checkChange(evt){
+        this.props.callbackFromParent({outliers_checkval: evt.target.checked})
     }
 
 
@@ -532,7 +532,7 @@ export class Outliers extends Component {
                         valueLabelDisplay="auto"
                         step={10}
                         marks
-                        min={10}
+                        min={0}
                         max={100}
                         onChangeCommitted={this.sliderChange}
                         size='small'
