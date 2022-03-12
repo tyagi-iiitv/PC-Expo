@@ -29,9 +29,14 @@ export default class Donut extends Component {
             },
             plotOptions: {
                 pie: {
-                startAngle: -90,
-                endAngle: 270
-                }
+                    donut: {
+                        labels: {
+                            show: true,
+                        }
+                    },
+                    startAngle: -90,
+                    endAngle: 270
+                },
             },
             dataLabels: {
                 enabled: true
