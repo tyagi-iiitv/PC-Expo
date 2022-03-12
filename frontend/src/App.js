@@ -114,7 +114,6 @@ export default class App extends Component{
                   neg_var={this.state.neg_var_sliderval}
                   pos_skew={this.state.pos_skew_sliderval}
                   neg_skew={this.state.neg_skew_sliderval}
-                  labels={['clear grouping', 'split up', 'density change']}
                 />
               </Row>
               <Row className={styles.clueImage}>
