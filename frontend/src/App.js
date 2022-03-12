@@ -44,7 +44,6 @@ export default class App extends Component{
       selectedList: [],
       heatmap_data: {},
     }
-    this.handleChange = this.handleChange.bind(this);
     this.sliderChange = this.sliderChange.bind(this);
     this.recommend = this.recommend.bind(this);
     this.callbackFromChild = this.callbackFromChild.bind(this);
@@ -72,11 +71,6 @@ export default class App extends Component{
     this.setState(data, ()=> this.setState({'data_rec': true}));
   }
 
-  handleChange(evt){
-    let cur_state = this.state;
-    cur_state[evt.target.id] = !cur_state[evt.target.id]
-    this.setState(cur_state, ()=> console.log(this.state));
-  }
 
   recommend(){
     this.setState({'data_rec': false});

@@ -49,12 +49,11 @@ def heatmapdata():
 def defheatmapdata():
     global num_df
     cols = list(num_df.columns)
-    matrix = {}
+    matrix = []
     for col1 in cols:
-        matrix[col1] = {}
         for col2 in cols:
-            matrix[col1][col2] = 0.2
-    return json.dumps(matrix)
+            matrix.append({'col1': col1, 'col2': col2, 'val': 0.2})
+    return json.dumps([matrix, cols])
 
 @app.route('/getjsondata', methods=['GET'])
 @cross_origin()
