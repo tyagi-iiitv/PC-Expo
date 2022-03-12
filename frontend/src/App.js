@@ -42,6 +42,7 @@ export default class App extends Component{
       neg_skew_checkval: false,
       dimensions: [],
       selectedList: [],
+      heatmap_data: {}
     }
     this.handleChange = this.handleChange.bind(this);
     this.sliderChange = this.sliderChange.bind(this);
@@ -57,12 +58,16 @@ export default class App extends Component{
     .then(response => {
       this.setState({'data_rec': false});
       let dimensions = [];
-      let data = response;
+      let data = response[0];
       let cols = d3.keys(data[0])
+      let heatmap_data = {}
       for(let i=0; i< cols.length; i++){
           dimensions.push({key: i, name: cols[i]})
+          for(let j=0; j<cols.length; j++){
+            heatmap_data[cols[i]][cols[j]] = 0
+          }
       }
-      this.setState({data: response, dimensions: dimensions, selectedList: dimensions}, ()=> this.setState({'data_rec': true}))
+      this.setState({data: response, dimensions: dimensions, selectedList: dimensions, heatmap_data: heatmap_data}, ()=> this.setState({'data_rec': true}))
     })
   }
 
@@ -78,6 +83,7 @@ export default class App extends Component{
   }
 
   recommend(){
+    this.setState({'data_rec': false});
     fetch('/heatmapdata', {
       method: 'POST',
       headers: {
@@ -114,8 +120,7 @@ export default class App extends Component{
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data)
-        // this.setState({sliderdata: data}, ()=> console.log(this.state))
+        this.setState({sliderdata: data}, ()=> this.setState({'data_rec': true}))
     })
   }
 

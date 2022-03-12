@@ -47,8 +47,6 @@ def heatmapdata():
 @app.route('/getjsondata', methods=['GET'])
 @cross_origin()
 def getjsondata():
-    print("inside getjsondata")
-    print(num_df.head())
     return num_df.to_json(orient='records')
 
 
