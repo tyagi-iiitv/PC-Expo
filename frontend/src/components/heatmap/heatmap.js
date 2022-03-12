@@ -7,13 +7,24 @@ export default class HeatMap extends Component{
         super(props);
         this.state = {
             canvasDims: {width: 300, height: 300},
+            data_rec: {},
         }
     }
     componentDidMount(){
-        generateSVG(
-            this.state.canvasDims.width,
-            this.state.canvasDims.height,
-        )
+        fetch('defheatmapdata', {
+            methods: 'GET'
+        })
+        .then(response => response.json())
+        .then(response => {
+            this.setState({data_rec: response}, ()=> 
+                generateSVG(
+                    this.state.canvasDims.width,
+                    this.state.canvasDims.height,
+                    this.state.data_rec,
+                )
+            )
+        })
+        
     }
 
     render(){
@@ -28,7 +39,7 @@ export default class HeatMap extends Component{
     }
 }
 
-async function generateSVG(width, height){
+async function generateSVG(width, height, data){
     d3.selectAll("#svg2 > *").remove();
     let svg = d3.select("#svg2");
 }
