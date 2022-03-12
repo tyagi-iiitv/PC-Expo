@@ -34,8 +34,15 @@ yed = yed[:-1]
 @app.route('/heatmapdata', methods=['POST'])
 @cross_origin()
 def heatmapdata():
-    print(len(num_df.columns))
-    return "OK"
+    global num_df
+    vals = request.get_json()
+    cols = list(num_df.columns)
+    matrix = {}
+    for col1 in cols:
+        matrix[col1] = {}
+        for col2 in cols:
+            matrix[col1][col2] = 0.2
+    return json.dumps(matrix)
 
 @app.route('/getjsondata', methods=['GET'])
 @cross_origin()

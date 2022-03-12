@@ -77,19 +77,46 @@ export default class App extends Component{
     this.setState(cur_state, ()=> console.log(this.state));
   }
 
-  recommend(evt){
+  recommend(){
     fetch('/heatmapdata', {
       method: 'POST',
       headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
       },
-      body: JSON.stringify([10])
+      body: JSON.stringify({
+        clear_grouping_sliderval: this.state.clear_grouping_sliderval,
+        split_up_sliderval: this.state.split_up_sliderval,
+        density_change_sliderval: this.state.density_change_sliderval,
+        neigh_sliderval: this.state.neigh_sliderval,
+        fan_sliderval: this.state.fan_sliderval,
+        outliers_sliderval: this.state.outliers_sliderval,
+        pos_corr_sliderval: this.state.pos_corr_sliderval,
+        neg_corr_sliderval: this.state.neg_corr_sliderval,
+        pos_var_sliderval: this.state.pos_var_sliderval,
+        neg_var_sliderval: this.state.neg_var_sliderval,
+        pos_skew_sliderval: this.state.pos_skew_sliderval,
+        neg_skew_sliderval: this.state.neg_skew_sliderval,
+        window_sliderval: this.state.window_sliderval,
+        clear_grouping_checkval: this.state.clear_grouping_checkval,
+        split_up_checkval: this.state.split_up_checkval,
+        density_change_checkval: this.state.density_change_checkval,
+        neigh_checkval: this.state.neigh_checkval,
+        fan_checkval: this.state.fan_checkval,
+        outliers_checkval: this.state.outliers_checkval,
+        pos_corr_checkval: this.state.pos_corr_checkval,
+        neg_corr_checkval: this.state.neg_corr_checkval,
+        pos_var_checkval: this.state.pos_var_checkval,
+        neg_var_checkval: this.state.neg_var_checkval,
+        pos_skew_checkval: this.state.pos_skew_checkval,
+        neg_skew_checkval: this.state.neg_skew_checkval,
+      })
     })
     .then(response => response.json())
-    // .then(data => {
-    //     this.setState({sliderdata: data}, ()=> console.log(this.state))
-    // })
+    .then(data => {
+        console.log(data)
+        // this.setState({sliderdata: data}, ()=> console.log(this.state))
+    })
   }
 
   sliderChange(evt, val){
