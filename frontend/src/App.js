@@ -1,6 +1,6 @@
 import './App.css';
-import { Navbar, Nav, NavbarBrand, Container, Row, Col, Form } from 'react-bootstrap';
-import {GeneratePCP, LoadData, ClearGrouping, DensityChange, SplitUp, Neighborhood, PosCorr, NegCorr, PosVar, NegVar, PosSkew, NegSkew, Fan, Outliers, EqualWeights, FeatureSelect, Donut} from './components';
+import { Navbar, Nav, NavbarBrand, Container, Row, Col, Button } from 'react-bootstrap';
+import {GeneratePCP, LoadData, ClearGrouping, DensityChange, SplitUp, Neighborhood, PosCorr, NegCorr, PosVar, NegVar, PosSkew, NegSkew, Fan, Outliers, EqualWeights, FeatureSelect, Donut, HeatMap} from './components';
 import { ScatterplotPlotly } from './components';
 import { Component } from 'react';
 // import * as navbar from './com';
@@ -40,6 +40,7 @@ export default class App extends Component{
     }
     this.handleChange = this.handleChange.bind(this);
     this.sliderChange = this.sliderChange.bind(this);
+    this.recommend = this.recommend.bind(this);
     this.callbackFromChild = this.callbackFromChild.bind(this);
   }
 
@@ -63,6 +64,10 @@ export default class App extends Component{
     let cur_state = this.state;
     cur_state[evt.target.id] = !cur_state[evt.target.id]
     this.setState(cur_state, ()=> console.log(this.state));
+  }
+
+  recommend(evt){
+    
   }
 
   sliderChange(evt, val){
@@ -101,24 +106,29 @@ export default class App extends Component{
                 <GeneratePCP pcpdata={this.state.sliderdata} data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan} callbackFromParent={this.callbackFromChild} selectedList={this.state.selectedList}/>
               </Row>
               <Row>
-                <Donut 
-                  clear_grouping={this.state.clear_grouping_sliderval}
-                  split_up={this.state.split_up_sliderval}
-                  density_change={this.state.density_change_sliderval}
-                  neigh={this.state.neigh_sliderval}
-                  fan={this.state.fan_sliderval}
-                  outliers={this.state.outliers_sliderval}
-                  pos_corr={this.state.pos_corr_sliderval}
-                  neg_corr={this.state.neg_corr_sliderval}
-                  pos_var={this.state.pos_var_sliderval}
-                  neg_var={this.state.neg_var_sliderval}
-                  pos_skew={this.state.pos_skew_sliderval}
-                  neg_skew={this.state.neg_skew_sliderval}
-                />
+                <Col md={4}>
+                  <Donut 
+                    clear_grouping={this.state.clear_grouping_sliderval}
+                    split_up={this.state.split_up_sliderval}
+                    density_change={this.state.density_change_sliderval}
+                    neigh={this.state.neigh_sliderval}
+                    fan={this.state.fan_sliderval}
+                    outliers={this.state.outliers_sliderval}
+                    pos_corr={this.state.pos_corr_sliderval}
+                    neg_corr={this.state.neg_corr_sliderval}
+                    pos_var={this.state.pos_var_sliderval}
+                    neg_var={this.state.neg_var_sliderval}
+                    pos_skew={this.state.pos_skew_sliderval}
+                    neg_skew={this.state.neg_skew_sliderval}
+                  />
+                </Col>
+                <Col md={5}>
+                  <HeatMap/>
+                </Col>
               </Row>
-              <Row className={styles.clueImage}>
+              {/* <Row className={styles.clueImage}>
                 <img src="/all_props.png" alt="image" className={styles.clueImage}/>
-              </Row>
+              </Row> */}
             </Col>
             <Col md={2} className={styles.slider}>
               <Row>
@@ -153,6 +163,9 @@ export default class App extends Component{
                     max={100}
                     onChangeCommitted={this.sliderChange}
                   />
+              </Row>
+              <Row>
+                <Button variant="info" onClick={this.recommend} className={styles.recommend_button}>Recommend</Button>
               </Row>
               <Row>
                 <h5>Data Features</h5>

@@ -31,6 +31,12 @@ bi_hist, xed, yed = np.histogram2d(num_df.bill_length_mm, num_df.bill_depth_mm, 
 xed = xed[:-1]
 yed = yed[:-1]
 
+@app.route('/heatmapdata', methods=['GET'])
+@cross_origin()
+def heatmapdata():
+    print(len(num_df.columns))
+    return "OK"
+
 @app.route('/getjsondata', methods=['GET'])
 @cross_origin()
 def getjsondata():
@@ -39,6 +45,7 @@ def getjsondata():
 
 
 @app.route('/upload', methods=['POST'])
+@cross_origin()
 #Function to upload file and read the data
 def fileUpload():
     target=os.path.join(UPLOAD_FOLDER)
