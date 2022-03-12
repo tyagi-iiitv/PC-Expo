@@ -50,14 +50,14 @@ export default class Donut extends Component {
             responsive: [{
                 breakpoint: 480,
                 options: {
-                chart: {
-                    width: 200
-                },
-                legend: {
-                    position: 'bottom'
+                    chart: {
+                        width: 200
+                    },
                 }
-                }
-            }]
+            }],
+            legend: {
+                show: false,
+            }
             },
         
         
