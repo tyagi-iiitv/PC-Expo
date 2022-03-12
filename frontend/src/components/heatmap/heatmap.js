@@ -8,7 +8,7 @@ export default class HeatMap extends Component{
         super(props);
         this.state = {
             canvasDims: {width: 400, height: 300},
-            margins: {top: 80, right: 150, bottom: 0, left: 40},
+            margins: {top: 0, right: 100, bottom: 0, left: 0},
             data_rec: {},
         }
     }
@@ -35,7 +35,7 @@ export default class HeatMap extends Component{
         return(
             <svg
                 id="svg2"
-                className={styles.svgComp}
+                // className={styles.svgComp}
                 height={this.state.canvasDims.height}
                 width={this.state.canvasDims.width}
             />
@@ -67,7 +67,6 @@ async function generateSVG(width, height, margins, data){
         .append("rect")
         .attr("class", "rects")
         .attr("x", function(d) {
-
             return x_scale(d.col1) 
         })
         .attr("y", function(d) {
