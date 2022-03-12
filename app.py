@@ -50,9 +50,9 @@ def defheatmapdata():
     global num_df
     cols = list(num_df.columns)
     matrix = []
-    for col1 in cols:
-        for col2 in cols:
-            matrix.append({'col1': col1, 'col2': col2, 'val': 0.2})
+    for i,col1 in enumerate(cols):
+        for j in range(i,len(cols)):
+            matrix.append({'col1': col1, 'col2': cols[j], 'val': 0.2})
     return json.dumps([matrix, cols])
 
 @app.route('/getjsondata', methods=['GET'])

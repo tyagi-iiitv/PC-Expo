@@ -45,23 +45,28 @@ async function generateSVG(width, height, data){
     let svg = d3.select("#svg2");
     let cols = data[1];
     data = data[0];
-    console.log(data, cols)
-    // let x_scale = d3.scalePoint()
-    //     .domain(cols)
-    //     .range([10, width])
-    // let y_scale = d3.scalePoint()
-    //     .domain(cols)
-    //     .range([10, height])
+    let x_scale = d3.scalePoint()
+        .domain(cols)
+        .range([10, width])
+    let y_scale = d3.scalePoint()
+        .domain(cols)
+        .range([10, height])
 
     
-    // let g = svg.append('g')
-    //     .selectAll('rects')
-    //     .data(cols).enter()
-    //     .append('rect')
-    //     .attr('class', 'rects')
-    //     .attr('x', function(d){console.log(d); return x_scale(d)})
-    //     .attr('y', function(d){console.log(d); return y_scale(d)})
-    //     .attr('width', 10)
-    //     .attr('height', 10)
-    //     .style('fill', 'red')
+    svg.selectAll()
+        .data(data)
+        .enter()
+        .append("rect")
+        .attr("class", "rects")
+        .attr("x", function(d) {
+
+            return x_scale(d.col1) 
+        })
+        .attr("y", function(d) {
+            return y_scale(d.col2)
+        })
+        .attr("width", 10)
+        .attr("height", 10)
+        .style("fill", "red")
+        .style("stroke-width","1px") 
 }
