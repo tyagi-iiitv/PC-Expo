@@ -6,13 +6,12 @@ export default class HeatMap extends Component{
     constructor(props){
         super(props);
         this.state = {
-            canvasDims: {width: 400, height: 300},
-            margins: {top: 0, right: 100, bottom: 0, left: 0},
+            canvasDims: {width: 500, height: 300},
+            margins: {top: 0, right: 250, bottom: 0, left: 0},
             data_rec: {},
         }
     }
     componentDidMount(){
-        console.log("inside mount heatmap")
         fetch('defheatmapdata', {
             methods: 'GET'
         })
@@ -98,7 +97,7 @@ async function generateSVG(width, height, margins, data){
         .append('text')
         .attr('class', 'texts')
         // .attr('text-anchor', 'end')
-        .attr('x', function(d){return x_scale(d)+x_scale.bandwidth()+10;})
+        .attr('x', function(d){return x_scale(d)+x_scale.bandwidth()/4;})
         .attr('y', function(d){return y_scale(d)+y_scale.bandwidth()/1.5;})
         .attr('font-size', y_scale.bandwidth()/2)
         .text(function(d){return d;})

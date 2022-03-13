@@ -200,7 +200,7 @@ def heatmapdata():
     #         val = pos_corr_sum + neg_corr_sum + pos_var_sum + neg_var_sum + pos_skew_sum + neg_skew_sum + fan_sum + neigh_sum + clear_grouping_sum + density_change_sum + split_up_sum + outliers_sum
     #         matrix.append({'col1': col1, 'col2': cols[j], 'val': val})
     for i,col1 in enumerate(cols):
-        for j in range(i,len(cols)):
+        for j in range(i+1,len(cols)):
             matrix.append({'col1': col1, 'col2': cols[j], 'val': random.random()})
     return json.dumps([matrix, cols])
 
@@ -211,7 +211,7 @@ def defheatmapdata():
     cols = list(num_df.columns)
     matrix = []
     for i,col1 in enumerate(cols):
-        for j in range(i,len(cols)):
+        for j in range(i+1,len(cols)):
             matrix.append({'col1': col1, 'col2': cols[j], 'val': 0.2})
     return json.dumps([matrix, cols])
 
