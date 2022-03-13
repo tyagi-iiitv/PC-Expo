@@ -10,6 +10,7 @@ from scipy import stats
 from flask_cors import CORS, cross_origin
 import warnings
 import os
+import sys, time
 warnings.filterwarnings("ignore")
 
 
@@ -174,25 +175,33 @@ def heatmapdata():
         'pos_skew': 0.3,
         'neg_skew': 0.3
     }
-    for i,col1 in enumerate(cols):
-        for j in range(i+1,len(cols)):
-            bi_hist, xed, _ = np.histogram2d(num_df[col1], num_df[cols[j]], bins=256)
-            xed = xed[:-1]
-            [pos_corr, neg_corr, pos_var, neg_var, pos_skew, neg_skew, fan, neigh, pt_bins, p_vals, clear_grouping, density_change, split_up, outliers] = getSliderData(col1, cols[j], 20, bi_hist, xed)
-            pos_corr_sum = pos_corr.sum()*weights['pos_corr']
-            neg_corr_sum = neg_corr.sum()*weights['neg_corr']
-            pos_var_sum = pos_var.sum()*weights['pos_var']
-            neg_var_sum = neg_var.sum()*weights['neg_var']
-            pos_skew_sum = pos_skew.sum()*weights['pos_skew']
-            neg_skew_sum = neg_skew.sum()*weights['neg_skew']
-            fan_sum = fan.sum()*weights['fan']
-            neigh_sum = neigh.sum()*weights['neigh']
-            clear_grouping_sum = clear_grouping.sum()*weights['clear_grouping']
-            density_change_sum = density_change.sum()*weights['density_change']
-            split_up_sum = split_up.sum()*weights['split_up']
-            outliers_sum = outliers.sum()*weights['outliers']
-            val = pos_corr_sum + neg_corr_sum + pos_var_sum + neg_var_sum + pos_skew_sum + neg_skew_sum + fan_sum + neigh_sum + clear_grouping_sum + density_change_sum + split_up_sum + outliers_sum
-            matrix.append({'col1': col1, 'col2': cols[j], 'val': val})
+    col1 = cols[0]
+    j = 1
+    print(time.perf_counter())
+    bi_hist, xed, _ = np.histogram2d(num_df[col1], num_df[cols[j]], bins=256)
+    xed = xed[:-1]
+    print(time.perf_counter())
+    [pos_corr, neg_corr, pos_var, neg_var, pos_skew, neg_skew, fan, neigh, pt_bins, p_vals, clear_grouping, density_change, split_up, outliers] = getSliderData(col1, cols[j], 20, bi_hist, xed)
+    print(time.perf_counter())
+    # for i,col1 in enumerate(cols):
+    #     for j in range(i+1,len(cols)):
+    #         bi_hist, xed, _ = np.histogram2d(num_df[col1], num_df[cols[j]], bins=256)
+    #         xed = xed[:-1]
+    #         [pos_corr, neg_corr, pos_var, neg_var, pos_skew, neg_skew, fan, neigh, pt_bins, p_vals, clear_grouping, density_change, split_up, outliers] = getSliderData(col1, cols[j], 20, bi_hist, xed)
+    #         pos_corr_sum = pos_corr.sum()*weights['pos_corr']
+    #         neg_corr_sum = neg_corr.sum()*weights['neg_corr']
+    #         pos_var_sum = pos_var.sum()*weights['pos_var']
+    #         neg_var_sum = neg_var.sum()*weights['neg_var']
+    #         pos_skew_sum = pos_skew.sum()*weights['pos_skew']
+    #         neg_skew_sum = neg_skew.sum()*weights['neg_skew']
+    #         fan_sum = fan.sum()*weights['fan']
+    #         neigh_sum = neigh.sum()*weights['neigh']
+    #         clear_grouping_sum = clear_grouping.sum()*weights['clear_grouping']
+    #         density_change_sum = density_change.sum()*weights['density_change']
+    #         split_up_sum = split_up.sum()*weights['split_up']
+    #         outliers_sum = outliers.sum()*weights['outliers']
+    #         val = pos_corr_sum + neg_corr_sum + pos_var_sum + neg_var_sum + pos_skew_sum + neg_skew_sum + fan_sum + neigh_sum + clear_grouping_sum + density_change_sum + split_up_sum + outliers_sum
+    #         matrix.append({'col1': col1, 'col2': cols[j], 'val': val})
     
     return json.dumps([matrix, cols])
 
