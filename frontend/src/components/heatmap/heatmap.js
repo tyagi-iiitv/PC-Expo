@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import styles from './heatmap.module.scss';
 import * as d3 from 'd3';
-import { margin } from '@mui/system';
+import equal from 'fast-deep-equal';
 
 export default class HeatMap extends Component{
     constructor(props){
@@ -29,6 +28,17 @@ export default class HeatMap extends Component{
             )
         })
         
+    }
+
+    componentDidUpdate(prevProps){
+        if(!equal(this.props, prevProps)){
+            generateSVG(
+                this.state.canvasDims.width,
+                this.state.canvasDims.height,
+                this.state.margins,
+                this.props.heatmap_data,
+                )
+        }
     }
 
     render(){
@@ -60,6 +70,10 @@ async function generateSVG(width, height, margins, data){
         .range([height, 0])
         .padding(0.05)
     
+    let colors = d3.scaleSequential()
+        .interpolator(d3.interpolateInferno)
+        .domain([-1,1])
+    
     // Adding rects for the heatmap
     svg.selectAll()
         .data(data)
@@ -74,7 +88,7 @@ async function generateSVG(width, height, margins, data){
         })
         .attr("width", x_scale.bandwidth())
         .attr("height", y_scale.bandwidth())
-        .style("fill", "red")
+        .style("fill", function(d){return colors(d.val)})
         .style("stroke-width","1px") 
 
     // Adding diagonal labels

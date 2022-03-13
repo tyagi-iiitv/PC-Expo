@@ -10,7 +10,7 @@ from scipy import stats
 from flask_cors import CORS, cross_origin
 import warnings
 import os
-import sys, time
+import sys, time, random
 warnings.filterwarnings("ignore")
 
 
@@ -158,31 +158,28 @@ def getSliderData(col1, col2, percent, bi_hist, xed):
 @cross_origin()
 def heatmapdata():
     global num_df
-    vals = request.get_json()
+    # vals = request.get_json()
     cols = list(num_df.columns)
     matrix = []
-    weights = {
-        'clear_grouping': 0.3,
-        'split_up': 0.3,
-        'density_change': 0.3,
-        'neigh': 0.3,
-        'fan': 0.3,
-        'outliers': 0.3,
-        'pos_corr': 0.3,
-        'neg_corr': 0.3,
-        'pos_var': 0.3,
-        'neg_var': 0.3,
-        'pos_skew': 0.3,
-        'neg_skew': 0.3
-    }
-    col1 = cols[0]
-    j = 1
-    print(time.perf_counter())
-    bi_hist, xed, _ = np.histogram2d(num_df[col1], num_df[cols[j]], bins=256)
-    xed = xed[:-1]
-    print(time.perf_counter())
-    [pos_corr, neg_corr, pos_var, neg_var, pos_skew, neg_skew, fan, neigh, pt_bins, p_vals, clear_grouping, density_change, split_up, outliers] = getSliderData(col1, cols[j], 20, bi_hist, xed)
-    print(time.perf_counter())
+    # weights = {
+    #     'clear_grouping': 0.3,
+    #     'split_up': 0.3,
+    #     'density_change': 0.3,
+    #     'neigh': 0.3,
+    #     'fan': 0.3,
+    #     'outliers': 0.3,
+    #     'pos_corr': 0.3,
+    #     'neg_corr': 0.3,
+    #     'pos_var': 0.3,
+    #     'neg_var': 0.3,
+    #     'pos_skew': 0.3,
+    #     'neg_skew': 0.3
+    # }
+    # col1 = cols[0]
+    # j = 1
+    # bi_hist, xed, _ = np.histogram2d(num_df[col1], num_df[cols[j]], bins=256)
+    # xed = xed[:-1]
+    # [pos_corr, neg_corr, pos_var, neg_var, pos_skew, neg_skew, fan, neigh, pt_bins, p_vals, clear_grouping, density_change, split_up, outliers] = getSliderData(col1, cols[j], 20, bi_hist, xed)
     # for i,col1 in enumerate(cols):
     #     for j in range(i+1,len(cols)):
     #         bi_hist, xed, _ = np.histogram2d(num_df[col1], num_df[cols[j]], bins=256)
@@ -202,7 +199,9 @@ def heatmapdata():
     #         outliers_sum = outliers.sum()*weights['outliers']
     #         val = pos_corr_sum + neg_corr_sum + pos_var_sum + neg_var_sum + pos_skew_sum + neg_skew_sum + fan_sum + neigh_sum + clear_grouping_sum + density_change_sum + split_up_sum + outliers_sum
     #         matrix.append({'col1': col1, 'col2': cols[j], 'val': val})
-    
+    for i,col1 in enumerate(cols):
+        for j in range(i,len(cols)):
+            matrix.append({'col1': col1, 'col2': cols[j], 'val': random.random()})
     return json.dumps([matrix, cols])
 
 @app.route('/defheatmapdata', methods=['GET'])
@@ -246,16 +245,16 @@ def fileUpload():
     num_df.columns = [f'{i}_{x[:4]}' for i, x in enumerate(num_df.columns)]
     return num_df.to_json(orient='records')
 
-@app.route('/getpoints', methods=['POST'])
-@cross_origin()
-def getPoints():
-    # global num_df
-    [end, start] = request.get_json()
-    cur_pts = np.where((num_df[col1] >= start) & 
-                            (num_df[col1] <= end)
-                           )
-    subset = num_df.iloc[cur_pts]
-    return json.dumps([list(subset['bill_length_mm']), list(subset['bill_depth_mm'])])
+# @app.route('/getpoints', methods=['POST'])
+# @cross_origin()
+# def getPoints():
+#     # global num_df
+#     [end, start] = request.get_json()
+#     cur_pts = np.where((num_df[col1] >= start) & 
+#                             (num_df[col1] <= end)
+#                            )
+#     subset = num_df.iloc[cur_pts]
+#     return json.dumps([list(subset['bill_length_mm']), list(subset['bill_depth_mm'])])
     
 
 @app.route('/readdata', methods=['GET'])

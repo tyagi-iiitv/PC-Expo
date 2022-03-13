@@ -66,6 +66,7 @@ export default class App extends Component{
     })
   }
 
+
   callbackFromChild(data){
     this.setState({'data_rec': false});
     this.setState(data, ()=> this.setState({'data_rec': true}));
@@ -110,8 +111,8 @@ export default class App extends Component{
     })
     .then(response => response.json())
     .then(data => {
-        // this.setState({heatmap_data: data}, ()=> this.setState({'data_rec': true}))
-        this.setState({heatmap_data: data}, ()=> console.log(this.state.heatmap_data))
+        this.setState({heatmap_data: data}, ()=> this.setState({'data_rec': true}))
+        // this.setState({heatmap_data: data}, ()=> console.log(this.state.heatmap_data))
     })
   }
 
@@ -156,7 +157,7 @@ export default class App extends Component{
                   />
                 </Col>
                 <Col md={5}>
-                  <HeatMap/>
+                  <HeatMap heatmap_data={this.state.heatmap_data}/>
                 </Col>
               </Row>
               {/* <Row className={styles.clueImage}>
