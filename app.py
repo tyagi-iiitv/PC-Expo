@@ -195,6 +195,28 @@ def globaloptimize():
     return json.dumps(solution)
 
 
+@app.route('/getlocaldata', methods=['POST'])
+@cross_origin()
+def getlocaldata():
+    vals = request.get_json()
+    print(vals)
+    cols = list(num_df.columns)
+    col1_name = vals['col1']
+    col2_name = vals['col2']
+    col1 = cols.index(col1_name)
+    col2 = cols.index(col2_name)
+    percent = int(vals['window_sliderval']/10-1)
+    solution = []
+    # First 12 arrays are for props
+    for prop in range(12):
+        solution.append(list(lookup_info[col1][col2][percent][prop]))
+    # 13th array is for bin points
+    solution.append(np.linspace(num_df[col1_name].min(), num_df[col1_name].max(), num_bins))
+    # 14th val is window size
+    var_range = num_df[col1_name].max()-num_df[col1_name].min()
+    solution.append((percent+1)/10*var_range)
+    return json.dumps(solution)
+
 @app.route('/heatmapdata', methods=['POST'])
 @cross_origin()
 def heatmapdata():

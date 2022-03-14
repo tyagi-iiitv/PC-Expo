@@ -31,6 +31,7 @@ export default class App extends Component{
       dimensions: [],
       selectedList: [],
       heatmap_data: {},
+      local_cols: [],
     }
     this.sliderChange = this.sliderChange.bind(this);
     this.recommend = this.recommend.bind(this);
@@ -51,7 +52,7 @@ export default class App extends Component{
       for(let i=0; i< cols.length; i++){
           dimensions.push({key: i, name: cols[i]})
       }
-      this.setState({data: data, dimensions: dimensions, selectedList: dimensions}, ()=> this.setState({'data_rec': true}))
+      this.setState({data: data, dimensions: dimensions, selectedList: dimensions, local_cols: [dimensions[0].name, dimensions[1].name]}, ()=> this.setState({'data_rec': true}))
     })
   }
 
@@ -170,7 +171,7 @@ export default class App extends Component{
                   <HeatMap heatmap_data={this.state.heatmap_data}/>
                 </Col>
                 <Col md="auto">
-                  <LocalView/>
+                  <LocalView data={this.state.data} local_cols={this.state.local_cols} window={this.state.window_sliderval}/>
                 </Col>
               </Row>
               {/* <Row className={styles.clueImage}>
