@@ -27,10 +27,13 @@ df = pd.read_csv('data/penguins.csv')
 df = df.dropna()
 numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
 num_df = df.select_dtypes(include=numerics)
-# num_df = num_df[['bill_length_mm', 'bill_depth_mm']]
-# bi_hist, xed, yed = np.histogram2d(num_df.bill_length_mm, num_df.bill_depth_mm, bins=256)
-# xed = xed[:-1]
-# yed = yed[:-1]
+
+# Using a lookup datastructure for all the information
+# #cols * #cols * #bins * #windows * #props
+lookup_info = np.random.rand(len(num_df.columns), len(num_df.columns), 256, 10, 12)
+'''
+props = ['pos_corr', 'neg_corr', 'pos_var', 'neg_var', 'pos_skew', 'neg_skew', 'fan', 'neigh', 'clear_grouping', 'density_change', 'split_up', 'outliers']
+'''
 
 def getSliderData(col1, col2, percent, bi_hist, xed):
     '''
@@ -157,51 +160,8 @@ def getSliderData(col1, col2, percent, bi_hist, xed):
 @app.route('/heatmapdata', methods=['POST'])
 @cross_origin()
 def heatmapdata():
-    global num_df
-    # vals = request.get_json()
-    cols = list(num_df.columns)
-    matrix = []
-    # weights = {
-    #     'clear_grouping': 0.3,
-    #     'split_up': 0.3,
-    #     'density_change': 0.3,
-    #     'neigh': 0.3,
-    #     'fan': 0.3,
-    #     'outliers': 0.3,
-    #     'pos_corr': 0.3,
-    #     'neg_corr': 0.3,
-    #     'pos_var': 0.3,
-    #     'neg_var': 0.3,
-    #     'pos_skew': 0.3,
-    #     'neg_skew': 0.3
-    # }
-    # col1 = cols[0]
-    # j = 1
-    # bi_hist, xed, _ = np.histogram2d(num_df[col1], num_df[cols[j]], bins=256)
-    # xed = xed[:-1]
-    # [pos_corr, neg_corr, pos_var, neg_var, pos_skew, neg_skew, fan, neigh, pt_bins, p_vals, clear_grouping, density_change, split_up, outliers] = getSliderData(col1, cols[j], 20, bi_hist, xed)
-    # for i,col1 in enumerate(cols):
-    #     for j in range(i+1,len(cols)):
-    #         bi_hist, xed, _ = np.histogram2d(num_df[col1], num_df[cols[j]], bins=256)
-    #         xed = xed[:-1]
-    #         [pos_corr, neg_corr, pos_var, neg_var, pos_skew, neg_skew, fan, neigh, pt_bins, p_vals, clear_grouping, density_change, split_up, outliers] = getSliderData(col1, cols[j], 20, bi_hist, xed)
-    #         pos_corr_sum = pos_corr.sum()*weights['pos_corr']
-    #         neg_corr_sum = neg_corr.sum()*weights['neg_corr']
-    #         pos_var_sum = pos_var.sum()*weights['pos_var']
-    #         neg_var_sum = neg_var.sum()*weights['neg_var']
-    #         pos_skew_sum = pos_skew.sum()*weights['pos_skew']
-    #         neg_skew_sum = neg_skew.sum()*weights['neg_skew']
-    #         fan_sum = fan.sum()*weights['fan']
-    #         neigh_sum = neigh.sum()*weights['neigh']
-    #         clear_grouping_sum = clear_grouping.sum()*weights['clear_grouping']
-    #         density_change_sum = density_change.sum()*weights['density_change']
-    #         split_up_sum = split_up.sum()*weights['split_up']
-    #         outliers_sum = outliers.sum()*weights['outliers']
-    #         val = pos_corr_sum + neg_corr_sum + pos_var_sum + neg_var_sum + pos_skew_sum + neg_skew_sum + fan_sum + neigh_sum + clear_grouping_sum + density_change_sum + split_up_sum + outliers_sum
-    #         matrix.append({'col1': col1, 'col2': cols[j], 'val': val})
-    for i,col1 in enumerate(cols):
-        for j in range(i+1,len(cols)):
-            matrix.append({'col1': col1, 'col2': cols[j], 'val': random.random()})
+    vals = request.get_json()
+    weights
     return json.dumps([matrix, cols])
 
 @app.route('/defheatmapdata', methods=['GET'])
@@ -212,7 +172,7 @@ def defheatmapdata():
     matrix = []
     for i,col1 in enumerate(cols):
         for j in range(i+1,len(cols)):
-            matrix.append({'col1': col1, 'col2': cols[j], 'val': 0.2})
+            matrix.append({'col1': col1, 'col2': cols[j], 'val': 0})
     return json.dumps([matrix, cols])
 
 @app.route('/getjsondata', methods=['GET'])
@@ -225,7 +185,7 @@ def getjsondata():
 @cross_origin()
 #Function to upload file and read the data
 def fileUpload():
-    global df, num_df
+    global df, num_df, lookup_info
     target=os.path.join(UPLOAD_FOLDER)
     if not os.path.isdir(target):
         os.mkdir(target)
@@ -243,6 +203,7 @@ def fileUpload():
     df = df.dropna()
     num_df = df.select_dtypes(include=numerics)
     num_df.columns = [f'{i}_{x[:4]}' for i, x in enumerate(num_df.columns)]
+    lookup_info = np.random.rand(len(num_df.columns), len(num_df.columns), 256, 10, 12)
     return num_df.to_json(orient='records')
 
 # @app.route('/getpoints', methods=['POST'])

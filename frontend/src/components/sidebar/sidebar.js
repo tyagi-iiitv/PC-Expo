@@ -33,14 +33,27 @@ export class ClearGrouping extends Component {
         super(props);
         this.sliderChange = this.sliderChange.bind(this);
         this.checkChange = this.checkChange.bind(this);
+        this.state = {
+            checked: false,
+            val: 30,
+        }
     }
 
     sliderChange(evt, val){
-        this.props.callbackFromParent({clear_grouping_sliderval: val})       
+        this.setState({val: val}, ()=> {
+            if(this.state.checked)
+                this.props.callbackFromParent({clear_grouping_sliderval: val})
+        })
+               
     }
 
     checkChange(evt){
-        this.props.callbackFromParent({clear_grouping_checkval: evt.target.checked})
+        this.setState({checked: evt.target.checked}, ()=> {
+            if(!this.state.checked)
+                this.props.callbackFromParent({clear_grouping_sliderval: 0})
+            else
+                this.props.callbackFromParent({clear_grouping_sliderval: this.state.val})
+        })
     }
 
 
@@ -55,7 +68,7 @@ export class ClearGrouping extends Component {
                         key={`slider-${this.props.val}`}
                         aria-label="Temperature"
                         aria-valuetext='Temp'
-                        defaultValue={this.props.val}
+                        defaultValue={this.state.val}
                         // getAriaValueText={valuetext}
                         valueLabelDisplay="auto"
                         step={10}
@@ -77,14 +90,26 @@ export class DensityChange extends Component {
         super(props);
         this.sliderChange = this.sliderChange.bind(this);
         this.checkChange = this.checkChange.bind(this);
+        this.state = {
+            checked: false,
+            val: 30
+        }
     }
 
     sliderChange(evt, val){
-        this.props.callbackFromParent({density_change_sliderval: val})       
+        this.setState({val: val}, ()=> {
+            if(this.state.checked)
+                this.props.callbackFromParent({density_change_sliderval: val})
+        })       
     }
 
     checkChange(evt){
-        this.props.callbackFromParent({density_change_checkval: evt.target.checked})
+        this.setState({checked: evt.target.checked}, ()=> {
+            if(!this.state.checked)
+                this.props.callbackFromParent({density_change_sliderval: 0})
+            else
+                this.props.callbackFromParent({density_change_sliderval: this.state.val})
+        })
     }
 
 
@@ -98,7 +123,7 @@ export class DensityChange extends Component {
                     <Slider
                         key={`slider-${this.props.val}`}
                         aria-label="Temperature"
-                        defaultValue={this.props.val}
+                        defaultValue={this.state.val}
                         // getAriaValueText={valuetext}
                         valueLabelDisplay="auto"
                         step={10}
@@ -120,14 +145,26 @@ export class SplitUp extends Component {
         super(props);
         this.sliderChange = this.sliderChange.bind(this);
         this.checkChange = this.checkChange.bind(this);
+        this.state = {
+            checked: false,
+            val: 30
+        }
     }
 
     sliderChange(evt, val){
-        this.props.callbackFromParent({split_up_sliderval: val})       
+        this.setState({val: val}, ()=> {
+            if(this.state.checked)
+                this.props.callbackFromParent({split_up_sliderval: val})
+        })       
     }
 
     checkChange(evt){
-        this.props.callbackFromParent({split_up_checkval: evt.target.checked})
+        this.setState({checked: evt.target.checked}, ()=> {
+            if(!this.state.checked)
+                this.props.callbackFromParent({split_up_sliderval: 0})
+            else
+                this.props.callbackFromParent({split_up_sliderval: this.state.val})
+        })
     }
 
 
@@ -141,7 +178,7 @@ export class SplitUp extends Component {
                     <Slider
                         key={`slider-${this.props.val}`}
                         aria-label="Temperature"
-                        defaultValue={this.props.val}
+                        defaultValue={this.state.val}
                         // getAriaValueText={valuetext}
                         valueLabelDisplay="auto"
                         step={10}
@@ -162,14 +199,26 @@ export class Neighborhood extends Component {
         super(props);
         this.sliderChange = this.sliderChange.bind(this);
         this.checkChange = this.checkChange.bind(this);
+        this.state = {
+            checked: false,
+            val: 30
+        }
     }
 
     sliderChange(evt, val){
-        this.props.callbackFromParent({neigh_sliderval: val})       
+        this.setState({val: val}, ()=> {
+            if(this.state.checked)
+                this.props.callbackFromParent({neigh_sliderval: val})
+        })       
     }
 
     checkChange(evt){
-        this.props.callbackFromParent({neigh_checkval: evt.target.checked})
+        this.setState({checked: evt.target.checked}, ()=> {
+            if(!this.state.checked)
+                this.props.callbackFromParent({neigh_sliderval: 0})
+            else
+                this.props.callbackFromParent({neigh_sliderval: this.state.val})
+        })
     }
 
 
@@ -183,7 +232,7 @@ export class Neighborhood extends Component {
                     <Slider
                         key={`slider-${this.props.val}`}
                         aria-label="Temperature"
-                        defaultValue={this.props.val}
+                        defaultValue={this.state.val}
                         // getAriaValueText={valuetext}
                         valueLabelDisplay="auto"
                         step={10}
@@ -205,14 +254,26 @@ export class PosCorr extends Component {
         super(props);
         this.sliderChange = this.sliderChange.bind(this);
         this.checkChange = this.checkChange.bind(this);
+        this.state = {
+            checked: false,
+            val: 30
+        }
     }
 
     sliderChange(evt, val){
-        this.props.callbackFromParent({pos_corr_sliderval: val})       
+        this.setState({val: val}, ()=> {
+            if(this.state.checked)
+                this.props.callbackFromParent({pos_corr_sliderval: val})
+        })       
     }
 
     checkChange(evt){
-        this.props.callbackFromParent({pos_corr_checkval: evt.target.checked})
+        this.setState({checked: evt.target.checked}, ()=> {
+            if(!this.state.checked)
+                this.props.callbackFromParent({pos_corr_sliderval: 0})
+            else
+                this.props.callbackFromParent({pos_corr_sliderval: this.state.val})
+        })
     }
 
 
@@ -226,7 +287,7 @@ export class PosCorr extends Component {
                     <Slider
                         key={`slider-${this.props.val}`}
                         aria-label="Temperature"
-                        defaultValue={this.props.val}
+                        defaultValue={this.state.val}
                         // getAriaValueText={valuetext}
                         valueLabelDisplay="auto"
                         step={10}
@@ -248,14 +309,26 @@ export class NegCorr extends Component {
         super(props);
         this.sliderChange = this.sliderChange.bind(this);
         this.checkChange = this.checkChange.bind(this);
+        this.state = {
+            checked: false,
+            val: 30
+        }
     }
 
     sliderChange(evt, val){
-        this.props.callbackFromParent({neg_corr_sliderval: val})       
+        this.setState({val: val}, ()=> {
+            if(this.state.checked)
+                this.props.callbackFromParent({neg_corr_sliderval: val})
+        })       
     }
 
     checkChange(evt){
-        this.props.callbackFromParent({neg_corr_checkval: evt.target.checked})
+        this.setState({checked: evt.target.checked}, ()=> {
+            if(!this.state.checked)
+                this.props.callbackFromParent({neg_corr_sliderval: 0})
+            else
+                this.props.callbackFromParent({neg_corr_sliderval: this.state.val})
+        })
     }
 
 
@@ -269,7 +342,7 @@ export class NegCorr extends Component {
                     <Slider
                         key={`slider-${this.props.val}`}
                         aria-label="Temperature"
-                        defaultValue={this.props.val}
+                        defaultValue={this.state.val}
                         // getAriaValueText={valuetext}
                         valueLabelDisplay="auto"
                         step={10}
@@ -291,14 +364,26 @@ export class PosVar extends Component {
         super(props);
         this.sliderChange = this.sliderChange.bind(this);
         this.checkChange = this.checkChange.bind(this);
+        this.state = {
+            checked: false,
+            val: 30
+        }
     }
 
     sliderChange(evt, val){
-        this.props.callbackFromParent({pos_var_sliderval: val})       
+        this.setState({val: val}, ()=> {
+            if(this.state.checked)
+                this.props.callbackFromParent({pos_var_sliderval: val})
+        })       
     }
 
     checkChange(evt){
-        this.props.callbackFromParent({pos_var_checkval: evt.target.checked})
+        this.setState({checked: evt.target.checked}, ()=> {
+            if(!this.state.checked)
+                this.props.callbackFromParent({pos_var_sliderval: 0})
+            else
+                this.props.callbackFromParent({pos_var_sliderval: this.state.val})
+        })
     }
 
 
@@ -312,7 +397,7 @@ export class PosVar extends Component {
                     <Slider
                         key={`slider-${this.props.val}`}
                         aria-label="Temperature"
-                        defaultValue={this.props.val}
+                        defaultValue={this.state.val}
                         // getAriaValueText={valuetext}
                         valueLabelDisplay="auto"
                         step={10}
@@ -334,16 +419,27 @@ export class NegVar extends Component {
         super(props);
         this.sliderChange = this.sliderChange.bind(this);
         this.checkChange = this.checkChange.bind(this);
+        this.state = {
+            checked: false,
+            val: 30
+        }
     }
 
     sliderChange(evt, val){
-        this.props.callbackFromParent({neg_var_sliderval: val})       
+        this.setState({val: val}, ()=> {
+            if(this.state.checked)
+                this.props.callbackFromParent({neg_var_sliderval: val})
+        })       
     }
 
     checkChange(evt){
-        this.props.callbackFromParent({neg_var_checkval: evt.target.checked})
+        this.setState({checked: evt.target.checked}, ()=> {
+            if(!this.state.checked)
+                this.props.callbackFromParent({neg_var_sliderval: 0})
+            else
+                this.props.callbackFromParent({neg_var_sliderval: this.state.val})
+        })
     }
-
 
     render(){
         return (
@@ -355,7 +451,7 @@ export class NegVar extends Component {
                     <Slider
                         key={`slider-${this.props.val}`}
                         aria-label="Temperature"
-                        defaultValue={this.props.val}
+                        defaultValue={this.state.val}
                         // getAriaValueText={valuetext}
                         valueLabelDisplay="auto"
                         step={10}
@@ -377,14 +473,26 @@ export class PosSkew extends Component {
         super(props);
         this.sliderChange = this.sliderChange.bind(this);
         this.checkChange = this.checkChange.bind(this);
+        this.state = {
+            checked: false,
+            val: 30
+        }
     }
 
     sliderChange(evt, val){
-        this.props.callbackFromParent({pos_skew_sliderval: val})       
+        this.setState({val: val}, ()=> {
+            if(this.state.checked)
+                this.props.callbackFromParent({pos_skew_sliderval: val})
+        })       
     }
 
     checkChange(evt){
-        this.props.callbackFromParent({pos_skew_checkval: evt.target.checked})
+        this.setState({checked: evt.target.checked}, ()=> {
+            if(!this.state.checked)
+                this.props.callbackFromParent({pos_skew_sliderval: 0})
+            else
+                this.props.callbackFromParent({pos_skew_sliderval: this.state.val})
+        })
     }
 
 
@@ -398,7 +506,7 @@ export class PosSkew extends Component {
                     <Slider
                         key={`slider-${this.props.val}`}
                         aria-label="Temperature"
-                        defaultValue={this.props.val}
+                        defaultValue={this.state.val}
                         // getAriaValueText={valuetext}
                         valueLabelDisplay="auto"
                         step={10}
@@ -420,14 +528,26 @@ export class NegSkew extends Component {
         super(props);
         this.sliderChange = this.sliderChange.bind(this);
         this.checkChange = this.checkChange.bind(this);
+        this.state = {
+            checked: false,
+            val: 30
+        }
     }
 
     sliderChange(evt, val){
-        this.props.callbackFromParent({neg_skew_sliderval: val})       
+        this.setState({val: val}, ()=> {
+            if(this.state.checked)
+                this.props.callbackFromParent({neg_skew_sliderval: val})
+        })       
     }
 
     checkChange(evt){
-        this.props.callbackFromParent({neg_skew_checkval: evt.target.checked})
+        this.setState({checked: evt.target.checked}, ()=> {
+            if(!this.state.checked)
+                this.props.callbackFromParent({neg_skew_sliderval: 0})
+            else
+                this.props.callbackFromParent({neg_skew_sliderval: this.state.val})
+        })
     }
 
 
@@ -441,7 +561,7 @@ export class NegSkew extends Component {
                     <Slider
                         key={`slider-${this.props.val}`}
                         aria-label="Temperature"
-                        defaultValue={this.props.val}
+                        defaultValue={this.state.val}
                         // getAriaValueText={valuetext}
                         valueLabelDisplay="auto"
                         step={10}
@@ -463,14 +583,26 @@ export class Fan extends Component {
         super(props);
         this.sliderChange = this.sliderChange.bind(this);
         this.checkChange = this.checkChange.bind(this);
+        this.state = {
+            checked: false,
+            val: 30
+        }
     }
 
     sliderChange(evt, val){
-        this.props.callbackFromParent({fan_sliderval: val})       
+        this.setState({val: val}, ()=> {
+            if(this.state.checked)
+                this.props.callbackFromParent({fan_sliderval: val})
+        })       
     }
 
     checkChange(evt){
-        this.props.callbackFromParent({fan_checkval: evt.target.checked})
+        this.setState({checked: evt.target.checked}, ()=> {
+            if(!this.state.checked)
+                this.props.callbackFromParent({fan_sliderval: 0})
+            else
+                this.props.callbackFromParent({fan_sliderval: this.state.val})
+        })
     }
 
 
@@ -484,7 +616,7 @@ export class Fan extends Component {
                     <Slider
                         key={`slider-${this.props.val}`}
                         aria-label="Temperature"
-                        defaultValue={this.props.val}
+                        defaultValue={this.state.val}
                         // getAriaValueText={valuetext}
                         valueLabelDisplay="auto"
                         step={10}
@@ -506,14 +638,26 @@ export class Outliers extends Component {
         super(props);
         this.sliderChange = this.sliderChange.bind(this);
         this.checkChange = this.checkChange.bind(this);
+        this.state = {
+            checked: false,
+            val: 30
+        }
     }
 
     sliderChange(evt, val){
-        this.props.callbackFromParent({outliers_sliderval: val})       
+        this.setState({val: val}, ()=> {
+            if(this.state.checked)
+                this.props.callbackFromParent({outliers_sliderval: val})
+        })       
     }
 
     checkChange(evt){
-        this.props.callbackFromParent({outliers_checkval: evt.target.checked})
+        this.setState({checked: evt.target.checked}, ()=> {
+            if(!this.state.checked)
+                this.props.callbackFromParent({outliers_sliderval: 0})
+            else
+                this.props.callbackFromParent({outliers_sliderval: this.state.val})
+        })
     }
 
 
@@ -527,7 +671,7 @@ export class Outliers extends Component {
                     <Slider
                         key={`slider-${this.props.val}`}
                         aria-label="Temperature"
-                        defaultValue={this.props.val}
+                        defaultValue={this.state.val}
                         // getAriaValueText={valuetext}
                         valueLabelDisplay="auto"
                         step={10}

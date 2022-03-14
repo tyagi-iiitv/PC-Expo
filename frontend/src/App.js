@@ -15,31 +15,19 @@ export default class App extends Component{
       pcpdata: {},
       dragdata: {},
       sliderdata: {},
-      clear_grouping_sliderval: 30,
-      split_up_sliderval: 30,
-      density_change_sliderval: 30,
-      neigh_sliderval: 30,
-      fan_sliderval: 30,
-      outliers_sliderval: 30,
-      pos_corr_sliderval: 30,
-      neg_corr_sliderval: 30,
-      pos_var_sliderval: 30,
-      neg_var_sliderval: 30,
-      pos_skew_sliderval: 30,
-      neg_skew_sliderval: 30,
+      clear_grouping_sliderval: 0,
+      split_up_sliderval: 0,
+      density_change_sliderval: 0,
+      neigh_sliderval: 0,
+      fan_sliderval: 0,
+      outliers_sliderval: 0,
+      pos_corr_sliderval: 0,
+      neg_corr_sliderval: 0,
+      pos_var_sliderval: 0,
+      neg_var_sliderval: 0,
+      pos_skew_sliderval: 0,
+      neg_skew_sliderval: 0,
       window_sliderval: 30,
-      clear_grouping_checkval: false,
-      split_up_checkval: false,
-      density_change_checkval: false,
-      neigh_checkval: false,
-      fan_checkval: false,
-      outliers_checkval: false,
-      pos_corr_checkval: false,
-      neg_corr_checkval: false,
-      pos_var_checkval: false,
-      neg_var_checkval: false,
-      pos_skew_checkval: false,
-      neg_skew_checkval: false,
       dimensions: [],
       selectedList: [],
       heatmap_data: {},
@@ -94,19 +82,7 @@ export default class App extends Component{
         neg_var_sliderval: this.state.neg_var_sliderval,
         pos_skew_sliderval: this.state.pos_skew_sliderval,
         neg_skew_sliderval: this.state.neg_skew_sliderval,
-        window_sliderval: this.state.window_sliderval,
-        clear_grouping_checkval: this.state.clear_grouping_checkval,
-        split_up_checkval: this.state.split_up_checkval,
-        density_change_checkval: this.state.density_change_checkval,
-        neigh_checkval: this.state.neigh_checkval,
-        fan_checkval: this.state.fan_checkval,
-        outliers_checkval: this.state.outliers_checkval,
-        pos_corr_checkval: this.state.pos_corr_checkval,
-        neg_corr_checkval: this.state.neg_corr_checkval,
-        pos_var_checkval: this.state.pos_var_checkval,
-        neg_var_checkval: this.state.neg_var_checkval,
-        pos_skew_checkval: this.state.pos_skew_checkval,
-        neg_skew_checkval: this.state.neg_skew_checkval,
+        window_sliderval: this.state.window_sliderval
       })
     })
     .then(response => response.json())
@@ -131,6 +107,9 @@ export default class App extends Component{
           <Nav className="mr-auto">
             <LoadData callbackFromParent={this.callbackFromChild}/>
             <EqualWeights callbackFromParent={this.callbackFromChild}/>
+            <Nav.Item style={{paddingLeft: 15}}>
+                <Button variant="info" onClick={this.handleChange}>Global Optimize</Button>
+            </Nav.Item>
           </Nav>
         </Navbar>
         <Container fluid>
