@@ -166,9 +166,7 @@ export default class App extends Component{
               <Row className={styles.sliderWindow}>
                 <h5>Granularity (Window Size)</h5>
                 <Slider
-                    aria-label="Temperature"
                     defaultValue={30}
-                    // getAriaValueText={valuetext}
                     valueLabelDisplay="auto"
                     step={10}
                     marks

@@ -1,4 +1,5 @@
 from audioop import cross, minmax
+import enum
 from statistics import variance
 import pandas as pd
 from flask import Flask, request
@@ -27,14 +28,14 @@ df = pd.read_csv('data/penguins.csv')
 df = df.dropna()
 numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
 num_df = df.select_dtypes(include=numerics)
+num_bins = 256
 
 # Using a lookup datastructure for all the information
-# #cols * #cols * #bins * #windows * #props
-lookup_info = np.random.rand(len(num_df.columns), len(num_df.columns), 256, 10, 12)
+# #cols * #cols * #windows * #props * #bins
+lookup_info = np.random.rand(len(num_df.columns), len(num_df.columns), 10, 12, num_bins)
 '''
 props = ['pos_corr', 'neg_corr', 'pos_var', 'neg_var', 'pos_skew', 'neg_skew', 'fan', 'neigh', 'clear_grouping', 'density_change', 'split_up', 'outliers']
 '''
-
 def getSliderData(col1, col2, percent, bi_hist, xed):
     '''
     Calculates properties based on the window slider
@@ -43,7 +44,7 @@ def getSliderData(col1, col2, percent, bi_hist, xed):
     # percent = request.get_json()
     var_range = num_df[col1].max() - num_df[col1].min()
     window_size = percent/100*var_range
-    x_pts = np.linspace(num_df[col1].min(), num_df[col1].max(), 256)
+    x_pts = np.linspace(num_df[col1].min(), num_df[col1].max(), num_bins)
     correlation_pos = []
     correlation_neg = []
     variance_pos = []
@@ -161,7 +162,31 @@ def getSliderData(col1, col2, percent, bi_hist, xed):
 @cross_origin()
 def heatmapdata():
     vals = request.get_json()
-    weights
+    weights = [
+        vals['pos_corr_sliderval']/100,
+        vals['neg_corr_sliderval']/100,
+        vals['pos_var_sliderval']/100,
+        vals['neg_var_sliderval']/100,
+        vals['pos_skew_sliderval']/100,
+        vals['neg_skew_sliderval']/100,
+        vals['fan_sliderval']/100,
+        vals['neigh_sliderval']/100,
+        vals['clear_grouping_sliderval']/100,
+        vals['density_change_sliderval']/100,
+        vals['split_up_sliderval']/100,
+        vals['outliers_sliderval']/100,
+    ]
+    percent = int(vals['window_sliderval']/10-1)
+    cols = list(num_df.columns)
+    matrix = []
+    window_data = lookup_info.sum(axis=-1)
+    num_active_props = len(weights) - weights.count(0)
+    for i,col1 in enumerate(cols):
+        for j,col2 in enumerate(cols):
+            if (i!=j):
+                # Divide by 256 to normalize the values, since each window has a range b/w 0-1
+                matrix.append({'col1': col1, 'col2': col2, 'val': np.sum(window_data[i][j][percent]*weights/(num_bins*num_active_props))})
+    print(matrix)
     return json.dumps([matrix, cols])
 
 @app.route('/defheatmapdata', methods=['GET'])
@@ -171,8 +196,9 @@ def defheatmapdata():
     cols = list(num_df.columns)
     matrix = []
     for i,col1 in enumerate(cols):
-        for j in range(i+1,len(cols)):
-            matrix.append({'col1': col1, 'col2': cols[j], 'val': 0})
+        for j,col2 in enumerate(cols):
+            if(i != j):
+                matrix.append({'col1': col1, 'col2': col2, 'val': random.random()})
     return json.dumps([matrix, cols])
 
 @app.route('/getjsondata', methods=['GET'])
@@ -203,7 +229,7 @@ def fileUpload():
     df = df.dropna()
     num_df = df.select_dtypes(include=numerics)
     num_df.columns = [f'{i}_{x[:4]}' for i, x in enumerate(num_df.columns)]
-    lookup_info = np.random.rand(len(num_df.columns), len(num_df.columns), 256, 10, 12)
+    lookup_info = np.random.rand(len(num_df.columns), len(num_df.columns), 10, 12, num_bins)
     return num_df.to_json(orient='records')
 
 # @app.route('/getpoints', methods=['POST'])

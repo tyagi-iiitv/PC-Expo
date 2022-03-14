@@ -71,7 +71,7 @@ async function generateSVG(width, height, margins, data){
     
     let colors = d3.scaleSequential()
         .interpolator(d3.interpolateInferno)
-        .domain([-1,1])
+        .domain([0,1])
     
     // Adding rects for the heatmap
     svg.selectAll()
@@ -97,8 +97,8 @@ async function generateSVG(width, height, margins, data){
         .append('text')
         .attr('class', 'texts')
         // .attr('text-anchor', 'end')
-        .attr('x', function(d){return x_scale(d)+x_scale.bandwidth()/4;})
+        .attr('x', function(d){return x_scale(d)+x_scale.bandwidth()/100;})
         .attr('y', function(d){return y_scale(d)+y_scale.bandwidth()/1.5;})
-        .attr('font-size', y_scale.bandwidth()/2)
+        .attr('font-size', y_scale.bandwidth()/4)
         .text(function(d){return d;})
 }
