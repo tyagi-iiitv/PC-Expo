@@ -34,6 +34,7 @@ export default class App extends Component{
     }
     this.sliderChange = this.sliderChange.bind(this);
     this.recommend = this.recommend.bind(this);
+    this.globaloptimize = this.globaloptimize.bind(this);
     this.callbackFromChild = this.callbackFromChild.bind(this);
   }
 
@@ -60,7 +61,37 @@ export default class App extends Component{
     this.setState(data, ()=> this.setState({'data_rec': true}));
   }
 
-
+  globaloptimize(){
+    this.setState({'data_rec': false});
+    fetch('/globaloptimize', {
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        clear_grouping_sliderval: this.state.clear_grouping_sliderval,
+        split_up_sliderval: this.state.split_up_sliderval,
+        density_change_sliderval: this.state.density_change_sliderval,
+        neigh_sliderval: this.state.neigh_sliderval,
+        fan_sliderval: this.state.fan_sliderval,
+        outliers_sliderval: this.state.outliers_sliderval,
+        pos_corr_sliderval: this.state.pos_corr_sliderval,
+        neg_corr_sliderval: this.state.neg_corr_sliderval,
+        pos_var_sliderval: this.state.pos_var_sliderval,
+        neg_var_sliderval: this.state.neg_var_sliderval,
+        pos_skew_sliderval: this.state.pos_skew_sliderval,
+        neg_skew_sliderval: this.state.neg_skew_sliderval,
+        window_sliderval: this.state.window_sliderval
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        this.setState({selectedList: data, dimensions: data}, ()=> this.setState({'data_rec': true}))
+    })
+  }
+  
   recommend(){
     this.setState({'data_rec': false});
     fetch('/heatmapdata', {
@@ -108,7 +139,7 @@ export default class App extends Component{
             <LoadData callbackFromParent={this.callbackFromChild}/>
             <EqualWeights callbackFromParent={this.callbackFromChild}/>
             <Nav.Item style={{paddingLeft: 15}}>
-                <Button variant="info" onClick={this.handleChange}>Global Optimize</Button>
+                <Button variant="info" onClick={this.globaloptimize}>Global Optimize</Button>
             </Nav.Item>
           </Nav>
         </Navbar>

@@ -12,6 +12,7 @@ from flask_cors import CORS, cross_origin
 import warnings
 import os
 import sys, time, random
+from tsp_solver.greedy import solve_tsp
 warnings.filterwarnings("ignore")
 
 
@@ -157,6 +158,42 @@ def getSliderData(col1, col2, percent, bi_hist, xed):
             np.nan_to_num(outliers[1:])
             ]
 
+@app.route('/globaloptimize', methods=['POST'])
+@cross_origin()
+def globaloptimize():
+    vals = request.get_json()
+    weights = np.array([
+        vals['pos_corr_sliderval']/100,
+        vals['neg_corr_sliderval']/100,
+        vals['pos_var_sliderval']/100,
+        vals['neg_var_sliderval']/100,
+        vals['pos_skew_sliderval']/100,
+        vals['neg_skew_sliderval']/100,
+        vals['fan_sliderval']/100,
+        vals['neigh_sliderval']/100,
+        vals['clear_grouping_sliderval']/100,
+        vals['density_change_sliderval']/100,
+        vals['split_up_sliderval']/100,
+        vals['outliers_sliderval']/100,
+    ])
+    percent = int(vals['window_sliderval']/10-1)
+    cols = list(num_df.columns)
+    window_data = lookup_info.sum(axis=-1)
+    dim_arr = np.ones((1,window_data.ndim),int).ravel()
+    dim_arr[-1] = -1
+    weights_reshaped = weights.reshape(dim_arr)
+    matrix = window_data*weights_reshaped
+    matrix = matrix[:,:,percent,:]
+    matrix = matrix.sum(axis=-1)
+    seq = solve_tsp(matrix)
+    solution = []
+    for id in seq:
+        solution.append({
+            'key': id,
+            'name': cols[id] 
+        })
+    return json.dumps(solution)
+
 
 @app.route('/heatmapdata', methods=['POST'])
 @cross_origin()
@@ -186,7 +223,6 @@ def heatmapdata():
             if (i!=j):
                 # Divide by 256 to normalize the values, since each window has a range b/w 0-1
                 matrix.append({'col1': col1, 'col2': col2, 'val': np.sum(window_data[i][j][percent]*weights/(num_bins*num_active_props))})
-    print(matrix)
     return json.dumps([matrix, cols])
 
 @app.route('/defheatmapdata', methods=['GET'])
