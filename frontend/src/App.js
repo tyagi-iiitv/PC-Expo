@@ -1,6 +1,6 @@
 import './App.css';
 import { Navbar, Nav, NavbarBrand, Container, Row, Col, Button } from 'react-bootstrap';
-import {GeneratePCP, LoadData, ClearGrouping, DensityChange, SplitUp, Neighborhood, PosCorr, NegCorr, PosVar, NegVar, PosSkew, NegSkew, Fan, Outliers, EqualWeights, FeatureSelect, Donut, HeatMap} from './components';
+import {GeneratePCP, LoadData, ClearGrouping, DensityChange, SplitUp, Neighborhood, PosCorr, NegCorr, PosVar, NegVar, PosSkew, NegSkew, Fan, Outliers, EqualWeights, FeatureSelect, Donut, HeatMap, LocalView} from './components';
 import { Component } from 'react';
 // import * as navbar from './com';
 import styles from './app.module.scss';
@@ -150,7 +150,7 @@ export default class App extends Component{
                 <GeneratePCP pcpdata={this.state.sliderdata} data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan} callbackFromParent={this.callbackFromChild} selectedList={this.state.selectedList}/>
               </Row>
               <Row>
-                <Col md={4}>
+                <Col md="auto">
                   <Donut 
                     clear_grouping={this.state.clear_grouping_sliderval}
                     split_up={this.state.split_up_sliderval}
@@ -166,8 +166,11 @@ export default class App extends Component{
                     neg_skew={this.state.neg_skew_sliderval}
                   />
                 </Col>
-                <Col md={5}>
+                <Col md="auto">
                   <HeatMap heatmap_data={this.state.heatmap_data}/>
+                </Col>
+                <Col md="auto">
+                  <LocalView/>
                 </Col>
               </Row>
               {/* <Row className={styles.clueImage}>

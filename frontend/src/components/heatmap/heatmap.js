@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import * as d3 from 'd3';
+import styles from './heatmap.module.scss';
 import equal from 'fast-deep-equal';
 
 export default class HeatMap extends Component{
     constructor(props){
         super(props);
         this.state = {
-            canvasDims: {width: 500, height: 300},
-            margins: {top: 0, right: 250, bottom: 0, left: 0},
+            canvasDims: {width: 300, height: 300},
+            margins: {top: 0, right: 0, bottom: 0, left: 0},
             data_rec: {},
         }
     }
@@ -44,7 +45,7 @@ export default class HeatMap extends Component{
         return(
             <svg
                 id="svg2"
-                // className={styles.svgComp}
+                className={styles.svgComp}
                 height={this.state.canvasDims.height}
                 width={this.state.canvasDims.width}
             />
