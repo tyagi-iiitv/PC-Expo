@@ -223,9 +223,9 @@ export default class App extends Component{
                   <LocalView data={this.state.data} local_cols={this.state.local_cols} window={this.state.window_sliderval} callbackFromParent={this.callbackFromChild}/>
                 </Col>
               </Row>
-              {/* <Row className={styles.clueImage}>
+              <Row className={styles.clueImage}>
                 <img src="/all_props.png" alt="image" className={styles.clueImage}/>
-              </Row> */}
+              </Row>
             </Col>
             <Col md={2} className={styles.slider}>
               <Row>
