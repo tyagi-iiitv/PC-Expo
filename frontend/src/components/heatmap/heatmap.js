@@ -107,7 +107,7 @@ async function generateSVG(width, height, margins, data, callbackFromParent, svg
         .padding(0.05)
     
     let colors = d3.scaleSequential()
-        .interpolator(d3.interpolateInferno)
+        .interpolator(d3.interpolateOrRd)
         .domain([0,1])
     
     let mouseclick = function(d){
