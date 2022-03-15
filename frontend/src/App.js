@@ -120,7 +120,6 @@ export default class App extends Component{
     .then(response => response.json())
     .then(data => {
         this.setState({heatmap_data: data}, ()=> this.setState({'data_rec': true}))
-        // this.setState({heatmap_data: data}, ()=> console.log(this.state.heatmap_data))
     })
   }
 
@@ -171,7 +170,7 @@ export default class App extends Component{
                   <HeatMap heatmap_data={this.state.heatmap_data}/>
                 </Col>
                 <Col md="auto">
-                  <LocalView data={this.state.data} local_cols={this.state.local_cols} window={this.state.window_sliderval}/>
+                  <LocalView data={this.state.data} local_cols={this.state.local_cols} window={this.state.window_sliderval} callbackFromParent={this.callbackFromChild}/>
                 </Col>
               </Row>
               {/* <Row className={styles.clueImage}>
