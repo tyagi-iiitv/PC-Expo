@@ -173,7 +173,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
 
     let x = d3.scalePoint()
     .domain(dimensions)
-    .range([x_para_offset, width-50]);
+    .range([x_para_offset, width-25]);
 
     let xd = d3.scaleLinear()
     .domain([-1, 1])
@@ -229,7 +229,6 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
     
     function line(d) {
         return d3.line()(dimensions.map(function (key) {
-            // console.log(key, x(key), y[key](d[key]));
             return [x(key), y[key](d[key])];
         }));
     }
