@@ -30,7 +30,8 @@ export default class HeatMap extends Component{
                     this.state.data_rec,
                     this.props.callbackFromParent,
                     this.state.svg_x,
-                    this.state.svg_y
+                    this.state.svg_y,
+                    this.props.click_seq,
                 )
             )
         })
@@ -38,16 +39,31 @@ export default class HeatMap extends Component{
     }
 
     componentDidUpdate(prevProps){
-        if(!equal(this.props, prevProps)){
+        if(!equal(this.props.heatmap_data, prevProps.heatmap_data)){
+            this.setState({data_rec: this.props.heatmap_data}, ()=> {
+                generateSVG(
+                    this.state.canvasDims.width,
+                    this.state.canvasDims.height,
+                    this.state.margins,
+                    this.state.data_rec,
+                    this.props.callbackFromParent,
+                    this.state.svg_x,
+                    this.state.svg_y,
+                    this.props.click_seq,
+                )
+            })
+        }
+        else if(this.props.change){
             generateSVG(
                 this.state.canvasDims.width,
                 this.state.canvasDims.height,
                 this.state.margins,
-                this.props.heatmap_data,
+                this.state.data_rec,
                 this.props.callbackFromParent,
                 this.state.svg_x,
-                this.state.svg_y
-                )
+                this.state.svg_y,
+                this.props.click_seq,
+            )
         }
     }
 
@@ -66,8 +82,10 @@ export default class HeatMap extends Component{
     }
 }
 
-async function generateSVG(width, height, margins, data, callbackFromParent, svg_x, svg_y){
+async function generateSVG(width, height, margins, data, callbackFromParent, svg_x, svg_y, click_seq){
+    console.log(click_seq)
     d3.selectAll("#svg2 > *").remove();
+    d3.selectAll('#tooltip').remove();
     let svg = d3.select("#svg2");
     let cols = data[1];
     data = data[0];
@@ -88,13 +106,14 @@ async function generateSVG(width, height, margins, data, callbackFromParent, svg
         .domain([0,1])
     
     let mouseclick = function(d){
-        callbackFromParent({local_cols: [d.col1, d.col2]})
+        callbackFromParent({local_cols: [d.col1, d.col2], change_heatmap: false})
     }
 
     let tooltip = d3.select('#div2')
         .append('div')
         .style("opacity", 0)
         .attr("class", "tooltip")
+        .attr("id", "tooltip")
         .style("background-color", "white")
         .style("border", "solid")
         .style("border-width", "2px")
@@ -114,12 +133,6 @@ async function generateSVG(width, height, margins, data, callbackFromParent, svg
           .style("opacity", 1)
     }
 
-    let mousemove = function(e,d) {
-        tooltip
-          .html(e.col1 + " : " + e.col2)
-          .style("left", (d3.mouse(this)[0]+svg_x) + "px")
-          .style("top", (d3.mouse(this)[1]+svg_y) + "px")
-    }
     let mouseleave = function(d) {
         tooltip
           .style("opacity", 0)
@@ -128,8 +141,20 @@ async function generateSVG(width, height, margins, data, callbackFromParent, svg
           .style("opacity", 0.8)
     }
 
-    // Adding rects for the heatmap
-    svg.selectAll()
+    let doubleclick = function(d){
+        click_seq.push(d.col1)
+        click_seq.push(d.col2)
+        callbackFromParent({click_seq: click_seq, change_heatmap: true});
+    }
+
+    let rightclick = function(d,i){
+        d3.event.preventDefault();
+        click_seq = []
+        callbackFromParent({click_seq: click_seq, change_heatmap: true})
+    }
+
+    // Adding selectable rects for the heatmap
+    svg.selectAll('rects')
         .data(data)
         .enter()
         .append("rect")
@@ -148,7 +173,8 @@ async function generateSVG(width, height, margins, data, callbackFromParent, svg
     .on('click', mouseclick) 
     .on('mouseover', mouseover)
     .on('mouseleave', mouseleave)
-    // .on('mousemove', mousemove)
+    .on('dblclick', doubleclick)
+    .on('contextmenu', rightclick)
 
     // Adding diagonal labels
     svg.selectAll('.texts')

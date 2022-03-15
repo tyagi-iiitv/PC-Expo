@@ -32,6 +32,8 @@ export default class App extends Component{
       selectedList: [],
       heatmap_data: {},
       local_cols: [],
+      click_seq: [],
+      change_heatmap: false,
     }
     this.sliderChange = this.sliderChange.bind(this);
     this.recommend = this.recommend.bind(this);
@@ -88,7 +90,6 @@ export default class App extends Component{
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data)
         this.setState({selectedList: data, dimensions: data}, ()=> this.setState({'data_rec': true}))
     })
   }
@@ -128,7 +129,6 @@ export default class App extends Component{
   }
 
   render(){
-    // console.log(this.state.data)
     return (
       <div>
         <Navbar bg="dark" variant="dark">
@@ -167,7 +167,7 @@ export default class App extends Component{
                   />
                 </Col>
                 <Col md="auto">
-                  <HeatMap heatmap_data={this.state.heatmap_data} callbackFromParent={this.callbackFromChild}/>
+                  <HeatMap heatmap_data={this.state.heatmap_data} click_seq={this.state.click_seq} change={this.state.change_heatmap} callbackFromParent={this.callbackFromChild}/>
                 </Col>
                 <Col md="auto">
                   <LocalView data={this.state.data} local_cols={this.state.local_cols} window={this.state.window_sliderval} callbackFromParent={this.callbackFromChild}/>
