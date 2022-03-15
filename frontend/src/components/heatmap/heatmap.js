@@ -121,8 +121,10 @@ async function generateSVG(width, height, margins, data, callbackFromParent, svg
         .style("padding", "5px")
         
     
+    let prev_opacity = 0.8
     // Three function that change the tooltip when user hover / move / leave a cell
     let mouseover = function(e,d) {
+        prev_opacity = d3.select(this).style('opacity')
         tooltip
           .style("opacity", 1)
           .html(e.col1 + " : " + e.col2)
@@ -138,7 +140,7 @@ async function generateSVG(width, height, margins, data, callbackFromParent, svg
           .style("opacity", 0)
         d3.select(this)
           .style("stroke", "none")
-          .style("opacity", 0.8)
+          .style("opacity", prev_opacity)
     }
 
     let doubleclick = function(d){
@@ -167,9 +169,19 @@ async function generateSVG(width, height, margins, data, callbackFromParent, svg
         })
         .attr("width", x_scale.bandwidth())
         .attr("height", y_scale.bandwidth())
-        .style("fill", function(d){return colors(d.val)})
+        .style("fill", function(d){
+             return colors(d.val)
+        })
         .style("stroke-width","1px")
-        .style('opacity', 0.8)
+        .style('opacity', function(d){
+            if(click_seq.length > 0){
+                if(click_seq[click_seq.length-1] == d.col1)
+                    return 0.8
+                else
+                    return 0.2
+            }
+            return 0.8
+        })
     .on('click', mouseclick) 
     .on('mouseover', mouseover)
     .on('mouseleave', mouseleave)
