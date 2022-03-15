@@ -167,7 +167,7 @@ export default class App extends Component{
                   />
                 </Col>
                 <Col md="auto">
-                  <HeatMap heatmap_data={this.state.heatmap_data}/>
+                  <HeatMap heatmap_data={this.state.heatmap_data} callbackFromParent={this.callbackFromChild}/>
                 </Col>
                 <Col md="auto">
                   <LocalView data={this.state.data} local_cols={this.state.local_cols} window={this.state.window_sliderval} callbackFromParent={this.callbackFromChild}/>

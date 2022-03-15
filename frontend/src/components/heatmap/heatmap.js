@@ -24,6 +24,7 @@ export default class HeatMap extends Component{
                     this.state.canvasDims.height,
                     this.state.margins,
                     this.state.data_rec,
+                    this.props.callbackFromParent
                 )
             )
         })
@@ -37,6 +38,7 @@ export default class HeatMap extends Component{
                 this.state.canvasDims.height,
                 this.state.margins,
                 this.props.heatmap_data,
+                this.props.callbackFromParent
                 )
         }
     }
@@ -53,7 +55,7 @@ export default class HeatMap extends Component{
     }
 }
 
-async function generateSVG(width, height, margins, data){
+async function generateSVG(width, height, margins, data, callbackFromParent){
     d3.selectAll("#svg2 > *").remove();
     let svg = d3.select("#svg2");
     let cols = data[1];
@@ -74,6 +76,10 @@ async function generateSVG(width, height, margins, data){
         .interpolator(d3.interpolateInferno)
         .domain([0,1])
     
+    let mouseclick = function(d){
+        callbackFromParent({local_cols: [d.col1, d.col2]})
+    }
+    
     // Adding rects for the heatmap
     svg.selectAll()
         .data(data)
@@ -89,7 +95,8 @@ async function generateSVG(width, height, margins, data){
         .attr("width", x_scale.bandwidth())
         .attr("height", y_scale.bandwidth())
         .style("fill", function(d){return colors(d.val)})
-        .style("stroke-width","1px") 
+        .style("stroke-width","1px")
+    .on('click', mouseclick) 
 
     // Adding diagonal labels
     svg.selectAll('.texts')
