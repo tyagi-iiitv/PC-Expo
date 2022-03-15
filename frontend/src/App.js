@@ -40,6 +40,7 @@ export default class App extends Component{
     this.recommend = this.recommend.bind(this);
     this.globaloptimize = this.globaloptimize.bind(this);
     this.getareacharts = this.getareacharts.bind(this);
+    this.delareacharts = this.delareacharts.bind(this);
     this.callbackFromChild = this.callbackFromChild.bind(this);
   }
 
@@ -64,6 +65,10 @@ export default class App extends Component{
   callbackFromChild(data){
     this.setState({'data_rec': false});
     this.setState(data, ()=> this.setState({'data_rec': true}));
+  }
+
+  delareacharts(){
+    this.setState({area_chart_data: []})
   }
 
   getareacharts(){
@@ -177,6 +182,9 @@ export default class App extends Component{
             </Nav.Item>
             <Nav.Item style={{paddingLeft: 15}}>
                 <Button variant="info" onClick={this.getareacharts}>Show Properties</Button>
+            </Nav.Item>
+            <Nav.Item style={{paddingLeft: 15}}>
+                <Button variant="info" onClick={this.delareacharts}>Hide Properties</Button>
             </Nav.Item>
           </Nav>
         </Navbar>
