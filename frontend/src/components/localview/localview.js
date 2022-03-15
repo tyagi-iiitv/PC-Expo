@@ -8,7 +8,7 @@ export default class LocalView extends Component{
     constructor(props){
         super(props);
         this.state = {
-            canvasDims: {width: 810, height: 300},
+            canvasDims: {width: 1010, height: 300},
             correlation_pos: [],
             correlation_neg: [], 
             variance_pos: [],
@@ -162,11 +162,11 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
     let dimensions = local_cols.filter(function (key) {
         y[key] = d3.scaleLinear()
             .domain(d3.extent(data, function (d) { return +d[key]; }))
-            .range([height-30, 0]);
+            .range([height-20, 0]);
         return key;
     });
-    let x_para_offset = 700
-    let dists = ['pos_corr', 'neg_corr', 'pos_var', 'neg_var', 'pos_skew', 'neg_skew', 'fan', 'neigh', 'clear_grouping', 'density_change', 'split_up', 'outliers']
+    let x_para_offset = 800
+    let dists = ['pos_corr', 'neg_corr', 'pos_var', 'neg_var', 'pos_skew', 'neg_skew', 'fan', 'neigh', 'clr_grp', 'den_ch', 'spl_up', 'outliers']
     let offset = 100
     let clicked_node = null;
     let x = d3.scalePoint()
@@ -207,7 +207,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
             .attr("x", function(d) {return x_dist('pos_corr')+20})
             .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
             .attr("width", 25)
-            .attr("height", 32)
+            .attr("height", 1)
             .style("fill", function(d) {return colors(d)})
 
     svg.append("g")
@@ -219,7 +219,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
             .attr("x", function(d) {return x_dist('neg_corr')+20})
             .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
             .attr("width", 25)
-            .attr("height", 32)
+            .attr("height", 1)
             .style("fill", function(d) {return colors(d)})
     
     svg.append("g")
@@ -231,7 +231,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
             .attr("x", function(d) {return x_dist('pos_var')+20})
             .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
             .attr("width", 25)
-            .attr("height", 32)
+            .attr("height", 1)
             .style("fill", function(d) {return colors(d)})
     
     svg.append("g")
@@ -243,7 +243,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
             .attr("x", function(d) {return x_dist('neg_var')+20})
             .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
             .attr("width", 25)
-            .attr("height", 32)
+            .attr("height", 1)
             .style("fill", function(d) {return colors(d)})
         
     svg.append("g")
@@ -255,7 +255,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
             .attr("x", function(d) {return x_dist('pos_skew')+20})
             .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
             .attr("width", 25)
-            .attr("height", 32)
+            .attr("height", 1)
             .style("fill", function(d) {return colors(d)})
             
     svg.append("g")
@@ -267,7 +267,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
             .attr("x", function(d) {return x_dist('neg_skew')+20})
             .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
             .attr("width", 25)
-            .attr("height", 32)
+            .attr("height", 1)
             .style("fill", function(d) {return colors(d)})
 
     svg.append("g")
@@ -279,7 +279,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
             .attr("x", function(d) {return x_dist('fan')+20})
             .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
             .attr("width", 25)
-            .attr("height", 32)
+            .attr("height", 1)
             .style("fill", function(d) {return colors(d)})
 
     svg.append("g")
@@ -291,7 +291,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
             .attr("x", function(d) {return x_dist('neigh')+20})
             .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
             .attr("width", 25)
-            .attr("height", 32)
+            .attr("height", 1)
             .style("fill", function(d) {return colors(d)})
 
     svg.append("g")
@@ -300,10 +300,10 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
         .data(clear_grouping)
         .enter()
         .append("rect")
-            .attr("x", function(d) {return x_dist('clear_grouping')+20})
+            .attr("x", function(d) {return x_dist('clr_grp')+20})
             .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
             .attr("width", 25)
-            .attr("height", 32)
+            .attr("height", 1)
             .style("fill", function(d) {return colors(d)})
 
     svg.append("g")
@@ -312,10 +312,10 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
         .data(density_change)
         .enter()
         .append("rect")
-            .attr("x", function(d) {return x_dist('density_change')+20})
+            .attr("x", function(d) {return x_dist('den_ch')+20})
             .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
             .attr("width", 25)
-            .attr("height", 32)
+            .attr("height", 1)
             .style("fill", function(d) {return colors(d)})
 
     svg.append("g")
@@ -324,10 +324,10 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
         .data(split_up)
         .enter()
         .append("rect")
-            .attr("x", function(d) {return x_dist('split_up')+20})
+            .attr("x", function(d) {return x_dist('spl_up')+20})
             .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
             .attr("width", 25)
-            .attr("height", 32)
+            .attr("height", 1)
             .style("fill", function(d) {return colors(d)})
 
     svg.append("g")
@@ -339,7 +339,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
             .attr("x", function(d) {return x_dist('outliers')+20})
             .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
             .attr("width", 25)
-            .attr("height", 32)
+            .attr("height", 1)
             .style("fill", function(d) {return colors(d)})
             
     let g = svg.selectAll(".dimension")
