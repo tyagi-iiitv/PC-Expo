@@ -224,6 +224,7 @@ def getareacharts():
     solution = []
     for i in range(len(col_seq)-1):
         solution.append(list(matrix[cols.index(col_seq[i]['name']),cols.index(col_seq[i+1]['name']),percent,:]))
+        solution.append(list(np.linspace(num_df[col_seq[i]['name']].min(), num_df[col_seq[i]['name']].max(), num_bins)))
     return json.dumps(solution)
 
 

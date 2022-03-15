@@ -64,6 +64,8 @@ async function generateSVG(
     data_rec, 
     selectedList,
     area_chart_data){
+    
+    console.log(area_chart_data, selectedList)
     d3.selectAll("#svg1 > *").remove();
     let svg = d3.select('#svg1');
     let y = {};
@@ -81,8 +83,12 @@ async function generateSVG(
     let x_para_right_offset = 150
     // Create our x axis scale.
     x = d3.scalePoint()
-    .domain(dimensions)
-    .range([x_para_offset, width-x_para_right_offset]);
+        .domain(dimensions)
+        .range([x_para_offset, width-x_para_right_offset]);
+
+    let xd = d3.scaleLinear()
+        .domain([0, 1])
+        .range([0, 100]);
 
     // Add grey background lines for context.
     let background = svg.append("g")
@@ -99,14 +105,34 @@ async function generateSVG(
         .append("path")
         .attr("d", line);
 
+    if(area_chart_data.length > 0){
+        for(let i=0;i<selectedList.length-1;i++){
+            svg.append("path")
+                .attr("class", "mypath")
+                .datum(area_chart_data[2*i])
+                .attr("fill", "#e41a1c")
+                .attr("opacity", ".8")
+                .attr("stroke", "#000")
+                .attr("stroke-width", 1)
+                .attr("stroke-linejoin", "round")
+                .attr("d",  d3.line()
+                    .curve(d3.curveBasis)
+                    // .x(function(d) { console.log(xd(d), x(selectedList[i].name)); return x(selectedList[i].name)+xd(d);})
+                    // .y(function(d,j) { console.log(area_chart_data[2*i+1][j]); return y[selectedList[i].name](area_chart_data[2*i+1][j]); })
+                    .x(function(d) { return x(selectedList[i].name)+xd(d);})
+                    .y(function(d,j) { return y[selectedList[i].name](area_chart_data[2*i+1][j]); })
+                )
+        }
+    }
+    
     // // Add a group element for each dimension and dist
     g = svg.selectAll(".dimension")
         .data(dimensions).enter()
         .append("g")
         .attr("class", "dimension")
         .attr("transform", function (d) { return "translate(" + x(d) + ")"; });
-    
-    // // // Add axis labels and title.
+
+    // // // // Add axis labels and title.
     g.append("g")
         .attr("class", styles.axis)
         .each(function (d) {d3.select(this).call(d3.axisLeft().scale(y[d])); })
@@ -117,7 +143,7 @@ async function generateSVG(
         .attr("y", height-5)
         .text(function (d) { return d; });
 
-    // Add and store a brush for each axis.
+    // // Add and store a brush for each axis.
     g.append("g")
         .attr("class", "brush")
         .call(d3.brushY()
