@@ -155,7 +155,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
     d3.selectAll("#svg3 > *").remove();
     let svg = d3.select("#svg3");
     let colors = d3.scaleSequential()
-        .interpolator(d3.interpolateInferno)
+        .interpolator(d3.interpolatePuBu)
         .domain([0,1])
     height = height - 20;
     let y = {};
