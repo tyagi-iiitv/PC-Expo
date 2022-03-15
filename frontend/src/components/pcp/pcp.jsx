@@ -67,34 +67,20 @@ async function generateSVG(
     let x, dimensions, lines, g;
     let height = boxHeight - 70;
     let data = data_rec
-    let selectedCols = selectedList.map(o => o.name)
+    let selectedCols = selectedList.map(o => o['name'])
     dimensions = selectedCols.filter(function (key) {
-        if (key !== "") {
-            y[key] = d3.scaleLinear()
-                .domain(d3.extent(data, function (d) { return +d[key]; }))
-                .range([height-30, 0]);
-            return key;
-        };
+        y[key] = d3.scaleLinear()
+            .domain(d3.extent(data, function (d) { return +d[key]; }))
+            .range([height-30, 0]);
+        return key;
     });
     let x_para_offset = 100
     let x_para_right_offset = 150
-    let dists = ['corr_pos', 'corr_neg', 'var_pos', 'var_neg', 'skew_pos', 'skew_neg', 'fan', 'neighborhood']
-    let offset = 100
     // Create our x axis scale.
     x = d3.scalePoint()
     .domain(dimensions)
     .range([x_para_offset, width-x_para_right_offset]);
 
-    let xd = d3.scaleLinear()
-    .domain([-1, 1])
-    .range([0, 25]);
-
-    let x_dist = d3.scalePoint()
-    .domain(dists)
-    .range([40, x_para_offset-offset])
-
-
-    
     // Add grey background lines for context.
     let background = svg.append("g")
         .attr("class", styles.background)

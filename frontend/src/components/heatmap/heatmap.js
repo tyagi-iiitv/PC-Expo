@@ -149,15 +149,15 @@ async function generateSVG(width, height, margins, data, callbackFromParent, svg
     }
 
     let doubleclick = function(d){
-        if(click_seq.length == 0){
+        if(click_seq.length === 0){
             click_seq.push(d.col1)
             click_seq.push(d.col2)
             let new_selected_list = []
             for(let i=0;i<org_dimensions.length;i++){
-                if(org_dimensions[i].name == d.col2){
+                if(org_dimensions[i].name === d.col2){
                     new_selected_list.push(org_dimensions[i])
                 }
-                else if(org_dimensions[i].name == d.col1){
+                else if(org_dimensions[i].name === d.col1){
                     new_selected_list.unshift(org_dimensions[i])
                 }
             }
@@ -167,7 +167,7 @@ async function generateSVG(width, height, margins, data, callbackFromParent, svg
             click_seq.push(d.col2)
             let select_list_clone = [...org_selected_list]
             for(let i=0;i<org_dimensions.length;i++){
-                if(org_dimensions[i].name == d.col2){
+                if(org_dimensions[i].name === d.col2){
                     select_list_clone.push(org_dimensions[i]);
                     break;
                 }
@@ -190,7 +190,7 @@ async function generateSVG(width, height, margins, data, callbackFromParent, svg
         .append("rect")
         .attr("class", function(d) {
             if(click_seq.length > 0){
-                if((click_seq[click_seq.length-1] == d.col1) && (click_seq.indexOf(d.col2) == -1))
+                if((click_seq[click_seq.length-1] === d.col1) && (click_seq.indexOf(d.col2) === -1))
                     return "rects"
                 else
                     return "hide_rects"
@@ -211,7 +211,7 @@ async function generateSVG(width, height, margins, data, callbackFromParent, svg
         .style("stroke-width","1px")
         .style('opacity', function(d){
             if(click_seq.length > 0){
-                if((click_seq[click_seq.length-1] == d.col1) && (click_seq.indexOf(d.col2) == -1))
+                if((click_seq[click_seq.length-1] === d.col1) && (click_seq.indexOf(d.col2) === -1))
                     return 0.8
                 else
                     return 0.2

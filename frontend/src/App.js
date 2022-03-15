@@ -1,6 +1,6 @@
 import './App.css';
 import { Navbar, Nav, NavbarBrand, Container, Row, Col, Button } from 'react-bootstrap';
-import {GeneratePCP, LoadData, ClearGrouping, DensityChange, SplitUp, Neighborhood, PosCorr, NegCorr, PosVar, NegVar, PosSkew, NegSkew, Fan, Outliers, EqualWeights, FeatureSelect, Donut, HeatMap, LocalView} from './components';
+import {GeneratePCP, LoadData, ClearGrouping, DensityChange, SplitUp, Neighborhood, PosCorr, NegCorr, PosVar, NegVar, PosSkew, NegSkew, Fan, Outliers, FeatureSelect, Donut, HeatMap, LocalView, Scatterplot} from './components';
 import { Component } from 'react';
 // import * as navbar from './com';
 import styles from './app.module.scss';
@@ -168,7 +168,7 @@ export default class App extends Component{
                     />
                   </Row>
                   <Row>
-                    
+                    <Scatterplot data={this.state.data} local_cols={this.state.local_cols}/>
                   </Row>
                 </Col>
                 <Col md="auto">

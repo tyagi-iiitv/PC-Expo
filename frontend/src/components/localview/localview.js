@@ -160,12 +160,10 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
     height = height - 20;
     let y = {};
     let dimensions = local_cols.filter(function (key) {
-        if (key !== "") {
-            y[key] = d3.scaleLinear()
-                .domain(d3.extent(data, function (d) { return +d[key]; }))
-                .range([height-30, 0]);
-            return key;
-        };
+        y[key] = d3.scaleLinear()
+            .domain(d3.extent(data, function (d) { return +d[key]; }))
+            .range([height-30, 0]);
+        return key;
     });
     let x_para_offset = 700
     let dists = ['pos_corr', 'neg_corr', 'pos_var', 'neg_var', 'pos_skew', 'neg_skew', 'fan', 'neigh', 'clear_grouping', 'density_change', 'split_up', 'outliers']
