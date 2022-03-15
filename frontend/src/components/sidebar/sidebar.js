@@ -12,7 +12,8 @@ export class FeatureSelect extends Component {
     }
 
     select(selectedList){
-        this.props.callbackFromParent({selectedList: selectedList})
+        let click_seq = selectedList.map(o => o.name)
+        this.props.callbackFromParent({selectedList: selectedList, click_seq: click_seq})
     }
     
     render(){
