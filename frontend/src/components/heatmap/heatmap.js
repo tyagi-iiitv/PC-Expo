@@ -89,7 +89,7 @@ export default class HeatMap extends Component{
 }
 
 async function generateSVG(width, height, margins, data, callbackFromParent, svg_x, svg_y, click_seq, org_dimensions, org_selected_list){
-    console.log(click_seq)
+    console.log(org_selected_list, org_dimensions)
     d3.selectAll("#svg2 > *").remove();
     d3.selectAll('#tooltip').remove();
     let svg = d3.select("#svg2");

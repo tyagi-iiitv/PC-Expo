@@ -33,7 +33,7 @@ export default class App extends Component{
       heatmap_data: {},
       local_cols: [],
       click_seq: [],
-      change_heatmap: false,
+      change_heatmap: true,
     }
     this.sliderChange = this.sliderChange.bind(this);
     this.recommend = this.recommend.bind(this);
