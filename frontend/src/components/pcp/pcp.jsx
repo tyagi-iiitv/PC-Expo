@@ -107,7 +107,7 @@ async function generateSVG(
 
     if(area_chart_data.length > 0){
         for(let i=0;i<selectedList.length-1;i++){
-            svg.append("path")
+        svg.append("path")
                 .attr("class", "mypath")
                 .datum(area_chart_data[2*i])
                 .attr("fill", "#e41a1c")
@@ -115,12 +115,13 @@ async function generateSVG(
                 .attr("stroke", "#000")
                 .attr("stroke-width", 1)
                 .attr("stroke-linejoin", "round")
-                .attr("d",  d3.line()
+                .attr("d",  d3.area()
                     .curve(d3.curveBasis)
-                    // .x(function(d) { console.log(xd(d), x(selectedList[i].name)); return x(selectedList[i].name)+xd(d);})
-                    // .y(function(d,j) { console.log(area_chart_data[2*i+1][j]); return y[selectedList[i].name](area_chart_data[2*i+1][j]); })
-                    .x(function(d) { return x(selectedList[i].name)+xd(d);})
-                    .y(function(d,j) { return y[selectedList[i].name](area_chart_data[2*i+1][j]); })
+                    .x0(function(d) { console.log(xd(d), x(selectedList[i].name)); return x(selectedList[i].name)+xd(d);})
+                    .y(function(d,j) { console.log(area_chart_data[2*i+1][j]); return y[selectedList[i].name](area_chart_data[2*i+1][j]); })
+                    .x1(function(d) {return x(selectedList[i].name)})
+                    // .x(function(d) { return x(selectedList[i].name)+xd(d);})
+                    // .y(function(d,j) { return y[selectedList[i].name](area_chart_data[2*i+1][j]); })
                 )
         }
     }

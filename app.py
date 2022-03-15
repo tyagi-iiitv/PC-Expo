@@ -223,8 +223,8 @@ def getareacharts():
     matrix = matrix.sum(axis=-2)/num_active_props
     solution = []
     for i in range(len(col_seq)-1):
-        solution.append(list(matrix[cols.index(col_seq[i]['name']),cols.index(col_seq[i+1]['name']),percent,:]))
-        solution.append(list(np.linspace(num_df[col_seq[i]['name']].min(), num_df[col_seq[i]['name']].max(), num_bins)))
+        solution.append(list(matrix[cols.index(col_seq[i]['name']),cols.index(col_seq[i+1]['name']),percent,:][0::4]))
+        solution.append(list(np.linspace(num_df[col_seq[i]['name']].min(), num_df[col_seq[i]['name']].max(), num_bins)[0::4]))
     return json.dumps(solution)
 
 
