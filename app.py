@@ -304,16 +304,15 @@ def fileUpload():
     lookup_info = np.random.rand(len(num_df.columns), len(num_df.columns), 10, 12, num_bins)
     return num_df.to_json(orient='records')
 
-# @app.route('/getpoints', methods=['POST'])
-# @cross_origin()
-# def getPoints():
-#     # global num_df
-#     [end, start] = request.get_json()
-#     cur_pts = np.where((num_df[col1] >= start) & 
-#                             (num_df[col1] <= end)
-#                            )
-#     subset = num_df.iloc[cur_pts]
-#     return json.dumps([list(subset['bill_length_mm']), list(subset['bill_depth_mm'])])
+@app.route('/getpoints', methods=['POST'])
+@cross_origin()
+def getPoints():
+    [end, start, col1, col2] = request.get_json()
+    cur_pts = np.where((num_df[col1] >= start) & 
+                            (num_df[col1] <= end)
+                           )
+    subset = num_df.iloc[cur_pts]
+    return json.dumps([list(subset[col1]), list(subset[col2])])
     
 
 @app.route('/readdata', methods=['GET'])

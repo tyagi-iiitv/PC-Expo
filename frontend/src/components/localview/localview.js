@@ -416,19 +416,19 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
             return
         }
 
-        // fetch('/getpoints', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify([y['bill_length_mm'].invert(d3.brushSelection(this)[0]), y['bill_length_mm'].invert(d3.brushSelection(this)[1])])
-        //     // console.log(y['bill_length_mm'].invert(940))
-        // })
-        // .then(response => response.json())
-        // .then(data => {
-        //     callbackFromParent({dragdata: data})
-        // })
+        fetch('/getpoints', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify([y[local_cols[0]].invert(d3.brushSelection(this)[0]), y[local_cols[0]].invert(d3.brushSelection(this)[1]), local_cols[0], local_cols[1]])
+            // console.log(y['bill_length_mm'].invert(940))
+        })
+        .then(response => response.json())
+        .then(data => {
+            callbackFromParent({dragdata: data})
+        })
     }
     // Handles a brush event, toggling the display of foreground lines.
     function brush() {

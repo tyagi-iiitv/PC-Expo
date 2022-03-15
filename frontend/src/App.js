@@ -168,7 +168,7 @@ export default class App extends Component{
                     />
                   </Row>
                   <Row>
-                    <Scatterplot data={this.state.data} local_cols={this.state.local_cols}/>
+                    <Scatterplot data={this.state.data} local_cols={this.state.local_cols} dragdata={this.state.dragdata}/>
                   </Row>
                 </Col>
                 <Col md="auto">

@@ -34,18 +34,18 @@ export default class Scatterplot extends Component {
                             y: this.state.y,
                             mode: 'markers',
                             type: 'scatter',
-                            marker: {color: '#F08080', size: 5},
+                            marker: {color: '#F08080', size: 3},
                         },
-                        // {
-                        //     x: this.props.dragdata[0],
-                        //     y: this.props.dragdata[1],
-                        //     mode: 'markers',
-                        //     type: 'scatter',
-                        //     marker: {color: '#3182bd', size: 13},
-                        // }
+                        {
+                            x: this.props.dragdata[0],
+                            y: this.props.dragdata[1],
+                            mode: 'markers',
+                            type: 'scatter',
+                            marker: {color: '#3182bd', size: 5},
+                        }
                     ]}
                     layout={{
-                        showlegend: false, xaxis: {showgrid: false, showticklabels: false, zeroline: false, rangemode: 'tozero'}, yaxis: {showgrid: false, showticklabels: false, zeroline: false, rangemode: 'tozero'}, margin: {b: 10, l: 0, r: 0, t: 0}
+                        showlegend: false, xaxis: {showgrid: false, showticklabels: false, zeroline: false, rangemode: 'tozero'}, yaxis: {showgrid: false, showticklabels: false, zeroline: false, rangemode: 'tozero'}, margin: {b: 0, l: 0, r: 0, t: 0}
                     }}
                     style={{width: 150, height: 125}}
                 />
