@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import Slider from '@mui/material/Slider';
 import {Form, Row, Col} from 'react-bootstrap';
 import Multiselect from 'multiselect-react-dropdown';
+import equal from 'fast-deep-equal';
+
 
 export class FeatureSelect extends Component {
     constructor(props){
@@ -13,7 +15,6 @@ export class FeatureSelect extends Component {
         this.props.callbackFromParent({selectedList: selectedList})
     }
     
-
     render(){
         return (
             <Multiselect

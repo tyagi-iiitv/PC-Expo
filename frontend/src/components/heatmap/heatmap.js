@@ -89,7 +89,6 @@ export default class HeatMap extends Component{
 }
 
 async function generateSVG(width, height, margins, data, callbackFromParent, svg_x, svg_y, click_seq, org_dimensions, org_selected_list){
-    console.log(org_selected_list, org_dimensions)
     d3.selectAll("#svg2 > *").remove();
     d3.selectAll('#tooltip').remove();
     let svg = d3.select("#svg2");
@@ -166,13 +165,15 @@ async function generateSVG(width, height, margins, data, callbackFromParent, svg
         }
         else{
             click_seq.push(d.col2)
+            let select_list_clone = [...org_selected_list]
             for(let i=0;i<org_dimensions.length;i++){
                 if(org_dimensions[i].name == d.col2){
-                    org_selected_list.push(org_dimensions[i]);
+                    select_list_clone.push(org_dimensions[i]);
                     break;
                 }
             }
-            callbackFromParent({click_seq: click_seq, change_heatmap: true, selectedList: org_selected_list});
+            console.log(org_selected_list, select_list_clone)
+            callbackFromParent({click_seq: click_seq, change_heatmap: true, selectedList: select_list_clone});
         }
     }
 
