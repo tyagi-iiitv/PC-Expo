@@ -137,7 +137,7 @@ export default class App extends Component{
           </NavbarBrand>
           <Nav className="mr-auto">
             <LoadData callbackFromParent={this.callbackFromChild}/>
-            <EqualWeights callbackFromParent={this.callbackFromChild}/>
+            {/* <EqualWeights callbackFromParent={this.callbackFromChild}/> */}
             <Nav.Item style={{paddingLeft: 15}}>
                 <Button variant="info" onClick={this.globaloptimize}>Global Optimize</Button>
             </Nav.Item>
