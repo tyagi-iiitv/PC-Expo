@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import * as d3 from 'd3';
 import styles from './heatmap.module.scss';
 import equal from 'fast-deep-equal';
-import { tooltipClasses } from '@mui/material';
 
 export default class HeatMap extends Component{
     constructor(props){

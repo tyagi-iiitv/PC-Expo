@@ -170,7 +170,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
     let x_para_offset = 700
     let dists = ['pos_corr', 'neg_corr', 'pos_var', 'neg_var', 'pos_skew', 'neg_skew', 'fan', 'neigh', 'clear_grouping', 'density_change', 'split_up', 'outliers']
     let offset = 100
-
+    let clicked_node = null;
     let x = d3.scalePoint()
     .domain(dimensions)
     .range([x_para_offset, width-25]);
@@ -199,16 +199,176 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
         .data(data).enter()
         .append("path")
         .attr("d", line);
+
+    svg.append("g")
+        .attr("class", styles.hists)
+        .selectAll("rect")
+        .data(pos_corr)
+        .enter()
+        .append("rect")
+            .attr("x", function(d) {return x_dist('pos_corr')+20})
+            .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
+            .attr("width", 25)
+            .attr("height", 32)
+            .style("fill", function(d) {return colors(d)})
+
+    svg.append("g")
+        .attr("class", styles.hists)
+        .selectAll("rect")
+        .data(neg_corr)
+        .enter()
+        .append("rect")
+            .attr("x", function(d) {return x_dist('neg_corr')+20})
+            .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
+            .attr("width", 25)
+            .attr("height", 32)
+            .style("fill", function(d) {return colors(d)})
+    
+    svg.append("g")
+        .attr("class", styles.hists)
+        .selectAll("rect")
+        .data(pos_var)
+        .enter()
+        .append("rect")
+            .attr("x", function(d) {return x_dist('pos_var')+20})
+            .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
+            .attr("width", 25)
+            .attr("height", 32)
+            .style("fill", function(d) {return colors(d)})
+    
+    svg.append("g")
+        .attr("class", styles.hists)
+        .selectAll("rect")
+        .data(neg_var)
+        .enter()
+        .append("rect")
+            .attr("x", function(d) {return x_dist('neg_var')+20})
+            .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
+            .attr("width", 25)
+            .attr("height", 32)
+            .style("fill", function(d) {return colors(d)})
         
+    svg.append("g")
+        .attr("class", styles.hists)
+        .selectAll("rect")
+        .data(pos_skew)
+        .enter()
+        .append("rect")
+            .attr("x", function(d) {return x_dist('pos_skew')+20})
+            .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
+            .attr("width", 25)
+            .attr("height", 32)
+            .style("fill", function(d) {return colors(d)})
+            
+    svg.append("g")
+        .attr("class", styles.hists)
+        .selectAll("rect")
+        .data(neg_skew)
+        .enter()
+        .append("rect")
+            .attr("x", function(d) {return x_dist('neg_skew')+20})
+            .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
+            .attr("width", 25)
+            .attr("height", 32)
+            .style("fill", function(d) {return colors(d)})
+
+    svg.append("g")
+        .attr("class", styles.hists)
+        .selectAll("rect")
+        .data(fan)
+        .enter()
+        .append("rect")
+            .attr("x", function(d) {return x_dist('fan')+20})
+            .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
+            .attr("width", 25)
+            .attr("height", 32)
+            .style("fill", function(d) {return colors(d)})
+
+    svg.append("g")
+        .attr("class", styles.hists)
+        .selectAll("rect")
+        .data(neigh)
+        .enter()
+        .append("rect")
+            .attr("x", function(d) {return x_dist('neigh')+20})
+            .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
+            .attr("width", 25)
+            .attr("height", 32)
+            .style("fill", function(d) {return colors(d)})
+
+    svg.append("g")
+        .attr("class", styles.hists)
+        .selectAll("rect")
+        .data(clear_grouping)
+        .enter()
+        .append("rect")
+            .attr("x", function(d) {return x_dist('clear_grouping')+20})
+            .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
+            .attr("width", 25)
+            .attr("height", 32)
+            .style("fill", function(d) {return colors(d)})
+
+    svg.append("g")
+        .attr("class", styles.hists)
+        .selectAll("rect")
+        .data(density_change)
+        .enter()
+        .append("rect")
+            .attr("x", function(d) {return x_dist('density_change')+20})
+            .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
+            .attr("width", 25)
+            .attr("height", 32)
+            .style("fill", function(d) {return colors(d)})
+
+    svg.append("g")
+        .attr("class", styles.hists)
+        .selectAll("rect")
+        .data(split_up)
+        .enter()
+        .append("rect")
+            .attr("x", function(d) {return x_dist('split_up')+20})
+            .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
+            .attr("width", 25)
+            .attr("height", 32)
+            .style("fill", function(d) {return colors(d)})
+
+    svg.append("g")
+        .attr("class", styles.hists)
+        .selectAll("rect")
+        .data(outliers)
+        .enter()
+        .append("rect")
+            .attr("x", function(d) {return x_dist('outliers')+20})
+            .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
+            .attr("width", 25)
+            .attr("height", 32)
+            .style("fill", function(d) {return colors(d)})
+            
     let g = svg.selectAll(".dimension")
         .data(dimensions).enter()
         .append("g")
         .attr("class", "dimension")
         .attr("transform", function (d) { return "translate(" + x(d) + ")"; });
 
+    let g_dist = svg.selectAll(".dists")
+        .data(dists).enter()
+        .append("g")
+        .attr("class", function(d) {return d})
+        .attr("transform", function (d) { return "translate(" + x_dist(d) + ")"; });
+
     g.append("g")
         .attr("class", styles.axis)
         .each(function (d) {d3.select(this).call(d3.axisLeft().scale(y[d])); })
+        .append("text")
+        .style("text-anchor", "middle")
+        .attr("fill", "black")
+        .attr("font-size", "12")
+        .attr("y", height-5)
+        .text(function (d) { return d; });
+    
+    g_dist.append("g")
+        .attr("class", styles.axis)
+        .each(function (d) { d3.select(this).call(d3.axisRight().scale(yd).tickFormat("")); })
         .append("text")
         .style("text-anchor", "middle")
         .attr("fill", "black")
@@ -227,6 +387,17 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
         .attr("x", -8)
         .attr("width", 16);
     
+    let fixed_brush = d3.brushY()
+        .extent([[-10, 0], [10, height-5]])
+        .on("start", distbrushstart)
+        .on("brush", brushDist)
+        .on("end", brushend)
+
+    g_dist.append("g")
+        .attr("class", "brushdist")
+        .call(fixed_brush)
+        .call(fixed_brush.move, [0,y[local_cols[0]](y[local_cols[0]].domain()[1]-window_size)])
+    
     function line(d) {
         return d3.line()(dimensions.map(function (key) {
             return [x(key), y[key](d[key])];
@@ -235,6 +406,10 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
 
     function brushstart() {
         d3.event.sourceEvent.stopPropagation();
+    }
+
+    function distbrushstart(){
+        clicked_node = d3.select(this.parentNode).attr('class')
     }
 
     function brushend(){
@@ -271,6 +446,23 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
                     extent: d3.brushSelection(this)
                 });
             });
+        // Change line visibility based on brush extent.
+        if (actives.length === 0) {
+            lines.style("display", null);
+        } else {
+            lines.style("display", function (d) {
+                return actives.every(function (brushObj) {
+                    return brushObj.extent[0] <= y[brushObj.dimension](d[brushObj.dimension]) && y[brushObj.dimension](d[brushObj.dimension]) <= brushObj.extent[1];
+                }) ? null : "none";
+            });
+        }
+    }
+
+    function brushDist() {
+        var actives = [{
+            dimension: local_cols[0],
+            extent: d3.brushSelection(this)
+        }]
         // Change line visibility based on brush extent.
         if (actives.length === 0) {
             lines.style("display", null);
