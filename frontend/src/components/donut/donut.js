@@ -23,10 +23,6 @@ export default class Donut extends Component {
             ],
             options: {
             labels: ['Clear Grouping', 'Split Up', 'Density Change', 'Neighborhood', 'Fan', 'Outliers', 'Pos Correlation', 'Neg Correlation', 'Pos Variance', 'Neg Variance', 'Pos Skewness', 'Neg Skewness'],
-            chart: {
-                width: 380,
-                type: 'donut',
-            },
             plotOptions: {
                 pie: {
                     donut: {
@@ -38,23 +34,12 @@ export default class Donut extends Component {
                     endAngle: 270
                 },
             },
-            dataLabels: {
-                enabled: true
-            },
             fill: {
                 type: 'gradient',
             },
             title: {
                 text: 'Property Weights'
             },
-            responsive: [{
-                breakpoint: 480,
-                options: {
-                    chart: {
-                        width: 200
-                    },
-                }
-            }],
             legend: {
                 show: false,
             }
@@ -88,7 +73,7 @@ export default class Donut extends Component {
     render() {
         return (
             <div id="chart">
-                <Chart options={this.state.options} series={this.state.series} labels={this.state.labels} type="donut" width={380} />
+                <Chart options={this.state.options} series={this.state.series} labels={this.state.labels} type="donut" width={200} />
             </div>
         )
     }

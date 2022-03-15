@@ -151,20 +151,25 @@ export default class App extends Component{
               </Row>
               <Row>
                 <Col md="auto">
-                  <Donut 
-                    clear_grouping={this.state.clear_grouping_sliderval}
-                    split_up={this.state.split_up_sliderval}
-                    density_change={this.state.density_change_sliderval}
-                    neigh={this.state.neigh_sliderval}
-                    fan={this.state.fan_sliderval}
-                    outliers={this.state.outliers_sliderval}
-                    pos_corr={this.state.pos_corr_sliderval}
-                    neg_corr={this.state.neg_corr_sliderval}
-                    pos_var={this.state.pos_var_sliderval}
-                    neg_var={this.state.neg_var_sliderval}
-                    pos_skew={this.state.pos_skew_sliderval}
-                    neg_skew={this.state.neg_skew_sliderval}
-                  />
+                  <Row>
+                    <Donut 
+                      clear_grouping={this.state.clear_grouping_sliderval}
+                      split_up={this.state.split_up_sliderval}
+                      density_change={this.state.density_change_sliderval}
+                      neigh={this.state.neigh_sliderval}
+                      fan={this.state.fan_sliderval}
+                      outliers={this.state.outliers_sliderval}
+                      pos_corr={this.state.pos_corr_sliderval}
+                      neg_corr={this.state.neg_corr_sliderval}
+                      pos_var={this.state.pos_var_sliderval}
+                      neg_var={this.state.neg_var_sliderval}
+                      pos_skew={this.state.pos_skew_sliderval}
+                      neg_skew={this.state.neg_skew_sliderval}
+                    />
+                  </Row>
+                  <Row>
+                    
+                  </Row>
                 </Col>
                 <Col md="auto">
                   <HeatMap heatmap_data={this.state.heatmap_data} click_seq={this.state.click_seq} change={this.state.change_heatmap} dimensions={this.state.dimensions} selected_list={this.state.selectedList} callbackFromParent={this.callbackFromChild}/>

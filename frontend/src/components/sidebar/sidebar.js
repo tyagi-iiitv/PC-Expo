@@ -75,7 +75,7 @@ export class ClearGrouping extends Component {
                         valueLabelDisplay="auto"
                         step={10}
                         marks
-                        min={0}
+                        min={10}
                         max={100}
                         onChangeCommitted={this.sliderChange}
                         size='small'
@@ -130,7 +130,7 @@ export class DensityChange extends Component {
                         valueLabelDisplay="auto"
                         step={10}
                         marks
-                        min={0}
+                        min={10}
                         max={100}
                         onChangeCommitted={this.sliderChange}
                         size='small'
@@ -185,7 +185,7 @@ export class SplitUp extends Component {
                         valueLabelDisplay="auto"
                         step={10}
                         marks
-                        min={0}
+                        min={10}
                         max={100}
                         onChangeCommitted={this.sliderChange}
                         size='small'
@@ -239,7 +239,7 @@ export class Neighborhood extends Component {
                         valueLabelDisplay="auto"
                         step={10}
                         marks
-                        min={0}
+                        min={10}
                         max={100}
                         onChangeCommitted={this.sliderChange}
                         size='small'
@@ -294,7 +294,7 @@ export class PosCorr extends Component {
                         valueLabelDisplay="auto"
                         step={10}
                         marks
-                        min={0}
+                        min={10}
                         max={100}
                         onChangeCommitted={this.sliderChange}
                         size='small'
@@ -349,7 +349,7 @@ export class NegCorr extends Component {
                         valueLabelDisplay="auto"
                         step={10}
                         marks
-                        min={0}
+                        min={10}
                         max={100}
                         onChangeCommitted={this.sliderChange}
                         size='small'
@@ -404,7 +404,7 @@ export class PosVar extends Component {
                         valueLabelDisplay="auto"
                         step={10}
                         marks
-                        min={0}
+                        min={10}
                         max={100}
                         onChangeCommitted={this.sliderChange}
                         size='small'
@@ -458,7 +458,7 @@ export class NegVar extends Component {
                         valueLabelDisplay="auto"
                         step={10}
                         marks
-                        min={0}
+                        min={10}
                         max={100}
                         onChangeCommitted={this.sliderChange}
                         size='small'
@@ -513,7 +513,7 @@ export class PosSkew extends Component {
                         valueLabelDisplay="auto"
                         step={10}
                         marks
-                        min={0}
+                        min={10}
                         max={100}
                         onChangeCommitted={this.sliderChange}
                         size='small'
@@ -568,7 +568,7 @@ export class NegSkew extends Component {
                         valueLabelDisplay="auto"
                         step={10}
                         marks
-                        min={0}
+                        min={10}
                         max={100}
                         onChangeCommitted={this.sliderChange}
                         size='small'
@@ -623,7 +623,7 @@ export class Fan extends Component {
                         valueLabelDisplay="auto"
                         step={10}
                         marks
-                        min={0}
+                        min={10}
                         max={100}
                         onChangeCommitted={this.sliderChange}
                         size='small'
@@ -678,7 +678,7 @@ export class Outliers extends Component {
                         valueLabelDisplay="auto"
                         step={10}
                         marks
-                        min={0}
+                        min={10}
                         max={100}
                         onChangeCommitted={this.sliderChange}
                         size='small'
