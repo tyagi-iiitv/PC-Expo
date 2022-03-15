@@ -194,6 +194,38 @@ def globaloptimize():
         })
     return json.dumps(solution)
 
+@app.route('/getareacharts', methods=['POST'])
+@cross_origin()
+def getareacharts():
+    vals = request.get_json()
+    weights = [
+        vals['pos_corr_sliderval']/100,
+        vals['neg_corr_sliderval']/100,
+        vals['pos_var_sliderval']/100,
+        vals['neg_var_sliderval']/100,
+        vals['pos_skew_sliderval']/100,
+        vals['neg_skew_sliderval']/100,
+        vals['fan_sliderval']/100,
+        vals['neigh_sliderval']/100,
+        vals['clear_grouping_sliderval']/100,
+        vals['density_change_sliderval']/100,
+        vals['split_up_sliderval']/100,
+        vals['outliers_sliderval']/100,
+    ]
+    col_seq = vals['selected_list']
+    cols = list(num_df.columns)
+    percent = int(vals['window_sliderval']/10-1)
+    dim_arr = np.ones((1,lookup_info.ndim),int).ravel()
+    dim_arr[-2] = -1
+    num_active_props = len(weights) - weights.count(0) + 1
+    weights_reshaped = np.array(weights).reshape(dim_arr)
+    matrix = lookup_info*weights_reshaped
+    matrix = matrix.sum(axis=-2)/num_active_props
+    solution = []
+    for i in range(len(col_seq)-1):
+        solution.append(list(matrix[cols.index(col_seq[i]['name']),cols.index(col_seq[i+1]['name']),percent,:]))
+    return json.dumps(solution)
+
 
 @app.route('/getlocaldata', methods=['POST'])
 @cross_origin()
@@ -253,7 +285,7 @@ def heatmapdata():
     cols = list(num_df.columns)
     matrix = []
     window_data = lookup_info.sum(axis=-1)
-    num_active_props = len(weights) - weights.count(0)
+    num_active_props = len(weights) - weights.count(0) + 1
     for i,col1 in enumerate(cols):
         for j,col2 in enumerate(cols):
             if (i!=j):

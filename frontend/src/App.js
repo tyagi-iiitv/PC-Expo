@@ -34,10 +34,12 @@ export default class App extends Component{
       local_cols: [],
       click_seq: [],
       change_heatmap: true,
+      area_chart_data: [],
     }
     this.sliderChange = this.sliderChange.bind(this);
     this.recommend = this.recommend.bind(this);
     this.globaloptimize = this.globaloptimize.bind(this);
+    this.getareacharts = this.getareacharts.bind(this);
     this.callbackFromChild = this.callbackFromChild.bind(this);
   }
 
@@ -63,6 +65,38 @@ export default class App extends Component{
     this.setState({'data_rec': false});
     this.setState(data, ()=> this.setState({'data_rec': true}));
   }
+
+  getareacharts(){
+    this.setState({'data_rec': false});
+    fetch('/getareacharts', {
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        clear_grouping_sliderval: this.state.clear_grouping_sliderval,
+        split_up_sliderval: this.state.split_up_sliderval,
+        density_change_sliderval: this.state.density_change_sliderval,
+        neigh_sliderval: this.state.neigh_sliderval,
+        fan_sliderval: this.state.fan_sliderval,
+        outliers_sliderval: this.state.outliers_sliderval,
+        pos_corr_sliderval: this.state.pos_corr_sliderval,
+        neg_corr_sliderval: this.state.neg_corr_sliderval,
+        pos_var_sliderval: this.state.pos_var_sliderval,
+        neg_var_sliderval: this.state.neg_var_sliderval,
+        pos_skew_sliderval: this.state.pos_skew_sliderval,
+        neg_skew_sliderval: this.state.neg_skew_sliderval,
+        window_sliderval: this.state.window_sliderval,
+        selected_list: this.state.selectedList,
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+        this.setState({area_chart_data: data}, ()=> this.setState({'data_rec': true}))
+    })
+  }
+
 
   globaloptimize(){
     this.setState({'data_rec': false});
@@ -141,13 +175,16 @@ export default class App extends Component{
             <Nav.Item style={{paddingLeft: 15}}>
                 <Button variant="info" onClick={this.globaloptimize}>Global Optimize</Button>
             </Nav.Item>
+            <Nav.Item style={{paddingLeft: 15}}>
+                <Button variant="info" onClick={this.getareacharts}>Show Properties</Button>
+            </Nav.Item>
           </Nav>
         </Navbar>
         <Container fluid>
           <Row className={styles.mainRow}>
             <Col md={10}>
               <Row>
-                <GeneratePCP pcpdata={this.state.sliderdata} data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan} callbackFromParent={this.callbackFromChild} selectedList={this.state.selectedList} click_seq={this.state.click_seq} change={this.state.change_heatmap}/>
+                <GeneratePCP pcpdata={this.state.sliderdata} data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan} callbackFromParent={this.callbackFromChild} selectedList={this.state.selectedList} click_seq={this.state.click_seq} change={this.state.change_heatmap} area_chart_data={this.state.area_chart_data}/>
               </Row>
               <Row>
                 <Col md="auto">

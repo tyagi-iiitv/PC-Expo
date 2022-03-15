@@ -28,6 +28,7 @@ class GeneratePCP extends React.Component {
             this.state.canvasDims.height,
             this.props.data, 
             this.props.selectedList,
+            this.props.area_chart_data,
         )
     }
 
@@ -38,6 +39,7 @@ class GeneratePCP extends React.Component {
                         this.state.canvasDims.height,
                         this.props.data, 
                         this.props.selectedList,
+                        this.props.area_chart_data,
                     )
             }
     }
@@ -60,7 +62,8 @@ async function generateSVG(
     width, 
     boxHeight, 
     data_rec, 
-    selectedList){
+    selectedList,
+    area_chart_data){
     d3.selectAll("#svg1 > *").remove();
     let svg = d3.select('#svg1');
     let y = {};
