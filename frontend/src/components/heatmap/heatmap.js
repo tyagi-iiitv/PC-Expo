@@ -157,11 +157,19 @@ async function generateSVG(width, height, margins, data, callbackFromParent, svg
     }
 
     // Adding selectable rects for the heatmap
-    svg.selectAll('rects')
+    svg.selectAll()
         .data(data)
         .enter()
         .append("rect")
-        .attr("class", "rects")
+        .attr("class", function(d) {
+            if(click_seq.length > 0){
+                if((click_seq[click_seq.length-1] == d.col1) && (click_seq.indexOf(d.col2) == -1))
+                    return "rects"
+                else
+                    return "hide_rects"
+            }
+            return "rects"
+        })
         .attr("x", function(d) {
             return x_scale(d.col1) 
         })
@@ -186,8 +194,10 @@ async function generateSVG(width, height, margins, data, callbackFromParent, svg
     .on('click', mouseclick) 
     .on('mouseover', mouseover)
     .on('mouseleave', mouseleave)
-    .on('dblclick', doubleclick)
     .on('contextmenu', rightclick)
+
+    svg.selectAll('.rects')
+        .on('dblclick', doubleclick)
 
     // Adding diagonal labels
     svg.selectAll('.texts')
