@@ -32,6 +32,8 @@ export default class HeatMap extends Component{
                     this.state.svg_x,
                     this.state.svg_y,
                     this.props.click_seq,
+                    this.props.dimensions,
+                    this.props.selected_list
                 )
             )
         })
@@ -50,6 +52,8 @@ export default class HeatMap extends Component{
                     this.state.svg_x,
                     this.state.svg_y,
                     this.props.click_seq,
+                    this.props.dimensions,
+                    this.props.selected_list
                 )
             })
         }
@@ -63,6 +67,8 @@ export default class HeatMap extends Component{
                 this.state.svg_x,
                 this.state.svg_y,
                 this.props.click_seq,
+                this.props.dimensions,
+                this.props.selected_list
             )
         }
     }
@@ -82,7 +88,7 @@ export default class HeatMap extends Component{
     }
 }
 
-async function generateSVG(width, height, margins, data, callbackFromParent, svg_x, svg_y, click_seq){
+async function generateSVG(width, height, margins, data, callbackFromParent, svg_x, svg_y, click_seq, org_dimensions, org_selected_list){
     console.log(click_seq)
     d3.selectAll("#svg2 > *").remove();
     d3.selectAll('#tooltip').remove();
@@ -144,10 +150,30 @@ async function generateSVG(width, height, margins, data, callbackFromParent, svg
     }
 
     let doubleclick = function(d){
-        console.log(d3.select(this).style('opacity'))
-        click_seq.push(d.col1)
-        click_seq.push(d.col2)
-        callbackFromParent({click_seq: click_seq, change_heatmap: true});
+        if(click_seq.length == 0){
+            click_seq.push(d.col1)
+            click_seq.push(d.col2)
+            let new_selected_list = []
+            for(let i=0;i<org_dimensions.length;i++){
+                if(org_dimensions[i].name == d.col2){
+                    new_selected_list.push(org_dimensions[i])
+                }
+                else if(org_dimensions[i].name == d.col1){
+                    new_selected_list.unshift(org_dimensions[i])
+                }
+            }
+            callbackFromParent({click_seq: click_seq, change_heatmap: true, selectedList: new_selected_list});
+        }
+        else{
+            click_seq.push(d.col2)
+            for(let i=0;i<org_dimensions.length;i++){
+                if(org_dimensions[i].name == d.col2){
+                    org_selected_list.push(org_dimensions[i]);
+                    break;
+                }
+            }
+            callbackFromParent({click_seq: click_seq, change_heatmap: true, selectedList: org_selected_list});
+        }
     }
 
     let rightclick = function(d,i){

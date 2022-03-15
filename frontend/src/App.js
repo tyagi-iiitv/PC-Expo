@@ -147,7 +147,7 @@ export default class App extends Component{
           <Row className={styles.mainRow}>
             <Col md={10}>
               <Row>
-                <GeneratePCP pcpdata={this.state.sliderdata} data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan} callbackFromParent={this.callbackFromChild} selectedList={this.state.selectedList}/>
+                <GeneratePCP pcpdata={this.state.sliderdata} data={this.state.data} corr={this.state.corr} var={this.state.var} skew={this.state.skew} neigh={this.state.neigh} split={this.state.split} fan={this.state.fan} callbackFromParent={this.callbackFromChild} selectedList={this.state.selectedList} click_seq={this.state.click_seq} change={this.state.change_heatmap}/>
               </Row>
               <Row>
                 <Col md="auto">
@@ -167,7 +167,7 @@ export default class App extends Component{
                   />
                 </Col>
                 <Col md="auto">
-                  <HeatMap heatmap_data={this.state.heatmap_data} click_seq={this.state.click_seq} change={this.state.change_heatmap} callbackFromParent={this.callbackFromChild}/>
+                  <HeatMap heatmap_data={this.state.heatmap_data} click_seq={this.state.click_seq} change={this.state.change_heatmap} dimensions={this.state.dimensions} selected_list={this.state.selectedList} callbackFromParent={this.callbackFromChild}/>
                 </Col>
                 <Col md="auto">
                   <LocalView data={this.state.data} local_cols={this.state.local_cols} window={this.state.window_sliderval} callbackFromParent={this.callbackFromChild}/>
