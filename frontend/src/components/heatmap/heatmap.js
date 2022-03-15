@@ -144,6 +144,7 @@ async function generateSVG(width, height, margins, data, callbackFromParent, svg
     }
 
     let doubleclick = function(d){
+        console.log(d3.select(this).style('opacity'))
         click_seq.push(d.col1)
         click_seq.push(d.col2)
         callbackFromParent({click_seq: click_seq, change_heatmap: true});
@@ -175,7 +176,7 @@ async function generateSVG(width, height, margins, data, callbackFromParent, svg
         .style("stroke-width","1px")
         .style('opacity', function(d){
             if(click_seq.length > 0){
-                if(click_seq[click_seq.length-1] == d.col1)
+                if((click_seq[click_seq.length-1] == d.col1) && (click_seq.indexOf(d.col2) == -1))
                     return 0.8
                 else
                     return 0.2
