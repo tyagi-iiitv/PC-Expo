@@ -252,7 +252,7 @@ export default class App extends Component{
                 <Slider
                     defaultValue={30}
                     valueLabelDisplay="auto"
-                    step={10}
+                    step={20}
                     marks
                     min={10}
                     max={100}

@@ -1,46 +1,71 @@
-import React, {Component} from 'react';
-import {Form, Button, Nav} from 'react-bootstrap';
+import React, {Component, useState} from 'react';
+import {Form, Button, Nav, Modal} from 'react-bootstrap';
 import * as d3 from 'd3';
 
-export class LoadData extends Component {
-    constructor(props){
-        super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
+// export class LoadData extends Component {
+    // constructor(props){
+    //     super(props);
+    //     this.handleSubmit = this.handleSubmit.bind(this);
+    // }
 
     // callbackFromChild(dataFromChild){
     //     this.setState(dataFromChild, ()=> this.setState({data_rec: true}));
     // }
+    
 
-    handleSubmit(value){
-        const file = value.target.files[0];
-        const data = new FormData();
-        data.append('file', file);
-        data.append('filename', 'data.csv');
+    // handleSubmit(value){
+    //     const file = value.target.files[0];
+    //     const data = new FormData();
+    //     data.append('file', file);
+    //     data.append('filename', 'data.csv');
 
-        fetch('/upload', {
-            method: 'POST',
-            body: data,
-        }).then(response => response.json())
-        .then((response) => {
-            let data = response;
-            let dimensions = []
-            let cols = d3.keys(data[0])
-            for(let i=0; i< cols.length; i++){
-                dimensions.push({key: i, name: cols[i]})
-            }
-            this.props.callbackFromParent({data: data, dimensions: dimensions, selectedList: dimensions, local_cols: [dimensions[0].name, dimensions[1].name], click_seq: []})
-        });
-    }
+    //     fetch('/upload', {
+    //         method: 'POST',
+    //         body: data,
+    //     }).then(response => response.json())
+    //     .then((response) => {
+    //         let data = response;
+    //         let dimensions = []
+    //         let cols = d3.keys(data[0])
+    //         for(let i=0; i< cols.length; i++){
+    //             dimensions.push({key: i, name: cols[i]})
+    //         }
+    //         this.props.callbackFromParent({data: data, dimensions: dimensions, selectedList: dimensions, local_cols: [dimensions[0].name, dimensions[1].name], click_seq: []})
+    //     });
+    // }
 
-    render(){
-        return (
-            <Form.Group style={{fontSize: 30, padding: '5 0', marginLeft: 15}} controlId="formFile" className="mb-1">
-                <Form.Control type="file" onChange={this.handleSubmit}/>
-            </Form.Group>
-        )
-    }
-}
+    // render(){
+    //     return (
+    //         <Form.Group style={{fontSize: 30, padding: '5 0', marginLeft: 15}} controlId="formFile" className="mb-1">
+    //             <Form.Control type="file" onChange={this.handleSubmit}/>
+    //         </Form.Group>
+    //     )
+    // }
+// }
+
+export function LoadData() {
+    const [show, setShow] = useState(false);
+  
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+  
+    return (
+      <div>
+        <Button variant="info" onClick={handleShow}>
+          Upload Dataset
+        </Button>
+  
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Whoops!</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Our hosting partner is having issues with this feature. We are working on it. Please try examples for now.</Modal.Body>
+        </Modal>
+      </div>
+    );
+  }
+  
+//   render(<Example />);
 
 export class EqualWeights extends Component {
     constructor(props){
