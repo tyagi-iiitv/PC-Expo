@@ -29,11 +29,11 @@ df = pd.read_csv('data/penguins.csv')
 df = df.dropna()
 numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
 num_df = df.select_dtypes(include=numerics)
-num_bins = 256
+num_bins = 20
 
 # Using a lookup datastructure for all the information
 # #cols * #cols * #windows * #props * #bins
-lookup_info = np.random.rand(len(num_df.columns), len(num_df.columns), 10, 12, num_bins)
+lookup_info = np.load('./data/lookup_info_penguins.npy')
 '''
 props = ['pos_corr', 'neg_corr', 'pos_var', 'neg_var', 'pos_skew', 'neg_skew', 'fan', 'neigh', 'clear_grouping', 'density_change', 'split_up', 'outliers']
 '''
@@ -241,12 +241,12 @@ def getlocaldata():
     solution = []
     # First 12 arrays are for props
     for prop in range(12):
-        solution.append(list(lookup_info[col1][col2][percent][prop]))
+        solution.append(lookup_info[col1][col2][percent][prop].tolist())
     # 13th array is for bin points
     solution.append(list(np.linspace(num_df[col1_name].min(), num_df[col1_name].max(), num_bins)))
     # 14th val is window size
     var_range = num_df[col1_name].max()-num_df[col1_name].min()
-    solution.append((percent+1)/10*var_range)
+    solution.append(float((percent+1)/10*var_range))
     return json.dumps({
         'pos_corr': solution[0],
         'neg_corr': solution[1],
@@ -320,21 +320,23 @@ def fileUpload():
     target=os.path.join(UPLOAD_FOLDER)
     if not os.path.isdir(target):
         os.mkdir(target)
-    # logger.info("welcome to upload`")
-    file = request.files['file'] 
-    # filename = secure_filename(file.filename)
-    filename = "data.csv"
-    destination="/".join([target, filename])
-    file.save(destination)
-    df = pd.read_csv('uploads/data.csv')
+    file_num = int(request.get_json())
+    if file_num == 1:
+        df = pd.read_csv('./data/cars.csv')
+        lookup_info = np.load('./data/lookup_info_cars.npy')
+    elif file_num == 2:
+        df = pd.read_csv('./data/fsl-mtc-sample.csv')
+        lookup_info = np.load('./data/lookup_info_systems.npy')
+    else:
+        df = pd.read_csv('./data/penguins.csv')
+        lookup_info = np.load('./data/lookup_info_penguins.npy')
     try:
         df = df.sample(n=2000)
     except:
         df = df.sample(n=2000, replace=True)
     df = df.dropna()
     num_df = df.select_dtypes(include=numerics)
-    num_df.columns = [f'{i}_{x[:4]}' for i, x in enumerate(num_df.columns)]
-    lookup_info = np.random.rand(len(num_df.columns), len(num_df.columns), 10, 12, num_bins)
+    num_df.columns = [f'{i}_{x[:8]}' for i, x in enumerate(num_df.columns)]
     return num_df.to_json(orient='records')
 
 @app.route('/getpoints', methods=['POST'])

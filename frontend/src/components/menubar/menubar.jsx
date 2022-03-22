@@ -1,6 +1,7 @@
 import React, {Component, useState} from 'react';
-import {Form, Button, Nav, Modal} from 'react-bootstrap';
+import {Form, Button, Nav, Modal, DropdownButton} from 'react-bootstrap';
 import * as d3 from 'd3';
+import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 
 // export class LoadData extends Component {
     // constructor(props){
@@ -65,7 +66,6 @@ export function LoadData() {
     );
   }
   
-//   render(<Example />);
 
 export class EqualWeights extends Component {
     constructor(props){
@@ -97,5 +97,42 @@ export class EqualWeights extends Component {
             </Nav.Item>
         );
         return reset_button;
+    }
+}
+
+export class LoadExamples extends Component {
+    constructor(props){
+        super(props);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleSubmit(evt){
+        fetch('/upload', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(evt)})
+            .then(response => response.json())
+            .then((response) => {
+                let data = response;
+                let dimensions = []
+                let cols = d3.keys(data[0])
+                for(let i=0; i< cols.length; i++){
+                    dimensions.push({key: i, name: cols[i]})
+                }
+                this.props.callbackFromParent({data: data, dimensions: dimensions, selectedList: dimensions, local_cols: [dimensions[0].name, dimensions[1].name], click_seq: []})
+        });
+    }
+
+    render(){
+        return (
+            <DropdownButton variant='info' style={{paddingLeft: 15}} id='examples' title='Load Examples' onSelect={this.handleSubmit}>
+                <DropdownItem eventKey="1">Cars</DropdownItem>
+                <DropdownItem eventKey="2">Systems</DropdownItem>
+                <DropdownItem eventKey="3">Penguins</DropdownItem>
+            </DropdownButton>
+        )
     }
 }

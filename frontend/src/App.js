@@ -1,6 +1,6 @@
 import './App.css';
 import { Navbar, Nav, NavbarBrand, Container, Row, Col, Button } from 'react-bootstrap';
-import {GeneratePCP, LoadData, ClearGrouping, DensityChange, SplitUp, Neighborhood, PosCorr, NegCorr, PosVar, NegVar, PosSkew, NegSkew, Fan, Outliers, FeatureSelect, Donut, HeatMap, LocalView, Scatterplot} from './components';
+import {GeneratePCP, LoadData, ClearGrouping, DensityChange, SplitUp, Neighborhood, PosCorr, NegCorr, PosVar, NegVar, PosSkew, NegSkew, Fan, Outliers, FeatureSelect, Donut, HeatMap, LocalView, Scatterplot, LoadExamples} from './components';
 import { Component } from 'react';
 // import * as navbar from './com';
 import styles from './app.module.scss';
@@ -186,6 +186,7 @@ export default class App extends Component{
             <Nav.Item style={{paddingLeft: 15}}>
                 <Button variant="info" onClick={this.delareacharts}>Hide Properties</Button>
             </Nav.Item>
+            <LoadExamples callbackFromParent={this.callbackFromChild}/>
           </Nav>
         </Navbar>
         <Container fluid>
