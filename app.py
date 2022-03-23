@@ -198,7 +198,7 @@ def globaloptimize():
 @cross_origin()
 def getareacharts():
     vals = request.get_json()
-    weights = [
+    weights = np.array([
         vals['pos_corr_sliderval']/100,
         vals['neg_corr_sliderval']/100,
         vals['pos_var_sliderval']/100,
@@ -211,20 +211,22 @@ def getareacharts():
         vals['density_change_sliderval']/100,
         vals['split_up_sliderval']/100,
         vals['outliers_sliderval']/100,
-    ]
+    ])
+    weights = weights/weights.sum()
+    weights = weights.tolist()
     col_seq = vals['selected_list']
     cols = list(num_df.columns)
     percent = int(vals['window_sliderval']/10-1)
     dim_arr = np.ones((1,lookup_info.ndim),int).ravel()
     dim_arr[-2] = -1
-    num_active_props = len(weights) - weights.count(0) + 1
+    # num_active_props = len(weights) - weights.count(0) + 1
     weights_reshaped = np.array(weights).reshape(dim_arr)
     matrix = lookup_info*weights_reshaped
-    matrix = matrix.sum(axis=-2)/num_active_props
+    matrix = matrix.sum(axis=-2)
     solution = []
     for i in range(len(col_seq)-1):
-        solution.append(list(matrix[cols.index(col_seq[i]['name']),cols.index(col_seq[i+1]['name']),percent,:][0::4]))
-        solution.append(list(np.linspace(num_df[col_seq[i]['name']].min(), num_df[col_seq[i]['name']].max(), num_bins)[0::4]))
+        solution.append(list(matrix[cols.index(col_seq[i]['name']),cols.index(col_seq[i+1]['name']),percent,:]))
+        solution.append(list(np.linspace(num_df[col_seq[i]['name']].min(), num_df[col_seq[i]['name']].max(), num_bins)))
     return json.dumps(solution)
 
 

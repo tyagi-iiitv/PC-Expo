@@ -80,7 +80,7 @@ export class ClearGrouping extends Component {
                         onChangeCommitted={this.sliderChange}
                         size='small'
                         />
-                    <p style={{'fontSize': '10px'}}>Clear Grouping</p>
+                    <p style={{'fontSize': '13px', 'fontWeight': 'bold', 'color': '#008FFB'}}>Clear Grouping</p>
                 </Col>
             </Row>
         )
@@ -135,7 +135,7 @@ export class DensityChange extends Component {
                         onChangeCommitted={this.sliderChange}
                         size='small'
                         />
-                    <p style={{'fontSize': '10px'}}>Density Change</p>
+                    <p style={{'fontSize': '12px', 'fontWeight': 'bold', 'color': '#FEB019'}}>Density Change</p>
                 </Col>
             </Row>
         )
@@ -190,7 +190,7 @@ export class SplitUp extends Component {
                         onChangeCommitted={this.sliderChange}
                         size='small'
                         />
-                    <p style={{'fontSize': '10px'}}>Split Up</p>
+                    <p style={{'fontSize': '13px', 'fontWeight': 'bold', 'color': '#00E396'}}>Split Up</p>
                 </Col>
             </Row>
         )
@@ -244,7 +244,7 @@ export class Neighborhood extends Component {
                         onChangeCommitted={this.sliderChange}
                         size='small'
                         />
-                    <p style={{'fontSize': '10px'}}>Neighborhood</p>
+                    <p style={{'fontSize': '13px', 'fontWeight': 'bold', 'color': '#FF4560'}}>Neighborhood</p>
                 </Col>
             </Row>
         )
@@ -299,7 +299,7 @@ export class PosCorr extends Component {
                         onChangeCommitted={this.sliderChange}
                         size='small'
                         />
-                    <p style={{'fontSize': '10px'}}>Positive Correlation</p>
+                    <p style={{'fontSize': '13px', 'fontWeight': 'bold', 'color': '#00E396'}}>Correlation +</p>
                 </Col>
             </Row>
         )
@@ -354,7 +354,7 @@ export class NegCorr extends Component {
                         onChangeCommitted={this.sliderChange}
                         size='small'
                         />
-                    <p style={{'fontSize': '10px'}}>Negative Correlation</p>
+                    <p style={{'fontSize': '13px', 'fontWeight': 'bold', 'color': '#FEB019'}}>Correlation -</p>
                 </Col>
             </Row>
         )
@@ -409,7 +409,7 @@ export class PosVar extends Component {
                         onChangeCommitted={this.sliderChange}
                         size='small'
                         />
-                    <p style={{'fontSize': '10px'}}>Positive Variance</p>
+                    <p style={{'fontSize': '13px', 'fontWeight': 'bold', 'color': '#FF4560'}}>Variance +</p>
                 </Col>
             </Row>
         )
@@ -463,7 +463,7 @@ export class NegVar extends Component {
                         onChangeCommitted={this.sliderChange}
                         size='small'
                         />
-                    <p style={{'fontSize': '10px'}}>Negative Variance</p>
+                    <p style={{'fontSize': '13px', 'fontWeight': 'bold', 'color': '#775DD0'}}>Variance -</p>
                 </Col>
             </Row>
         )
@@ -518,7 +518,7 @@ export class PosSkew extends Component {
                         onChangeCommitted={this.sliderChange}
                         size='small'
                         />
-                    <p style={{'fontSize': '10px'}}>Positive Skewness</p>
+                    <p style={{'fontSize': '13px', 'fontWeight': 'bold', 'color': '#008FFB'}}>Skewness +</p>
                 </Col>
             </Row>
         )
@@ -573,7 +573,7 @@ export class NegSkew extends Component {
                         onChangeCommitted={this.sliderChange}
                         size='small'
                         />
-                    <p style={{'fontSize': '10px'}}>Negative Skewness</p>
+                    <p style={{'fontSize': '13px', 'fontWeight': 'bold', 'color': '#00E396'}}>Skewness -</p>
                 </Col>
             </Row>
         )
@@ -628,7 +628,7 @@ export class Fan extends Component {
                         onChangeCommitted={this.sliderChange}
                         size='small'
                         />
-                    <p style={{'fontSize': '10px'}}>Fan</p>
+                    <p style={{'fontSize': '13px', 'fontWeight': 'bold', 'color': '#775DD0'}}>Fan</p>
                 </Col>
             </Row>
         )
@@ -683,7 +683,7 @@ export class Outliers extends Component {
                         onChangeCommitted={this.sliderChange}
                         size='small'
                         />
-                    <p style={{'fontSize': '10px'}}>Outliers</p>
+                    <p style={{'fontSize': '13px', 'fontWeight': 'bold', 'color': '#008FFB'}}>Outliers</p>
                 </Col>
             </Row>
         )

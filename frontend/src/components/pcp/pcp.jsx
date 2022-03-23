@@ -64,8 +64,6 @@ async function generateSVG(
     data_rec, 
     selectedList,
     area_chart_data){
-    
-    console.log(area_chart_data, selectedList)
     d3.selectAll("#svg1 > *").remove();
     let svg = d3.select('#svg1');
     let y = {};
@@ -110,8 +108,8 @@ async function generateSVG(
         svg.append("path")
                 .attr("class", "mypath")
                 .datum(area_chart_data[2*i])
-                .attr("fill", "#e41a1c")
-                .attr("opacity", ".8")
+                .attr("fill", "#d73027")
+                .attr("opacity", ".6")
                 .attr("stroke", "#000")
                 .attr("stroke-width", 1)
                 .attr("stroke-linejoin", "round")
