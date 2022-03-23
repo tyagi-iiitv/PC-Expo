@@ -172,7 +172,7 @@ export default class App extends Component{
       <div>
         <Navbar bg="dark" variant="dark">
           <NavbarBrand style={{fontSize: 30, padding: '5 0', marginLeft: 15}}>
-            ParaCoords Explorer
+            PC-Pilot
           </NavbarBrand>
           <Nav className="mr-auto">
             <LoadData callbackFromParent={this.callbackFromChild}/>
