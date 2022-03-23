@@ -144,7 +144,15 @@ async function generateSVG(width, height, margins, data, callbackFromParent, svg
         tooltip
           .style("opacity", 0)
         d3.select(this)
-          .style("stroke", "none")
+          .style("stroke", function(d){
+            if(click_seq.length > 0){
+                if((click_seq[click_seq.length-1] === d.col1) && (click_seq.indexOf(d.col2) === -1))
+                    return "2px"
+                else
+                    return "0px"
+            }
+            return "0px"
+          })
           .style("opacity", prev_opacity)
     }
 
@@ -172,7 +180,6 @@ async function generateSVG(width, height, margins, data, callbackFromParent, svg
                     break;
                 }
             }
-            console.log(org_selected_list, select_list_clone)
             callbackFromParent({click_seq: click_seq, change_heatmap: true, selectedList: select_list_clone});
         }
     }
@@ -210,7 +217,16 @@ async function generateSVG(width, height, margins, data, callbackFromParent, svg
         .style("fill", function(d){
              return colors(d.val)
         })
-        .style("stroke-width","1px")
+        .style("stroke", "black")
+        .style("stroke-width",function(d){
+            if(click_seq.length > 0){
+                if((click_seq[click_seq.length-1] === d.col1) && (click_seq.indexOf(d.col2) === -1))
+                    return "2px"
+                else
+                    return "0px"
+            }
+            return "0px"
+        })
         .style('opacity', function(d){
             if(click_seq.length > 0){
                 if((click_seq[click_seq.length-1] === d.col1) && (click_seq.indexOf(d.col2) === -1))
@@ -238,5 +254,6 @@ async function generateSVG(width, height, margins, data, callbackFromParent, svg
         .attr('x', function(d){return x_scale(d)+x_scale.bandwidth()/100;})
         .attr('y', function(d){return y_scale(d)+y_scale.bandwidth()/1.5;})
         .attr('font-size', y_scale.bandwidth()/4)
+        .attr('font-weight', 700)
         .text(function(d){return d;})
 }
