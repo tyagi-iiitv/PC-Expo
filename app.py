@@ -268,7 +268,7 @@ def getlocaldata():
 @cross_origin()
 def heatmapdata():
     vals = request.get_json()
-    weights = [
+    weights = np.array([
         vals['pos_corr_sliderval']/100,
         vals['neg_corr_sliderval']/100,
         vals['pos_var_sliderval']/100,
@@ -281,17 +281,22 @@ def heatmapdata():
         vals['density_change_sliderval']/100,
         vals['split_up_sliderval']/100,
         vals['outliers_sliderval']/100,
-    ]
+    ])
+    weights = weights/weights.sum()
+    weights = weights.tolist()
     percent = int(vals['window_sliderval']/10-1)
     cols = list(num_df.columns)
     matrix = []
     window_data = lookup_info.sum(axis=-1)
-    num_active_props = len(weights) - weights.count(0) + 1
     for i,col1 in enumerate(cols):
         for j,col2 in enumerate(cols):
             if (i!=j):
                 # Divide by 256 to normalize the values, since each window has a range b/w 0-1
-                matrix.append({'col1': col1, 'col2': col2, 'val': np.sum(window_data[i][j][percent]*weights/(num_bins*num_active_props))})
+                matrix.append({'col1': col1, 'col2': col2, 'val': np.sum(window_data[i][j][percent]*weights)})
+    matrix_norm_vals = np.array([a['val'] for a in matrix])
+    matrix_norm_vals = (matrix_norm_vals-matrix_norm_vals.min())/(matrix_norm_vals.max()-matrix_norm_vals.min()+1e-9)
+    for i in range(len(matrix)):
+        matrix[i]['val'] = matrix_norm_vals[i]
     return json.dumps([matrix, cols])
 
 @app.route('/defheatmapdata', methods=['GET'])
@@ -303,7 +308,7 @@ def defheatmapdata():
     for i,col1 in enumerate(cols):
         for j,col2 in enumerate(cols):
             if(i != j):
-                matrix.append({'col1': col1, 'col2': col2, 'val': random.random()})
+                matrix.append({'col1': col1, 'col2': col2, 'val': 0})
     return json.dumps([matrix, cols])
 
 @app.route('/getjsondata', methods=['GET'])
