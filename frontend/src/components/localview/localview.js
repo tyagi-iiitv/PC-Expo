@@ -160,10 +160,14 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
         .domain([0,1])
     height = height - 20;
     let y = {};
+    let y_hists = {};
     let dimensions = local_cols.filter(function (key) {
         y[key] = d3.scaleLinear()
             .domain(d3.extent(data, function (d) { return +d[key]; }))
-            .range([height-20, 0]);
+            .range([height-20, 10]);
+        y_hists[key] = d3.scaleLinear()
+            .domain(d3.extent(data, function (d) { return +d[key]; }))
+            .range([height-35, 10]);
         return key;
     });
     let x_para_offset = 800
@@ -206,7 +210,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
         .enter()
         .append("rect")
             .attr("x", function(d) {return x_dist('pos_corr')+20})
-            .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
+            .attr("y", function(d,i) {return y_hists[local_cols[0]](indices[i])})
             .attr("width", 25)
             .attr("height", 13)
             .style("fill", function(d) {return colors(d)})
@@ -218,7 +222,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
         .enter()
         .append("rect")
             .attr("x", function(d) {return x_dist('neg_corr')+20})
-            .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
+            .attr("y", function(d,i) {return y_hists[local_cols[0]](indices[i])})
             .attr("width", 25)
             .attr("height", 13)
             .style("fill", function(d) {return colors(d)})
@@ -230,7 +234,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
         .enter()
         .append("rect")
             .attr("x", function(d) {return x_dist('pos_var')+20})
-            .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
+            .attr("y", function(d,i) {return y_hists[local_cols[0]](indices[i])})
             .attr("width", 25)
             .attr("height", 13)
             .style("fill", function(d) {return colors(d)})
@@ -242,7 +246,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
         .enter()
         .append("rect")
             .attr("x", function(d) {return x_dist('neg_var')+20})
-            .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
+            .attr("y", function(d,i) {return y_hists[local_cols[0]](indices[i])})
             .attr("width", 25)
             .attr("height", 13)
             .style("fill", function(d) {return colors(d)})
@@ -254,7 +258,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
         .enter()
         .append("rect")
             .attr("x", function(d) {return x_dist('pos_skew')+20})
-            .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
+            .attr("y", function(d,i) {return y_hists[local_cols[0]](indices[i])})
             .attr("width", 25)
             .attr("height", 13)
             .style("fill", function(d) {return colors(d)})
@@ -266,7 +270,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
         .enter()
         .append("rect")
             .attr("x", function(d) {return x_dist('neg_skew')+20})
-            .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
+            .attr("y", function(d,i) {return y_hists[local_cols[0]](indices[i])})
             .attr("width", 25)
             .attr("height", 13)
             .style("fill", function(d) {return colors(d)})
@@ -278,7 +282,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
         .enter()
         .append("rect")
             .attr("x", function(d) {return x_dist('fan')+20})
-            .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
+            .attr("y", function(d,i) {return y_hists[local_cols[0]](indices[i])})
             .attr("width", 25)
             .attr("height", 13)
             .style("fill", function(d) {return colors(d)})
@@ -290,7 +294,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
         .enter()
         .append("rect")
             .attr("x", function(d) {return x_dist('neigh')+20})
-            .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
+            .attr("y", function(d,i) {return y_hists[local_cols[0]](indices[i])})
             .attr("width", 25)
             .attr("height", 13)
             .style("fill", function(d) {return colors(d)})
@@ -302,7 +306,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
         .enter()
         .append("rect")
             .attr("x", function(d) {return x_dist('clr_grp')+20})
-            .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
+            .attr("y", function(d,i) {return y_hists[local_cols[0]](indices[i])})
             .attr("width", 25)
             .attr("height", 13)
             .style("fill", function(d) {return colors(d)})
@@ -314,7 +318,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
         .enter()
         .append("rect")
             .attr("x", function(d) {return x_dist('den_ch')+20})
-            .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
+            .attr("y", function(d,i) {return y_hists[local_cols[0]](indices[i])})
             .attr("width", 25)
             .attr("height", 13)
             .style("fill", function(d) {return colors(d)})
@@ -326,7 +330,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
         .enter()
         .append("rect")
             .attr("x", function(d) {return x_dist('spl_up')+20})
-            .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
+            .attr("y", function(d,i) {return y_hists[local_cols[0]](indices[i])})
             .attr("width", 25)
             .attr("height", 13)
             .style("fill", function(d) {return colors(d)})
@@ -338,7 +342,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
         .enter()
         .append("rect")
             .attr("x", function(d) {return x_dist('outliers')+20})
-            .attr("y", function(d,i) {return y[local_cols[0]](indices[i])})
+            .attr("y", function(d,i) {return y_hists[local_cols[0]](indices[i])})
             .attr("width", 25)
             .attr("height", 13)
             .style("fill", function(d) {return colors(d)})
@@ -378,7 +382,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
     g.append("g")
         .attr("class", "brush")
         .call(d3.brushY()
-            .extent([[-10, 0], [10, height]])
+            .extent([[-10, 0], [10, height-20]])
             .on("start", brushstart)
             .on("brush", brush)
             .on("end", brushend))
@@ -387,7 +391,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
         .attr("width", 16);
     
     let fixed_brush = d3.brushY()
-        .extent([[-10, 0], [10, height-5]])
+        .extent([[-10, 10], [10, height-20]])
         .on("start", distbrushstart)
         .on("brush", brushDist)
         .on("end", brushend)
@@ -395,7 +399,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
     g_dist.append("g")
         .attr("class", "brushdist")
         .call(fixed_brush)
-        .call(fixed_brush.move, [0,y[local_cols[0]](y[local_cols[0]].domain()[1]-window_size)])
+        .call(fixed_brush.move, [10,y[local_cols[0]](y[local_cols[0]].domain()[1]-window_size)])
     
     function line(d) {
         return d3.line()(dimensions.map(function (key) {

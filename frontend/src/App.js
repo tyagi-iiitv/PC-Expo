@@ -256,7 +256,7 @@ export default class App extends Component{
                     step={20}
                     marks
                     min={10}
-                    max={100}
+                    max={90}
                     onChangeCommitted={this.sliderChange}
                   />
               </Row>

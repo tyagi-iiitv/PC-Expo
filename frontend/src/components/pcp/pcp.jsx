@@ -74,7 +74,7 @@ async function generateSVG(
     dimensions = selectedCols.filter(function (key) {
         y[key] = d3.scaleLinear()
             .domain(d3.extent(data, function (d) { return +d[key]; }))
-            .range([height-30, 0]);
+            .range([height-30, 10]);
         return key;
     });
     let x_para_offset = 100
@@ -124,14 +124,14 @@ async function generateSVG(
         }
     }
     
-    // // Add a group element for each dimension and dist
+    // Add a group element for each dimension and dist
     g = svg.selectAll(".dimension")
         .data(dimensions).enter()
         .append("g")
         .attr("class", "dimension")
         .attr("transform", function (d) { return "translate(" + x(d) + ")"; });
 
-    // // // // Add axis labels and title.
+    // Add axis labels and title.
     g.append("g")
         .attr("class", styles.axis)
         .each(function (d) {d3.select(this).call(d3.axisLeft().scale(y[d])); })
@@ -146,7 +146,7 @@ async function generateSVG(
     g.append("g")
         .attr("class", "brush")
         .call(d3.brushY()
-            .extent([[-10, 0], [10, height]])
+            .extent([[-10, 0], [10, height-30]])
             .on("start", brushstart)
             .on("brush", brush)
             .on("end", brushend))
