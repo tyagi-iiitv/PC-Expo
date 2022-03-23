@@ -197,6 +197,12 @@ export default class App extends Component{
               </Row>
               <Row>
                 <Col md="auto">
+                  <HeatMap heatmap_data={this.state.heatmap_data} click_seq={this.state.click_seq} change={this.state.change_heatmap} dimensions={this.state.dimensions} selected_list={this.state.selectedList} callbackFromParent={this.callbackFromChild}/>
+                </Col>
+                <Col md="auto">
+                  <LocalView data={this.state.data} local_cols={this.state.local_cols} window={this.state.window_sliderval} callbackFromParent={this.callbackFromChild}/>
+                </Col>
+                <Col md="auto">
                   <Row>
                     <Donut 
                       clear_grouping={this.state.clear_grouping_sliderval}
@@ -216,12 +222,6 @@ export default class App extends Component{
                   <Row>
                     <Scatterplot data={this.state.data} local_cols={this.state.local_cols} dragdata={this.state.dragdata}/>
                   </Row>
-                </Col>
-                <Col md="auto">
-                  <HeatMap heatmap_data={this.state.heatmap_data} click_seq={this.state.click_seq} change={this.state.change_heatmap} dimensions={this.state.dimensions} selected_list={this.state.selectedList} callbackFromParent={this.callbackFromChild}/>
-                </Col>
-                <Col md="auto">
-                  <LocalView data={this.state.data} local_cols={this.state.local_cols} window={this.state.window_sliderval} callbackFromParent={this.callbackFromChild}/>
                 </Col>
               </Row>
               <Row className={styles.clueImage}>

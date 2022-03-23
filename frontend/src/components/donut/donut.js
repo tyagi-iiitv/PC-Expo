@@ -37,9 +37,9 @@ export default class Donut extends Component {
             fill: {
                 type: 'gradient',
             },
-            title: {
-                text: 'Property Weights'
-            },
+            // title: {
+            //     text: 'Property Weights'
+            // },
             legend: {
                 show: false,
             }

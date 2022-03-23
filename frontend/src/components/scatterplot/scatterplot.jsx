@@ -45,9 +45,10 @@ export default class Scatterplot extends Component {
                         }
                     ]}
                     layout={{
-                        showlegend: false, xaxis: {showgrid: false, showticklabels: false, zeroline: false, rangemode: 'tozero'}, yaxis: {showgrid: false, showticklabels: false, zeroline: false, rangemode: 'tozero'}, margin: {b: 0, l: 0, r: 0, t: 0}
+                        showlegend: false, xaxis: {showgrid: false, showticklabels: false, zeroline: false, rangemode: 'tozero'}, yaxis: {showgrid: false, showticklabels: false, zeroline: false, rangemode: 'tozero'}, margin: {b: 0, l: 0, r: 0, t: 0}, hovermode: false
                     }}
-                    style={{width: 150, height: 125}}
+                    style={{width: 190, height: 150}}
+                    config={{displayModeBar: false}}
                 />
             </div>
 

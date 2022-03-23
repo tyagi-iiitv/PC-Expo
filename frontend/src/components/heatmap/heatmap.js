@@ -203,6 +203,8 @@ async function generateSVG(width, height, margins, data, callbackFromParent, svg
         .attr("y", function(d) {
             return y_scale(d.col2)
         })
+        .attr("rx", 6)
+        .attr("ry", 6)
         .attr("width", x_scale.bandwidth())
         .attr("height", y_scale.bandwidth())
         .style("fill", function(d){
