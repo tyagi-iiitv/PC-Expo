@@ -25,8 +25,8 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 CORS(app)
 
 
-df = pd.read_csv('data/penguins.csv')
-df = df.dropna()
+df = pd.read_csv('data/penguins_sample.csv')
+# df = df.dropna()
 numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
 num_df = df.select_dtypes(include=numerics)
 num_bins = 20
@@ -322,19 +322,19 @@ def fileUpload():
         os.mkdir(target)
     file_num = int(request.get_json())
     if file_num == 1:
-        df = pd.read_csv('./data/cars.csv')
+        df = pd.read_csv('./data/cars_sample.csv')
         lookup_info = np.load('./data/lookup_info_cars.npy')
     elif file_num == 2:
-        df = pd.read_csv('./data/fsl-mtc-sample.csv')
+        df = pd.read_csv('./data/systems_sample.csv')
         lookup_info = np.load('./data/lookup_info_systems.npy')
     else:
-        df = pd.read_csv('./data/penguins.csv')
+        df = pd.read_csv('./data/penguins_sample.csv')
         lookup_info = np.load('./data/lookup_info_penguins.npy')
-    try:
-        df = df.sample(n=2000)
-    except:
-        df = df.sample(n=2000, replace=True)
-    df = df.dropna()
+    # try:
+    #     df = df.sample(n=2000)
+    # except:
+    #     df = df.sample(n=2000, replace=True)
+    # df = df.dropna()
     num_df = df.select_dtypes(include=numerics)
     # num_df.columns = [f'{i}{x[-8:]}' for i, x in enumerate(num_df.columns)]
     return num_df.to_json(orient='records')
