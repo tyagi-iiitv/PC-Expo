@@ -8,7 +8,7 @@ export default class HeatMap extends Component{
         super(props);
         this.state = {
             canvasDims: {width: 300, height: 300},
-            margins: {top: 0, right: 0, bottom: 0, left: 0},
+            margins: {top: 0, right: 5, bottom: 3, left: 0},
             data_rec: {},
             svg_x: 430,
             svg_y: 580,
