@@ -336,7 +336,7 @@ def fileUpload():
         df = df.sample(n=2000, replace=True)
     df = df.dropna()
     num_df = df.select_dtypes(include=numerics)
-    num_df.columns = [f'{i}_{x[:8]}' for i, x in enumerate(num_df.columns)]
+    # num_df.columns = [f'{i}{x[-8:]}' for i, x in enumerate(num_df.columns)]
     return num_df.to_json(orient='records')
 
 @app.route('/getpoints', methods=['POST'])
