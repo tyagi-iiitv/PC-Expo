@@ -178,6 +178,7 @@ def globaloptimize():
     ])
     percent = int(vals['window_sliderval']/10-1)
     cols = list(num_df.columns)
+    weights = weights/weights.sum()
     window_data = lookup_info.sum(axis=-1)
     dim_arr = np.ones((1,window_data.ndim),int).ravel()
     dim_arr[-1] = -1
@@ -185,6 +186,7 @@ def globaloptimize():
     matrix = window_data*weights_reshaped
     matrix = matrix[:,:,percent,:]
     matrix = matrix.sum(axis=-1)
+    matrix = matrix*-1
     seq = solve_tsp(matrix)
     solution = []
     for id in seq:
