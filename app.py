@@ -31,7 +31,7 @@ numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
 num_df = df.select_dtypes(include=numerics)
 num_bins = 20
 
-cur_session = 0
+cur_session = 1
 session_files = {}
 
 # Using a lookup datastructure for all the information
@@ -306,10 +306,12 @@ def heatmapdata():
         matrix[i]['val'] = matrix_norm_vals[i]
     return json.dumps([matrix, cols])
 
-@app.route('/defheatmapdata', methods=['GET'])
+@app.route('/defheatmapdata', methods=['POST'])
 @cross_origin()
 def defheatmapdata():
     global num_df
+    session_id = request.get_json()
+    print(session_id)
     cols = list(num_df.columns)
     matrix = []
     for i,col1 in enumerate(cols):
@@ -318,9 +320,11 @@ def defheatmapdata():
                 matrix.append({'col1': col1, 'col2': col2, 'val': 0})
     return json.dumps([matrix, cols])
 
-@app.route('/getjsondata', methods=['GET'])
+@app.route('/getjsondata', methods=['POST'])
 @cross_origin()
 def getjsondata():
+    session_id = request.get_json()
+    print(session_id)
     return num_df.to_json(orient='records')
 
 
@@ -354,7 +358,7 @@ def fileUpload():
 @app.route('/getpoints', methods=['POST'])
 @cross_origin()
 def getPoints():
-    [end, start, col1, col2] = request.get_json()
+    [end, start, col1, col2, session_id] = request.get_json()
     cur_pts = np.where((num_df[col1] >= start) & 
                             (num_df[col1] <= end)
                            )
@@ -362,7 +366,7 @@ def getPoints():
     return json.dumps([list(subset[col1]), list(subset[col2])])
     
 
-@app.route('/readdata', methods=['GET'])
+@app.route('/readdata', methods=['POST'])
 @cross_origin()
 def readData():
     # global num_df

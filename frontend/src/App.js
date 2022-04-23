@@ -47,7 +47,7 @@ export default class App extends Component{
 
   componentDidMount(){
     fetch('/getsession', {
-      methods: 'GET',
+      method: 'GET',
     })
     .then(response => response.json())
     .then(response => {
@@ -57,7 +57,7 @@ export default class App extends Component{
     }); 
 
     fetch('/getjsondata', {
-      methods: 'POST',
+      method: 'POST',
       headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
