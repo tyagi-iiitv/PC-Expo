@@ -32,6 +32,7 @@ export default class LocalView extends Component{
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
+            credentials: "include",
             body: JSON.stringify({
               col1: this.props.local_cols[0],
               col2: this.props.local_cols[1],
@@ -90,6 +91,7 @@ export default class LocalView extends Component{
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 },
+                credentials: "include",
                 body: JSON.stringify({
                   col1: this.props.local_cols[0],
                   col2: this.props.local_cols[1],
@@ -427,6 +429,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
+            credentials: "include",
             body: JSON.stringify([y[local_cols[0]].invert(d3.brushSelection(this)[0]), y[local_cols[0]].invert(d3.brushSelection(this)[1]), local_cols[0], local_cols[1]])
             // console.log(y['bill_length_mm'].invert(940))
         })

@@ -16,7 +16,8 @@ export default class HeatMap extends Component{
     }
     componentDidMount(){
         fetch('defheatmapdata', {
-            methods: 'GET'
+            methods: 'GET',
+            credentials: "include",
         })
         .then(response => response.json())
         .then(response => {

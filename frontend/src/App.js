@@ -47,6 +47,7 @@ export default class App extends Component{
   componentDidMount(){
     fetch('/getjsondata', {
       methods: 'GET',
+      credentials: "include",
     })
     .then(response => response.json())
     .then(response => {
@@ -79,6 +80,7 @@ export default class App extends Component{
           'Accept': 'application/json',
           'Content-Type': 'application/json',
       },
+      credentials: "include",
       body: JSON.stringify({
         clear_grouping_sliderval: this.state.clear_grouping_sliderval,
         split_up_sliderval: this.state.split_up_sliderval,
@@ -111,6 +113,7 @@ export default class App extends Component{
           'Accept': 'application/json',
           'Content-Type': 'application/json',
       },
+      credentials: "include",
       body: JSON.stringify({
         clear_grouping_sliderval: this.state.clear_grouping_sliderval,
         split_up_sliderval: this.state.split_up_sliderval,
@@ -141,6 +144,7 @@ export default class App extends Component{
           'Accept': 'application/json',
           'Content-Type': 'application/json',
       },
+      credentials: "include",
       body: JSON.stringify({
         clear_grouping_sliderval: this.state.clear_grouping_sliderval,
         split_up_sliderval: this.state.split_up_sliderval,

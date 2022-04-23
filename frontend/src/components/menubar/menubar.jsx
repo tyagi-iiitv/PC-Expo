@@ -113,6 +113,7 @@ export class LoadExamples extends Component {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
+            credentials: "include",
             body: JSON.stringify(evt)})
             .then(response => response.json())
             .then((response) => {

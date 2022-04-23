@@ -1,2 +1,5 @@
 env/
 uploads/
+data/
+paper_files/
+flask_session/
