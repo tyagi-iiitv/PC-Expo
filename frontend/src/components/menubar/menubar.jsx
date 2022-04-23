@@ -113,7 +113,7 @@ export class LoadExamples extends Component {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(evt)})
+            body: JSON.stringify([evt, this.props.session_id])})
             .then(response => response.json())
             .then((response) => {
                 let data = response;
