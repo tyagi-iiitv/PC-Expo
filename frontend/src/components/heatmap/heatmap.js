@@ -15,8 +15,15 @@ export default class HeatMap extends Component{
         }
     }
     componentDidMount(){
-        fetch('defheatmapdata', {
-            methods: 'GET'
+        fetch('/defheatmapdata', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                session_id: this.props.session_id,
+            })
         })
         .then(response => response.json())
         .then(response => {

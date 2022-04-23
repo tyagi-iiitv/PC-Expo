@@ -35,6 +35,7 @@ export default class App extends Component{
       click_seq: [],
       change_heatmap: true,
       area_chart_data: [],
+      session_id: 0,
     }
     this.sliderChange = this.sliderChange.bind(this);
     this.recommend = this.recommend.bind(this);
@@ -45,8 +46,25 @@ export default class App extends Component{
   }
 
   componentDidMount(){
+    fetch('/getsession', {
+      method: 'GET',
+    })
+    .then(response => response.json())
+    .then(response => {
+      this.setState({'data_rec': false});
+      this.setState({session_id: response}, ()=> this.setState({'data_rec': true}))
+      console.log(this.state.session_id)
+    }); 
+
     fetch('/getjsondata', {
-      methods: 'GET',
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        session_id: this.state.session_id,
+      })
     })
     .then(response => response.json())
     .then(response => {
@@ -94,6 +112,7 @@ export default class App extends Component{
         neg_skew_sliderval: this.state.neg_skew_sliderval,
         window_sliderval: this.state.window_sliderval,
         selected_list: this.state.selectedList,
+        session_id: this.state.session_id,
       })
     })
     .then(response => response.json())
@@ -124,7 +143,8 @@ export default class App extends Component{
         neg_var_sliderval: this.state.neg_var_sliderval,
         pos_skew_sliderval: this.state.pos_skew_sliderval,
         neg_skew_sliderval: this.state.neg_skew_sliderval,
-        window_sliderval: this.state.window_sliderval
+        window_sliderval: this.state.window_sliderval,
+        session_id: this.state.session_id,
       })
     })
     .then(response => response.json())
@@ -154,7 +174,8 @@ export default class App extends Component{
         neg_var_sliderval: this.state.neg_var_sliderval,
         pos_skew_sliderval: this.state.pos_skew_sliderval,
         neg_skew_sliderval: this.state.neg_skew_sliderval,
-        window_sliderval: this.state.window_sliderval
+        window_sliderval: this.state.window_sliderval,
+        session_id: this.state.session_id,
       })
     })
     .then(response => response.json())
@@ -186,7 +207,7 @@ export default class App extends Component{
             <Nav.Item style={{paddingLeft: 15}}>
                 <Button variant="info" onClick={this.delareacharts}>Hide Properties</Button>
             </Nav.Item>
-            <LoadExamples callbackFromParent={this.callbackFromChild}/>
+            <LoadExamples callbackFromParent={this.callbackFromChild} session_id={this.state.session_id}/>
           </Nav>
         </Navbar>
         <Container fluid>
@@ -197,10 +218,10 @@ export default class App extends Component{
               </Row>
               <Row>
                 <Col md="auto">
-                  <HeatMap heatmap_data={this.state.heatmap_data} click_seq={this.state.click_seq} change={this.state.change_heatmap} dimensions={this.state.dimensions} selected_list={this.state.selectedList} callbackFromParent={this.callbackFromChild}/>
+                  <HeatMap heatmap_data={this.state.heatmap_data} click_seq={this.state.click_seq} change={this.state.change_heatmap} dimensions={this.state.dimensions} selected_list={this.state.selectedList} callbackFromParent={this.callbackFromChild} session_id={this.state.session_id}/>
                 </Col>
                 <Col md="auto">
-                  <LocalView data={this.state.data} local_cols={this.state.local_cols} window={this.state.window_sliderval} callbackFromParent={this.callbackFromChild}/>
+                  <LocalView data={this.state.data} local_cols={this.state.local_cols} window={this.state.window_sliderval} callbackFromParent={this.callbackFromChild} session_id={this.state.session_id}/>
                 </Col>
                 <Col md="auto">
                   <Row>
