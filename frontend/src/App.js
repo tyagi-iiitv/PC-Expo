@@ -15,7 +15,7 @@ export default class App extends Component{
       pcpdata: {},
       dragdata: {},
       sliderdata: {},
-      clear_grouping_sliderval: 0,
+      clear_grouping_sliderval: 10,
       split_up_sliderval: 0,
       density_change_sliderval: 0,
       neigh_sliderval: 0,
@@ -185,6 +185,7 @@ export default class App extends Component{
     })
     .then(response => response.json())
     .then(data => {
+        console.log(data)
         this.setState({heatmap_data: data}, ()=> this.setState({'data_rec': true}))
     })
   }
@@ -214,6 +215,9 @@ export default class App extends Component{
             </Nav.Item>
             <LoadExamples callbackFromParent={this.callbackFromChild} session_id={this.state.session_id}/>
           </Nav>
+          <NavbarBrand style={{fontSize: 20, padding: '5 0', marginLeft: 15}}>
+            Please zoom out your browser window if the app is distorted.
+          </NavbarBrand>
         </Navbar>
         <Container fluid>
           <Row className={styles.mainRow}>
