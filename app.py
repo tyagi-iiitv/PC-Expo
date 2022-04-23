@@ -31,6 +31,9 @@ numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
 num_df = df.select_dtypes(include=numerics)
 num_bins = 20
 
+cur_session = 0
+session_files = {}
+
 # Using a lookup datastructure for all the information
 # #cols * #cols * #windows * #props * #bins
 lookup_info = np.load('./data/lookup_info_penguins.npy')
@@ -369,6 +372,14 @@ def readData():
 @cross_origin()
 def serve():
     return send_from_directory(app.static_folder, 'index.html')
+
+@app.route('/getsession', methods=['GET'])
+@cross_origin()
+def getSession():
+    global cur_session
+    response = json.dumps(cur_session)
+    cur_session += 1
+    return response
 
 if __name__ == "__main__":
     # num_df.to_csv('penguins_num.csv', index=False)

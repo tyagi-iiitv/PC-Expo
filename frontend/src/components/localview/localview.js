@@ -83,7 +83,6 @@ export default class LocalView extends Component{
 
     componentDidUpdate(prevProps){
         if (!equal(this.props, prevProps)){
-            console.log(this.props)
             fetch('/getlocaldata', {
                 method: 'POST',
                 headers: {

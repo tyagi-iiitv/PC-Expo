@@ -35,6 +35,7 @@ export default class App extends Component{
       click_seq: [],
       change_heatmap: true,
       area_chart_data: [],
+      session_id: 0,
     }
     this.sliderChange = this.sliderChange.bind(this);
     this.recommend = this.recommend.bind(this);
@@ -45,6 +46,17 @@ export default class App extends Component{
   }
 
   componentDidMount(){
+    fetch('/getsession', {
+      methods: 'GET'
+    })
+    .then(response => response.json())
+    .then(response => {
+      this.setState({'data_rec': false});
+      this.setState({session_id: response}, ()=> this.setState({'data_rec': true}))
+      console.log(this.state.session_id)
+    }); 
+
+
     fetch('/getjsondata', {
       methods: 'GET',
     })
