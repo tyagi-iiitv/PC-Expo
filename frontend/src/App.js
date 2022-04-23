@@ -36,6 +36,7 @@ export default class App extends Component{
       change_heatmap: true,
       area_chart_data: [],
       session_id: 0,
+      upload_clicked: false,
     }
     this.sliderChange = this.sliderChange.bind(this);
     this.recommend = this.recommend.bind(this);
@@ -83,6 +84,10 @@ export default class App extends Component{
   callbackFromChild(data){
     this.setState({'data_rec': false});
     this.setState(data, ()=> this.setState({'data_rec': true}));
+    if(this.state.upload_clicked){
+      this.recommend();
+      this.setState({upload_clicked: false});
+    }
   }
 
   delareacharts(){
@@ -245,9 +250,9 @@ export default class App extends Component{
                   </Row>
                 </Col>
               </Row>
-              <Row className={styles.clueImage}>
+              {/* <Row className={styles.clueImage}>
                 <img src="/all_props.png" alt="image" className={styles.clueImage}/>
-              </Row>
+              </Row> */}
             </Col>
             <Col md={2} className={styles.slider}>
               <Row>
