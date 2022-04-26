@@ -113,7 +113,7 @@ export class LoadExamples extends Component {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(evt)})
+            body: JSON.stringify([evt, this.props.session_id])})
             .then(response => response.json())
             .then((response) => {
                 let data = response;
@@ -122,7 +122,7 @@ export class LoadExamples extends Component {
                 for(let i=0; i< cols.length; i++){
                     dimensions.push({key: i, name: cols[i]})
                 }
-                this.props.callbackFromParent({data: data, dimensions: dimensions, selectedList: dimensions, local_cols: [dimensions[0].name, dimensions[1].name], click_seq: []})
+                this.props.callbackFromParent({data: data, dimensions: dimensions, selectedList: dimensions, local_cols: [dimensions[0].name, dimensions[1].name], click_seq: [], upload_clicked: true})
         });
     }
 

@@ -25,23 +25,44 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 CORS(app)
 
 
-df = pd.read_csv('data/penguins_sample.csv')
-# df = df.dropna()
 numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
-num_df = df.select_dtypes(include=numerics)
 num_bins = 20
+
+cur_session = 1
+session_files = {0:3}
+
+def getFileData(file_num):
+    global numerics
+    if file_num == 1:
+        df = pd.read_csv('./data/cars_sample.csv')
+    elif file_num == 2:
+        df = pd.read_csv('./data/systems_sample.csv')
+    else:
+        df = pd.read_csv('./data/penguins_sample.csv')
+    num_df = df.select_dtypes(include=numerics)
+    return num_df
+
+def getLookupData(file_num):
+    if file_num == 1:
+        lookup_info = np.load('./data/lookup_info_cars.npy')
+    elif file_num == 2:
+        lookup_info = np.load('./data/lookup_info_systems.npy')
+    else:
+        lookup_info = np.load('./data/lookup_info_penguins.npy')
+    return lookup_info
+
+
 
 # Using a lookup datastructure for all the information
 # #cols * #cols * #windows * #props * #bins
-lookup_info = np.load('./data/lookup_info_penguins.npy')
 '''
 props = ['pos_corr', 'neg_corr', 'pos_var', 'neg_var', 'pos_skew', 'neg_skew', 'fan', 'neigh', 'clear_grouping', 'density_change', 'split_up', 'outliers']
 '''
-def getSliderData(col1, col2, percent, bi_hist, xed):
+def getSliderData(col1, col2, percent, bi_hist, xed, file_num):
     '''
     Calculates properties based on the window slider
     '''
-    global num_df
+    num_df = getFileData(file_num)
     # percent = request.get_json()
     var_range = num_df[col1].max() - num_df[col1].min()
     window_size = percent/100*var_range
@@ -162,6 +183,10 @@ def getSliderData(col1, col2, percent, bi_hist, xed):
 @cross_origin()
 def globaloptimize():
     vals = request.get_json()
+    session_id = vals['session_id']
+    session_file = int(session_files.get(session_id, 3))
+    num_df = getFileData(session_file)
+    lookup_info = getLookupData(session_file)
     weights = np.array([
         vals['pos_corr_sliderval']/100,
         vals['neg_corr_sliderval']/100,
@@ -200,6 +225,10 @@ def globaloptimize():
 @cross_origin()
 def getareacharts():
     vals = request.get_json()
+    session_id = vals['session_id']
+    session_file = int(session_files.get(session_id, 3))
+    num_df = getFileData(session_file)
+    lookup_info = getLookupData(session_file)
     weights = np.array([
         vals['pos_corr_sliderval']/100,
         vals['neg_corr_sliderval']/100,
@@ -236,6 +265,10 @@ def getareacharts():
 @cross_origin()
 def getlocaldata():
     vals = request.get_json()
+    session_id = vals['session_id']
+    session_file = int(session_files.get(session_id, 3))
+    num_df = getFileData(session_file)
+    lookup_info = getLookupData(session_file)
     cols = list(num_df.columns)
     col1_name = vals['col1']
     col2_name = vals['col2']
@@ -272,6 +305,10 @@ def getlocaldata():
 @cross_origin()
 def heatmapdata():
     vals = request.get_json()
+    session_id = vals['session_id']
+    session_file = int(session_files.get(session_id, 3))
+    num_df = getFileData(session_file)
+    lookup_info = getLookupData(session_file)
     weights = np.array([
         vals['pos_corr_sliderval']/100,
         vals['neg_corr_sliderval']/100,
@@ -303,10 +340,13 @@ def heatmapdata():
         matrix[i]['val'] = matrix_norm_vals[i]
     return json.dumps([matrix, cols])
 
-@app.route('/defheatmapdata', methods=['GET'])
+@app.route('/defheatmapdata', methods=['POST'])
 @cross_origin()
 def defheatmapdata():
-    global num_df
+    vals = request.get_json()
+    session_id = vals['session_id']
+    session_file = int(session_files.get(session_id, 3))
+    num_df = getFileData(session_file)
     cols = list(num_df.columns)
     matrix = []
     for i,col1 in enumerate(cols):
@@ -315,9 +355,13 @@ def defheatmapdata():
                 matrix.append({'col1': col1, 'col2': col2, 'val': 0})
     return json.dumps([matrix, cols])
 
-@app.route('/getjsondata', methods=['GET'])
+@app.route('/getjsondata', methods=['POST'])
 @cross_origin()
 def getjsondata():
+    vals = request.get_json()
+    session_id = vals['session_id']
+    session_file = int(session_files.get(session_id, 3))
+    num_df = getFileData(session_file)
     return num_df.to_json(orient='records')
 
 
@@ -325,33 +369,21 @@ def getjsondata():
 @cross_origin()
 #Function to upload file and read the data
 def fileUpload():
-    global df, num_df, lookup_info
     target=os.path.join(UPLOAD_FOLDER)
     if not os.path.isdir(target):
         os.mkdir(target)
-    file_num = int(request.get_json())
-    if file_num == 1:
-        df = pd.read_csv('./data/cars_sample.csv')
-        lookup_info = np.load('./data/lookup_info_cars.npy')
-    elif file_num == 2:
-        df = pd.read_csv('./data/systems_sample.csv')
-        lookup_info = np.load('./data/lookup_info_systems.npy')
-    else:
-        df = pd.read_csv('./data/penguins_sample.csv')
-        lookup_info = np.load('./data/lookup_info_penguins.npy')
-    # try:
-    #     df = df.sample(n=2000)
-    # except:
-    #     df = df.sample(n=2000, replace=True)
-    # df = df.dropna()
-    num_df = df.select_dtypes(include=numerics)
-    # num_df.columns = [f'{i}{x[-8:]}' for i, x in enumerate(num_df.columns)]
+    file_num, session_id = request.get_json()[0], int(request.get_json()[1])
+    session_files[session_id] = file_num
+    session_file = int(session_files.get(session_id, 3))
+    num_df = getFileData(session_file)
     return num_df.to_json(orient='records')
 
 @app.route('/getpoints', methods=['POST'])
 @cross_origin()
 def getPoints():
-    [end, start, col1, col2] = request.get_json()
+    [end, start, col1, col2, session_id] = request.get_json()
+    session_file = int(session_files.get(session_id, 3))
+    num_df = getFileData(session_file)
     cur_pts = np.where((num_df[col1] >= start) & 
                             (num_df[col1] <= end)
                            )
@@ -359,16 +391,24 @@ def getPoints():
     return json.dumps([list(subset[col1]), list(subset[col2])])
     
 
-@app.route('/readdata', methods=['GET'])
-@cross_origin()
-def readData():
-    # global num_df
-    return json.dumps([list(num_df['bill_length_mm']), list(num_df['bill_depth_mm'])])
+# @app.route('/readdata', methods=['POST'])
+# @cross_origin()
+# def readData():
+#     # global num_df
+    # return json.dumps([list(num_df['bill_length_mm']), list(num_df['bill_depth_mm'])])
 
 @app.route('/')
 @cross_origin()
 def serve():
     return send_from_directory(app.static_folder, 'index.html')
+
+@app.route('/getsession', methods=['GET'])
+@cross_origin()
+def getSession():
+    global cur_session
+    response = json.dumps(cur_session)
+    cur_session += 1
+    return response
 
 if __name__ == "__main__":
     # num_df.to_csv('penguins_num.csv', index=False)

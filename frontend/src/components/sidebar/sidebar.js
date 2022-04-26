@@ -36,7 +36,7 @@ export class ClearGrouping extends Component {
         this.sliderChange = this.sliderChange.bind(this);
         this.checkChange = this.checkChange.bind(this);
         this.state = {
-            checked: false,
+            checked: true,
             val: 30,
         }
     }
@@ -63,7 +63,7 @@ export class ClearGrouping extends Component {
         return (
             <Row>
                 <Col md="auto">
-                    <Form.Check type="checkbox" id="corr" onChange={this.checkChange}/>
+                    <Form.Check type="checkbox" id="corr" onChange={this.checkChange} defaultChecked={true}/>
                 </Col>
                 <Col>
                     <Slider

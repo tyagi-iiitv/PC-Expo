@@ -35,7 +35,8 @@ export default class LocalView extends Component{
             body: JSON.stringify({
               col1: this.props.local_cols[0],
               col2: this.props.local_cols[1],
-              window_sliderval: this.props.window
+              window_sliderval: this.props.window,
+              session_id: this.props.session_id,
             })
           })
           .then(response => response.json())
@@ -75,7 +76,8 @@ export default class LocalView extends Component{
                     this.state.outliers,
                     this.state.indices,
                     this.state.window_size,
-                    this.props.callbackFromParent
+                    this.props.callbackFromParent,
+                    this.props.session_id,
             )
               )
           })
@@ -83,7 +85,6 @@ export default class LocalView extends Component{
 
     componentDidUpdate(prevProps){
         if (!equal(this.props, prevProps)){
-            console.log(this.props)
             fetch('/getlocaldata', {
                 method: 'POST',
                 headers: {
@@ -93,7 +94,8 @@ export default class LocalView extends Component{
                 body: JSON.stringify({
                   col1: this.props.local_cols[0],
                   col2: this.props.local_cols[1],
-                  window_sliderval: this.props.window
+                  window_sliderval: this.props.window,
+                  session_id: this.props.session_id,
                 })
               })
               .then(response => response.json())
@@ -133,7 +135,8 @@ export default class LocalView extends Component{
                         this.state.outliers,
                         this.state.indices,
                         this.state.window_size,
-                        this.props.callbackFromParent
+                        this.props.callbackFromParent,
+                        this.props.session_id,
                 )
                   )
               })
@@ -152,7 +155,7 @@ export default class LocalView extends Component{
     }
 }
 
-async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, pos_var, neg_var, pos_skew, neg_skew, fan, neigh, clear_grouping, density_change, split_up, outliers, indices, window_size, callbackFromParent){
+async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, pos_var, neg_var, pos_skew, neg_skew, fan, neigh, clear_grouping, density_change, split_up, outliers, indices, window_size, callbackFromParent, session_id){
     d3.selectAll("#svg3 > *").remove();
     let svg = d3.select("#svg3");
     let colors = d3.scaleSequential()
@@ -427,7 +430,7 @@ async function generateSVG(data, local_cols, width, height, pos_corr, neg_corr, 
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify([y[local_cols[0]].invert(d3.brushSelection(this)[0]), y[local_cols[0]].invert(d3.brushSelection(this)[1]), local_cols[0], local_cols[1]])
+            body: JSON.stringify([y[local_cols[0]].invert(d3.brushSelection(this)[0]), y[local_cols[0]].invert(d3.brushSelection(this)[1]), local_cols[0], local_cols[1], session_id])
             // console.log(y['bill_length_mm'].invert(940))
         })
         .then(response => response.json())
