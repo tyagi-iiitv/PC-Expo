@@ -23,10 +23,10 @@ warnings.filterwarnings("ignore")
 
 
 # df = pd.read_csv('./data/fsl-mtc-sample.csv')
-df = pd.read_csv('../data/cars.csv')
+df = pd.read_csv('../data/viz-data-simplified-sample.csv')
 # df = df.sample(n=2000, )
 df = df.dropna()
-df.to_csv('../data/cars_sample.csv', index=False)
+# df.to_csv('../data/cars_sample.csv', index=False)
 
 # In[5]:
 
@@ -193,4 +193,4 @@ if __name__ == '__main__':
             prop_min_norm = lookup_info[:,:,int(p_id/10-1),prop_id,:].min()
             lookup_info[:,:,int(p_id/10-1),prop_id,:] = (lookup_info[:,:,int(p_id/10-1),prop_id,:] - prop_min_norm) / (prop_max_norm - prop_min_norm + eps)
     lookup_info[:,:,:,10,:] = 1-lookup_info[:,:,:,8,:]
-    np.save('../data/lookup_info_cars.npy', lookup_info)
+    np.save('../data/lookup_info_viz_data.npy', lookup_info)
